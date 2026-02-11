@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Planner - Your Personal Recipe Assistant</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍳 Meal Planner</h1>
+            <div class="header-stats">
+                <div class="basket-count">
+                    <span id="mealCount">0</span> meals selected
+                </div>
+                <div class="portions-selector">
+                    <label>Portions:</label>
+                    <input type="number" id="portionsInput" value="1" min="1" max="10">
+                </div>
+            </div>
+        </header>
+
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchView('meals')">🍽️ Select Meals</button>
+            <button class="tab-btn" onclick="switchView('shopping')">🛒 Shopping List</button>
+            <button class="tab-btn" onclick="switchView('recipe')">👨‍🍳 Cook</button>
+        </div>
+
+        <!-- Meal Selection View -->
+        <div id="mealsView" class="view-container active">
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterMeals('all')">All</button>
+                <button class="filter-btn" onclick="filterMeals('quick')">⚡ Under 20 mins</button>
+                <button class="filter-btn" onclick="filterMeals('vegetarian')">🥗 Vegetarian</button>
+                <button class="filter-btn" onclick="filterMeals('fish')">🐟 Fish</button>
+                <button class="filter-btn" onclick="filterMeals('asian')">🥢 Asian</button>
+                <button class="filter-btn" onclick="filterMeals('italian')">🍝 Italian</button>
+                <button class="filter-btn" onclick="filterMeals('healthy')">💪 Low Cal</button>
+            </div>
+
+            <div class="meal-grid" id="mealGrid">
+                <!-- Meals will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <!-- Shopping List View -->
+        <div id="shoppingView" class="view-container">
+            <div class="shopping-list">
+                <h2>Shopping List</h2>
+                
+                <div class="pantry-check">
+                    <h4>Check your pantry (click items you already have):</h4>
+                    <div class="pantry-items" id="pantryItems">
+                        <span class="pantry-item" onclick="togglePantryItem(this)">Olive oil</span>
+                        <span class="pantry-item" onclick="togglePantryItem(this)">Salt</span>
+                        <span class="pantry-item" onclick="togglePantryItem(this)">Black pepper</span>
+                        <span class="pantry-item" onclick="togglePantryItem(this)">Garlic</span>
+                        <span class="pantry-item" onclick="togglePantryItem(this)">Soy sauce</span>
+                        <span class="pantry-item" onclick="togglePantryItem(this)">Rice vinegar</span>
+                        <span class="pantry-item" onclick="togglePantryItem(this)">Sesame oil</span>
+                        <span class="pantry-item" onclick="togglePantryItem(this)">Honey</span>
+                    </div>
+                </div>
+
+                <div id="shoppingListContent">
+                    <!-- Shopping list will be generated here -->
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-primary" onclick="exportList()">📋 Copy List</button>
+                    <button class="btn btn-secondary" onclick="sendToSupermarket()">🏪 Send to Tesco</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recipe View -->
+        <div id="recipeView" class="view-container">
+            <div class="recipe-view">
+                <div class="recipe-header">
+                    <div class="recipe-title">
+                        <h2 id="recipeName">Select a meal to start cooking</h2>
+                        <div class="recipe-meta" id="recipeMeta"></div>
+                    </div>
+                    <select id="recipeSelector" class="recipe-selector" onchange="loadRecipe(this.value)">
+                        <option value="">Choose a meal to cook...</option>
+                    </select>
+                </div>
+                
+                <div class="recipe-content">
+                    <div class="ingredients-panel" id="ingredientsPanel" style="display: none;">
+                        <h3>Ingredients</h3>
+                        <div id="ingredientsList"></div>
+                    </div>
+                    
+                    <div class="steps-panel">
+                        <div class="recipe-steps" id="recipeSteps">
+                            <!-- Recipe steps will be loaded here -->
+                        </div>
+                        
+                        <div class="timer-controls" id="timerControls" style="display: none;">
+                            <button class="btn btn-primary" onclick="startTimer()">Start Timer</button>
+                            <button class="btn btn-secondary" onclick="resetTimer()">Reset</button>
+                            <div class="timer-display" id="timerDisplay">00:00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recipe-source" id="recipeSource" style="display: none;">
+                    <!-- Source attribution will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/meals.js"></script>
+    <script src="js/recipes.js"></script>
+    <script src="js/shopping.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

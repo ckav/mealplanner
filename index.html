@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Mate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 font-sans">
+
+    <div class="container mx-auto max-w-5xl p-4">
+        
+        <!-- Header -->
+        <header class="flex justify-between items-center p-4 bg-white rounded-lg shadow-md mb-4">
+            <h1 class="text-3xl font-bold text-indigo-600">🍳 Meal Planner</h1>
+            <div id="meal-plan-summary" class="text-lg font-semibold text-slate-700">
+                0 of 7 meals selected
+            </div>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="mb-4 flex space-x-2 bg-white p-2 rounded-lg shadow">
+            <button data-view="planner" class="tab-btn flex-1 py-2 px-4 rounded-md text-center font-semibold transition-colors duration-300">🗓️ Weekly Plan</button>
+            <button data-view="recipes" class="tab-btn flex-1 py-2 px-4 rounded-md text-center font-semibold transition-colors duration-300">🍲 Recipes</button>
+            <button data-view="shopping" class="tab-btn flex-1 py-2 px-4 rounded-md text-center font-semibold transition-colors duration-300">🛒 Shopping List</button>
+            <button data-view="settings" class="tab-btn flex-1 py-2 px-4 rounded-md text-center font-semibold transition-colors duration-300">⚙️ Settings</button>
+        </div>
+
+        <!-- Main Content Views -->
+        <main>
+            <!-- Planner View -->
+            <div id="planner-view" class="view hidden">
+                <div id="meal-plan" class="space-y-2">
+                    <!-- Vertical meal plan will be generated here -->
+                </div>
+            </div>
+
+            <!-- Recipes View -->
+            <div id="recipes-view" class="view hidden">
+                 <!-- Filters -->
+                <div id="filter-container" class="bg-white p-6 rounded-lg shadow mb-6">
+                    <h2 class="text-xl font-bold mb-4">Find a Recipe</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="filter-cuisine" class="block text-sm font-medium text-slate-600">Cuisine</label>
+                            <select id="filter-cuisine" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500">
+                                <option value="all">All</option>
+                                <option value="Mexican">Mexican</option>
+                                <option value="Indian">Indian</option>
+                                <option value="British">British</option>
+                                <option value="Italian">Italian</option>
+                                <option value="Asian">Asian</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="cook-time-filter" class="block text-sm font-medium text-slate-600">Max Cook Time</label>
+                            <select id="cook-time-filter" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500">
+                                <option value="all">Any</option>
+                                <option value="15">15 mins</option>
+                                <option value="30">30 mins</option>
+                                <option value="45">45 mins</option>
+                                <option value="60">60 mins</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Allergen Filter Section -->
+                    <div class="mt-6 pt-6 border-t border-slate-200">
+                        <h3 class="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                            <span>⚠️ Avoid Allergens</span>
+                        </h3>
+                        <div id="allergen-filters" class="flex flex-wrap gap-2 mb-4"></div>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-4">
+                        <div class="flex items-center">
+                            <input id="filter-favourites" type="checkbox" class="h-4 w-4 text-green-600 border-slate-300 rounded focus:ring-green-500">
+                            <label for="filter-favourites" class="ml-2 block text-sm text-slate-800">Show Favourites Only</label>
+                        </div>
+                        <button id="filter-reset-btn" class="bg-gray-300 hover:bg-gray-400 text-slate-800 font-bold py-2 px-4 rounded-lg">
+                            Reset Filters
+                        </button>
+                    </div>
+                </div>
+                <!-- Recipe List -->
+                <div id="recipe-list-container" class="bg-white p-6 rounded-lg shadow">
+                    <h2 class="text-xl font-bold mb-4">My Recipes</h2>
+                    <div id="recipe-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                </div>
+            </div>
+
+            <!-- Shopping List View -->
+            <div id="shopping-view" class="view hidden">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold">Shopping List</h2>
+                        <div class="flex gap-2">
+                            <button id="copy-shopping-list" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">
+                                Copy List
+                            </button>
+                            <button id="clear-shopping-list" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
+                                Clear Plan
+                            </button>
+                        </div>
+                    </div>
+                    <ul id="shopping-list-items" class="space-y-2">
+                        <!-- Items will be generated here -->
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div id="settings-view" class="view hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div id="add-recipe-container" class="bg-white p-6 rounded-lg shadow">
+                    <h2 class="text-xl font-bold mb-4">Add a Recipe</h2>
+                    <div class="mb-4 border-b pb-4">
+                        <h3 class="text-lg font-semibold mb-2">Load from URL</h3>
+                        <div class="space-y-2">
+                            <input type="url" id="recipe-url-input" placeholder="Enter recipe URL" class="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm">
+                            <button id="fetch-recipe-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg">Fetch Recipe</button>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2 mt-4">Or Add Manually</h3>
+                    <form id="add-recipe-form" class="space-y-2">
+                        <input type="text" id="recipe-name" placeholder="Recipe Name" class="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm" required>
+                        <input type="number" id="recipe-servings" placeholder="Default Servings (e.g., 4)" class="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm" required>
+                        <textarea id="recipe-ingredients" placeholder="Ingredients (comma separated)" class="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm" rows="3" required></textarea>
+                        <textarea id="recipe-instructions" placeholder="Instructions (one per line)" class="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm" rows="4" required></textarea>
+                        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">
+                            Add Recipe
+                        </button>
+                    </form>
+                </div>
+                <div class="space-y-6">
+                    <div id="profiles-container" class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-xl font-bold mb-4">Family Profiles</h2>
+                        <div id="active-profiles-list" class="flex flex-wrap gap-2 mt-1 mb-4"></div>
+                        <div id="profile-list" class="space-y-3"></div>
+                        <form id="add-profile-form" class="mt-4 space-y-2">
+                            <input type="text" id="profile-name-input" placeholder="New profile name" class="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm" required>
+                            
+                            <!-- Allergen Preferences -->
+                            <div class="border-t border-slate-200 pt-3 mt-3">
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Select Allergens to Avoid:</label>
+                                <div id="profile-allergens-checkboxes" class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto p-2 bg-slate-50 rounded-md border border-slate-200"></div>
+                            </div>
+
+                            <input type="text" id="profile-dislikes-input" placeholder="Dislikes (e.g., paella, rice)" class="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm">
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Add Profile</button>
+                        </form>
+                    </div>
+                    <div id="pantry-container" class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-xl font-bold mb-4">My Pantry</h2>
+                        <form id="add-pantry-item-form" class="flex gap-2 mb-4">
+                            <input type="text" id="pantry-item-name" placeholder="e.g., olive oil" required class="flex-grow mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Add</button>
+                        </form>
+                        <div id="pantry-list" class="space-y-2"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Recipe Modal -->
+    <div id="recipe-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-full overflow-y-auto">
+            <div class="p-6 border-b">
+                <div class="flex justify-between items-start">
+                    <h2 id="modal-recipe-name" class="text-2xl font-bold">Recipe Name</h2>
+                    <div class="flex items-center gap-2">
+                        <button id="modal-portion-minus" class="portion-btn bg-slate-200 rounded-full h-8 w-8 flex items-center justify-center">-</button>
+                        <span id="modal-portion-display" class="font-bold text-lg">1</span>
+                        <button id="modal-portion-plus" class="portion-btn bg-slate-200 rounded-full h-8 w-8 flex items-center justify-center">+</button>
+                        <span class="text-sm text-slate-500">servings</span>
+                    </div>
+                </div>
+                <div id="modal-stats-bar" class="flex justify-around text-center text-sm text-slate-600 mt-4 p-2 bg-slate-100 rounded-lg"></div>
+            </div>
+            <div class="p-6">
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold mb-2">Allergens</h3>
+                    <div id="modal-allergen-icons" class="flex flex-wrap gap-2"></div>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Ingredients</h3>
+                <ul id="modal-recipe-ingredients" class="list-disc list-inside mb-4"></ul>
+                <h3 class="text-lg font-semibold mb-2">Instructions</h3>
+                <div id="modal-recipe-instructions" class="space-y-4"></div>
+            </div>
+            <div class="p-6 bg-slate-50 rounded-b-lg">
+                <div id="modal-source-info" class="text-xs text-slate-500 text-center"></div>
+                <div class="text-right mt-4">
+                    <button id="close-modal-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

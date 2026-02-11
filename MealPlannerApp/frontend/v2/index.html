@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Planner - Recipe Cards</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Feature: Recipe Editor (v2) -->
+    <link rel="stylesheet" href="features/recipe-editor/recipe-editor.css">
+    <link rel="stylesheet" href="features/recipe-editor/recipe-editor-v2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <h1 class="app-title">Meal Planner</h1>
+            </div>
+            <div class="header-right">
+                <div class="meal-plan-summary">
+                    <span class="plan-count" id="planCount">0</span> meals planned
+                </div>
+                <button class="btn btn-primary" id="addRecipeBtn" title="Add New Recipe">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Add Recipe
+                </button>
+                <button class="btn btn-secondary" id="groceryListBtn" title="View Grocery List">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    Grocery List
+                </button>
+                <button class="btn btn-secondary" id="fridgeBtn" title="What's in my fridge?">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="5" y="3" width="14" height="18" rx="2" ry="2"></rect>
+                        <line x1="5" y1="10" x2="19" y2="10"></line>
+                        <line x1="9" y1="14" x2="11" y2="14"></line>
+                    </svg>
+                    What's in my fridge?
+                </button>
+                <button class="btn btn-secondary" id="allergenFilterBtn" title="Allergen Filter">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18M7 12h10M5 18h14"></path>
+                    </svg>
+                    Allergen Filter
+                </button>
+                <button class="btn-icon" id="settingsBtn" title="Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Filter & Sort Bar -->
+        <div class="filter-bar">
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label class="filter-label">Cooking for:</label>
+                    <select class="filter-select" id="cookingForSelect">
+                        <option value="everyone">Everyone Home (4)</option>
+                        <option value="me">Just Me (1)</option>
+                        <option value="couple">Couple Night (2)</option>
+                        <option value="custom">Custom...</option>
+                    </select>
+                </div>
+
+                <div class="filter-pills" id="filterPills">
+                    <button class="filter-pill active" data-filter="all">All</button>
+                    <button class="filter-pill" data-filter="quick">Under 20m</button>
+                    <button class="filter-pill" data-filter="vegetarian">Vegetarian</button>
+                    <button class="filter-pill" data-filter="asian">Asian</button>
+                    <button class="filter-pill" data-filter="italian">Italian</button>
+                    <button class="filter-pill" data-filter="healthy">Healthy</button>
+                    <button class="filter-pill" data-filter="fish">Fish</button>
+                </div>
+            </div>
+
+            <div class="sort-section">
+                <label class="filter-label">Sort:</label>
+                <select class="filter-select" id="sortSelect">
+                    <option value="recent">Recently Added</option>
+                    <option value="favourites">Family Favourites</option>
+                    <option value="never-tried">Never Tried</option>
+                    <option value="recently-cooked">Recently Cooked</option>
+                    <option value="quick">Quick & Easy</option>
+                    <option value="random">Surprise Me</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Recipe Card Grid -->
+        <main class="recipe-grid" id="recipeGrid">
+            <!-- Cards will be inserted by JavaScript -->
+        </main>
+
+        <!-- Recipe Detail Modal -->
+        <div class="modal-overlay" id="recipeModal">
+            <div class="modal-content recipe-detail">
+                <header class="modal-header">
+                    <button class="btn-icon modal-close" id="modalClose">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                        </svg>
+                        <span>Back</span>
+                    </button>
+                    <div class="modal-actions">
+                        <button class="btn-icon" id="modalFavourite" title="Favourite">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                        </button>
+                        <button class="btn-icon" id="modalShare" title="Share">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="18" cy="5" r="3"></circle>
+                                <circle cx="6" cy="12" r="3"></circle>
+                                <circle cx="18" cy="19" r="3"></circle>
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </header>
+
+                <div class="modal-body" id="modalBody">
+                    <!-- Recipe detail content inserted by JavaScript -->
+                </div>
+
+                <footer class="modal-footer">
+                    <button class="btn btn-secondary" id="modalEditRecipe">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        Edit
+                    </button>
+                    <button class="btn btn-primary btn-large" id="modalAddToPlan">
+                        + Add to Meal Plan
+                    </button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Grocery List Modal -->
+        <div class="modal-overlay" id="groceryListModal">
+            <div class="modal-content modal-medium">
+                <header class="modal-header">
+                    <h2 class="modal-title">Grocery List</h2>
+                    <button class="btn-icon modal-close" id="groceryListClose">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </header>
+
+                <div class="modal-body" id="groceryListBody">
+                    <!-- Grocery list content inserted by JavaScript -->
+                </div>
+
+                <footer class="modal-footer">
+                    <button class="btn btn-secondary" id="groceryListClear">Clear Plan</button>
+                    <button class="btn btn-primary" id="groceryListCopy">Copy to Clipboard</button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- What's in my fridge? Modal -->
+        <div class="modal-overlay" id="fridgeModal">
+            <div class="modal-content modal-medium">
+                <header class="modal-header">
+                    <h2 class="modal-title">What's in my fridge?</h2>
+                    <button class="btn-icon modal-close" id="fridgeClose">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </header>
+
+                <div class="modal-body">
+                    <div class="text-small" style="color: var(--color-gray-600); margin-bottom: 0.5rem;">Quick stub for a future fridge-aware planner. Add what you have or upload a photo to kickstart matches.</div>
+
+                    <div class="fridge-tabs" style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+                        <button class="fridge-tab active" data-tab="list">List items</button>
+                        <button class="fridge-tab" data-tab="scan">Scan a photo</button>
+                    </div>
+
+                    <div id="fridgeTabList" class="fridge-tab-panel">
+                        <div class="form-group">
+                            <label class="form-label" for="fridgeInput">Items you have</label>
+                            <textarea id="fridgeInput" class="form-input" rows="3" placeholder="milk, eggs, spinach"></textarea>
+                        </div>
+                        <div class="modal-actions" style="margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button class="btn btn-secondary" id="fridgePresetBtn">Use sample items</button>
+                            <button class="btn btn-primary" id="fridgeFindBtn">Find recipe matches</button>
+                        </div>
+                    </div>
+
+                    <div id="fridgeTabScan" class="fridge-tab-panel" style="display: none;">
+                        <p class="text-small" style="color: var(--color-gray-600);">Upload a fridge photo or snap a single ingredient. Vision wiring comes later; this is a UI stub.</p>
+
+                        <div class="photo-upload" id="fridgeDropzone" style="border: 1px dashed var(--color-gray-300); border-radius: 10px; padding: 1rem; text-align: center; cursor: pointer;">
+                            <input type="file" id="fridgeFile" accept="image/*" style="display: none;">
+                            <div class="photo-upload-inner" style="display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="5" y="3" width="14" height="18" rx="2" ry="2"></rect>
+                                    <line x1="5" y1="10" x2="19" y2="10"></line>
+                                    <line x1="9" y1="14" x2="11" y2="14"></line>
+                                </svg>
+                                <div style="font-weight: 600;">Drop a photo or click to browse</div>
+                                <div class="text-small" style="color: var(--color-gray-600);">Good lighting helps detect items.</div>
+                            </div>
+                        </div>
+
+                        <div class="photo-preview" id="fridgePhotoPreview" style="display: none; margin-top: 0.75rem; align-items: center; gap: 0.75rem; border: 1px solid var(--color-gray-200); border-radius: 8px; padding: 0.5rem;">
+                            <img id="fridgePhotoImg" alt="Uploaded fridge" style="width: 72px; height: 72px; object-fit: cover; border-radius: 6px;">
+                            <div style="flex: 1;">
+                                <div id="fridgePhotoName" style="font-weight: 600;"></div>
+                                <div class="text-small" style="color: var(--color-gray-600);">Not processed yet — placeholder only.</div>
+                            </div>
+                            <button class="btn btn-secondary" id="fridgeRemovePhoto">Remove</button>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label class="form-label" for="fridgeDetectedInput">Detected items (editable)</label>
+                            <textarea id="fridgeDetectedInput" class="form-input" rows="3" placeholder="e.g., eggs, spinach, feta"></textarea>
+                        </div>
+                        <div class="modal-actions" style="margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button class="btn btn-secondary" id="fridgeDetectSampleBtn">Use sample detection</button>
+                            <button class="btn btn-primary" id="fridgeDetectRunBtn">Detect items (stub)</button>
+                        </div>
+                    </div>
+
+                    <div id="fridgeResults" class="fridge-results" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recipe Editor Modal (v2 - Multi-Input) -->
+        <div class="modal-overlay" id="recipeEditorModal">
+            <div class="modal-content modal-large">
+                <header class="modal-header">
+                    <h2 class="modal-title" id="recipeEditorTitle">Add New Recipe</h2>
+                    <button class="btn-icon modal-close" id="recipeEditorClose">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </header>
+
+                <div class="modal-body recipe-editor-body">
+                    <!-- Input Method Selector (shown when adding new recipe) -->
+                    <div class="input-method-selector" id="inputMethodSelector">
+                        <h3 class="input-method-title">How would you like to add this recipe?</h3>
+                        <div class="input-method-cards">
+                            <button class="input-method-card" data-method="url">
+                                <div class="method-icon">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="method-title">Import from URL</h4>
+                                <p class="method-description">Paste a link from any recipe website and we'll try to fill in the details</p>
+                            </button>
+                            
+                            <button class="input-method-card" data-method="cookbook">
+                                <div class="method-icon">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="method-title">From a Cookbook</h4>
+                                <p class="method-description">Add a photo of the recipe page and record the source</p>
+                            </button>
+                            
+                            <button class="input-method-card" data-method="manual">
+                                <div class="method-icon">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="method-title">Type it in</h4>
+                                <p class="method-description">Enter recipe details manually from a shared recipe or from memory</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- URL Import Panel -->
+                    <div class="url-import-panel" id="urlImportPanel" style="display: none;">
+                        <button class="btn btn-text back-btn" id="urlBackBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                            </svg>
+                            Back
+                        </button>
+                        <h3 class="panel-title">Import from URL</h3>
+                        <p class="panel-description">Paste a recipe URL from websites like BBC Food, Delicious Magazine, Jamie Oliver, and more.</p>
+                        
+                        <div class="url-input-group">
+                            <input type="url" class="form-input url-input" id="recipeUrl" placeholder="https://www.example.com/recipe/...">
+                            <button class="btn btn-primary" id="fetchUrlBtn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    <path d="M9 12l2 2 4-4"></path>
+                                </svg>
+                                Import
+                            </button>
+                        </div>
+                        
+                        <div class="url-loading" id="urlLoading" style="display: none;">
+                            <div class="spinner"></div>
+                            <span>Fetching recipe details...</span>
+                        </div>
+                        
+                        <div class="url-error" id="urlError" style="display: none;">
+                            <div class="error-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                            </div>
+                            <p class="error-message" id="urlErrorMessage">Could not fetch recipe from this URL. The site may block external access.</p>
+                            <div class="error-actions">
+                                <button class="btn btn-secondary" id="urlRetryBtn">Try Again</button>
+                                <button class="btn btn-text" id="urlManualBtn">Enter manually instead</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cookbook Panel -->
+                    <div class="cookbook-panel" id="cookbookPanel" style="display: none;">
+                        <button class="btn btn-text back-btn" id="cookbookBackBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                            </svg>
+                            Back
+                        </button>
+                        <h3 class="panel-title">Add from Cookbook</h3>
+                        <p class="panel-description">Record where this recipe comes from for proper attribution.</p>
+                        
+                        <div class="cookbook-source-form">
+                            <div class="form-group">
+                                <label class="form-label" for="cookbookTitle">Cookbook Title *</label>
+                                <input type="text" class="form-input" id="cookbookTitle" placeholder="e.g., Jamie's 30-Minute Meals" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="cookbookAuthor">Author</label>
+                                    <input type="text" class="form-input" id="cookbookAuthor" placeholder="e.g., Jamie Oliver">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="cookbookPage">Page Number</label>
+                                    <input type="number" class="form-input" id="cookbookPage" placeholder="42" min="1">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Recipe Photo (optional)</label>
+                                <div class="photo-upload-area" id="photoUploadArea">
+                                    <input type="file" id="cookbookPhoto" accept="image/*" style="display: none;">
+                                    <div class="photo-placeholder" id="photoPlaceholder">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                            <polyline points="21 15 16 10 5 21"></polyline>
+                                        </svg>
+                                        <span>Click to upload a photo of the recipe page</span>
+                                    </div>
+                                    <div class="photo-preview" id="photoPreview" style="display: none;">
+                                        <img id="photoPreviewImg" alt="Recipe page preview">
+                                        <button type="button" class="btn btn-icon photo-remove" id="photoRemove" title="Remove photo">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="panel-actions">
+                            <button class="btn btn-primary" id="cookbookContinueBtn">Continue to Recipe Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Main Recipe Form -->
+                    <form id="recipeEditorForm" style="display: none;">
+                        <!-- Source Attribution Banner (shown after URL import or cookbook selection) -->
+                        <div class="source-attribution" id="sourceAttribution" style="display: none;">
+                            <div class="source-icon" id="sourceIcon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                </svg>
+                            </div>
+                            <span class="source-label" id="sourceLabel">Imported from</span>
+                            <a href="#" class="source-link" id="sourceLink" target="_blank">Source</a>
+                            <button type="button" class="btn btn-text btn-small" id="editSourceBtn">Edit</button>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group form-group-large">
+                                <label class="form-label" for="recipeName">Recipe Name *</label>
+                                <input type="text" class="form-input" id="recipeName" required placeholder="e.g., Chicken Stir Fry">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group form-group-large">
+                                <label class="form-label" for="recipeImage">Image URL</label>
+                                <input type="url" class="form-input" id="recipeImage" placeholder="https://...">
+                                <div class="image-preview-container" id="imagePreviewContainer" style="display: none;">
+                                    <img id="recipeImagePreview" alt="Recipe preview">
+                                    <button type="button" class="btn btn-icon image-remove" id="imageRemove" title="Remove image">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="imageCredit">Image Credit</label>
+                                <input type="text" class="form-input" id="imageCredit" placeholder="e.g., BBC Food">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="recipePrepTime">Prep Time (mins)</label>
+                                <input type="number" class="form-input" id="recipePrepTime" min="0" placeholder="15">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="recipeCookTime">Cook Time (mins) *</label>
+                                <input type="number" class="form-input" id="recipeCookTime" required min="1" placeholder="25">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="recipeServings">Servings *</label>
+                                <input type="number" class="form-input" id="recipeServings" required min="1" value="4">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="recipeCalories">Calories</label>
+                                <input type="number" class="form-input" id="recipeCalories" min="0" placeholder="350">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="recipeDifficulty">Difficulty</label>
+                                <select class="form-input" id="recipeDifficulty">
+                                    <option value="Easy">Easy</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Hard">Hard</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="recipeCuisine">Cuisine</label>
+                                <select class="form-input" id="recipeCuisine">
+                                    <option value="">Select...</option>
+                                    <option value="asian">Asian</option>
+                                    <option value="italian">Italian</option>
+                                    <option value="mexican">Mexican</option>
+                                    <option value="indian">Indian</option>
+                                    <option value="mediterranean">Mediterranean</option>
+                                    <option value="american">American</option>
+                                    <option value="french">French</option>
+                                    <option value="british">British</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group form-group-large">
+                                <label class="form-label" for="recipeTags">Tags (comma separated)</label>
+                                <input type="text" class="form-input" id="recipeTags" placeholder="Quick, Healthy, Family Friendly">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="recipeDescription">Description</label>
+                            <textarea class="form-input form-textarea" id="recipeDescription" rows="2" placeholder="A brief description of the dish..."></textarea>
+                        </div>
+
+                        <!-- Source Details (collapsible for editing) -->
+                        <details class="form-section-details" id="sourceDetailsSection">
+                            <summary class="form-section-summary">Source Details</summary>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="recipeSourceName">Source Name</label>
+                                    <input type="text" class="form-input" id="recipeSourceName" placeholder="e.g., BBC Good Food">
+                                </div>
+                                <div class="form-group form-group-large">
+                                    <label class="form-label" for="recipeSourceUrl">Source URL</label>
+                                    <input type="url" class="form-input" id="recipeSourceUrl" placeholder="https://...">
+                                </div>
+                            </div>
+                        </details>
+
+                        <div class="form-group">
+                            <label class="form-label">Ingredients</label>
+                            <div class="ingredients-editor" id="ingredientsEditor">
+                                <div class="ingredient-category" data-category="protein">
+                                    <h4 class="ingredient-category-header">Protein</h4>
+                                    <div class="ingredient-list-editor" id="proteinIngredients"></div>
+                                    <button type="button" class="btn btn-text add-ingredient-btn" data-category="protein">+ Add Protein</button>
+                                </div>
+                                <div class="ingredient-category" data-category="vegetables">
+                                    <h4 class="ingredient-category-header">Vegetables</h4>
+                                    <div class="ingredient-list-editor" id="vegetablesIngredients"></div>
+                                    <button type="button" class="btn btn-text add-ingredient-btn" data-category="vegetables">+ Add Vegetable</button>
+                                </div>
+                                <div class="ingredient-category" data-category="carbs">
+                                    <h4 class="ingredient-category-header">Carbs</h4>
+                                    <div class="ingredient-list-editor" id="carbsIngredients"></div>
+                                    <button type="button" class="btn btn-text add-ingredient-btn" data-category="carbs">+ Add Carb</button>
+                                </div>
+                                <div class="ingredient-category" data-category="sauce">
+                                    <h4 class="ingredient-category-header">Sauce / Seasonings</h4>
+                                    <div class="ingredient-list-editor" id="sauceIngredients"></div>
+                                    <button type="button" class="btn btn-text add-ingredient-btn" data-category="sauce">+ Add Sauce/Seasoning</button>
+                                </div>
+                                <div class="ingredient-category" data-category="pantry">
+                                    <h4 class="ingredient-category-header">Pantry</h4>
+                                    <div class="ingredient-list-editor" id="pantryIngredients"></div>
+                                    <button type="button" class="btn btn-text add-ingredient-btn" data-category="pantry">+ Add Pantry Item</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Steps</label>
+                            <div class="steps-editor" id="stepsEditor"></div>
+                            <button type="button" class="btn btn-text" id="addStepBtn">+ Add Step</button>
+                        </div>
+
+                        <!-- Personal Notes Section -->
+                        <div class="form-group notes-section">
+                            <label class="form-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                </svg>
+                                Personal Notes
+                                <span class="notes-private-badge">Private</span>
+                            </label>
+                            <textarea class="form-input form-textarea" id="recipeNotes" rows="3" placeholder="Add your own tips, substitutions, or modifications. These notes are private and won't be shared."></textarea>
+                        </div>
+                    </form>
+                </div>
+
+                <footer class="modal-footer">
+                    <button class="btn btn-secondary" id="recipeEditorCancel">Cancel</button>
+                    <button class="btn btn-danger" id="recipeEditorDelete" style="display: none;">Delete Recipe</button>
+                    <button class="btn btn-primary" id="recipeEditorSave" style="display: none;">Save Recipe</button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Add to Plan Modal -->
+        <div class="modal-overlay" id="addToPlanModal">
+            <div class="modal-content modal-small">
+                <header class="modal-header">
+                    <h2 class="modal-title" id="addToPlanTitle">Add to Plan</h2>
+                    <button class="btn-icon modal-close" id="addToPlanClose">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </header>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Who's eating?</label>
+                        <div class="radio-group" id="whosEatingGroup">
+                            <label class="radio-option">
+                                <input type="radio" name="whosEating" value="everyone" checked>
+                                <span class="radio-label">Everyone Home</span>
+                                <span class="radio-count">(4)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="whosEating" value="me">
+                                <span class="radio-label">Just Me</span>
+                                <span class="radio-count">(1)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="whosEating" value="couple">
+                                <span class="radio-label">Couple Night</span>
+                                <span class="radio-count">(2)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="whosEating" value="custom">
+                                <span class="radio-label">Custom</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Portions</label>
+                        <div class="portion-selector">
+                            <button class="btn-icon" id="portionMinus">-</button>
+                            <input type="number" class="portion-input" id="portionInput" value="4" min="1" max="12">
+                            <button class="btn-icon" id="portionPlus">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="modal-footer">
+                    <button class="btn btn-secondary" id="addToPlanCancel">Cancel</button>
+                    <button class="btn btn-primary" id="addToPlanConfirm">Add to Plan</button>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <script src="recipes.js"></script>
+    <!-- Feature: Recipe Editor (v2) -->
+    <script src="features/recipe-editor/recipe-editor-v2.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "tableName": "Recipes",
+  "fields": [
+    { "name": "Name", "type": "singleLineText" },
+    { "name": "Ingredients", "type": "longText" },
+    { "name": "Instructions", "type": "longText" },
+    { "name": "Prep Time (min)", "type": "number" },
+    { "name": "Cook Time (min)", "type": "number" },
+    { "name": "Servings", "type": "number" },
+    { "name": "Tags", "type": "multipleSelect" },
+    { "name": "Image URL", "type": "singleLineText" }
+  ]
+}

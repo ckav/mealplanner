@@ -1,0 +1,231 @@
+/* ===========================================
+   RECIPE EDITOR - Styles
+   Feature: Add/Edit Recipe Modal
+   =========================================== */
+
+/* Modal Size */
+.modal-large {
+    max-width: 700px;
+    width: 95%;
+    max-height: 90vh;
+}
+
+.recipe-editor-body {
+    max-height: calc(90vh - 140px);
+    overflow-y: auto;
+}
+
+/* ===========================================
+   FORM LAYOUT
+   =========================================== */
+.form-row {
+    display: flex;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.form-row .form-group-large {
+    flex: 2;
+}
+
+.form-group {
+    margin-bottom: var(--space-4);
+}
+
+.form-label {
+    display: block;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-gray-700);
+    margin-bottom: var(--space-2);
+}
+
+/* ===========================================
+   FORM INPUTS
+   =========================================== */
+.form-input {
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--font-size-sm);
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.form-input::placeholder {
+    color: var(--color-gray-400);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+/* ===========================================
+   INGREDIENTS EDITOR
+   =========================================== */
+.ingredients-editor {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.ingredient-category {
+    background: var(--color-gray-50);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+}
+
+.ingredient-category-header {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-gray-600);
+    margin-bottom: var(--space-2);
+}
+
+.ingredient-list-editor {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.ingredient-row {
+    display: flex;
+    gap: var(--space-2);
+    align-items: center;
+}
+
+.ingredient-row .ingredient-name {
+    flex: 2;
+}
+
+.ingredient-row .ingredient-amount {
+    flex: 0 0 80px;
+}
+
+.ingredient-row .ingredient-unit {
+    flex: 0 0 80px;
+}
+
+.ingredient-row .remove-ingredient-btn {
+    flex-shrink: 0;
+    color: var(--color-gray-400);
+}
+
+.ingredient-row .remove-ingredient-btn:hover {
+    color: var(--color-danger);
+}
+
+/* ===========================================
+   STEPS EDITOR
+   =========================================== */
+.steps-editor {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.step-row {
+    display: flex;
+    gap: var(--space-2);
+    align-items: flex-start;
+}
+
+.step-number {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    margin-top: var(--space-1);
+}
+
+.step-instruction {
+    flex: 1;
+}
+
+.step-time {
+    flex: 0 0 80px;
+}
+
+.step-row .remove-step-btn {
+    flex-shrink: 0;
+    color: var(--color-gray-400);
+    margin-top: var(--space-1);
+}
+
+.step-row .remove-step-btn:hover {
+    color: var(--color-danger);
+}
+
+/* ===========================================
+   BUTTON VARIANTS
+   =========================================== */
+.btn-text {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    padding: var(--space-2) 0;
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+}
+
+.btn-text:hover {
+    text-decoration: underline;
+}
+
+.btn-danger {
+    background: var(--color-danger);
+    color: var(--color-white);
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+/* ===========================================
+   RESPONSIVE
+   =========================================== */
+@media (max-width: 600px) {
+    .form-row {
+        flex-direction: column;
+        gap: var(--space-3);
+    }
+    
+    .form-row .form-group,
+    .form-row .form-group-large {
+        flex: none;
+        width: 100%;
+    }
+    
+    .ingredient-row {
+        flex-wrap: wrap;
+    }
+    
+    .ingredient-row .ingredient-name {
+        flex: 1 1 100%;
+    }
+    
+    .ingredient-row .ingredient-amount,
+    .ingredient-row .ingredient-unit {
+        flex: 1 1 calc(50% - var(--space-4));
+    }
+}

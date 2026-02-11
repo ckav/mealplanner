@@ -1,0 +1,141 @@
+<!-- Recipe Editor Modal Template -->
+<!-- Include this in your main HTML file or load dynamically -->
+
+<div class="modal-overlay" id="recipeEditorModal">
+    <div class="modal-content modal-large">
+        <header class="modal-header">
+            <h2 class="modal-title" id="recipeEditorTitle">Add New Recipe</h2>
+            <button class="btn-icon modal-close" id="recipeEditorClose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </header>
+
+        <div class="modal-body recipe-editor-body">
+            <form id="recipeEditorForm">
+                <!-- Basic Info -->
+                <div class="form-row">
+                    <div class="form-group form-group-large">
+                        <label class="form-label" for="recipeName">Recipe Name *</label>
+                        <input type="text" class="form-input" id="recipeName" required placeholder="e.g., Chicken Stir Fry">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="recipeImage">Image URL</label>
+                        <input type="url" class="form-input" id="recipeImage" placeholder="https://...">
+                    </div>
+                </div>
+
+                <!-- Cooking Details -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="recipeCookTime">Cook Time (mins) *</label>
+                        <input type="number" class="form-input" id="recipeCookTime" required min="1" placeholder="25">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="recipeServings">Servings *</label>
+                        <input type="number" class="form-input" id="recipeServings" required min="1" value="4">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="recipeCalories">Calories</label>
+                        <input type="number" class="form-input" id="recipeCalories" min="0" placeholder="350">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="recipeDifficulty">Difficulty</label>
+                        <select class="form-input" id="recipeDifficulty">
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Cuisine & Tags -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="recipeCuisine">Cuisine</label>
+                        <select class="form-input" id="recipeCuisine">
+                            <option value="">Select...</option>
+                            <option value="asian">Asian</option>
+                            <option value="italian">Italian</option>
+                            <option value="mexican">Mexican</option>
+                            <option value="indian">Indian</option>
+                            <option value="mediterranean">Mediterranean</option>
+                            <option value="american">American</option>
+                            <option value="french">French</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-group-large">
+                        <label class="form-label" for="recipeTags">Tags (comma separated)</label>
+                        <input type="text" class="form-input" id="recipeTags" placeholder="Quick, Healthy, Family Friendly">
+                    </div>
+                </div>
+
+                <!-- Source -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="recipeSourceName">Source Name</label>
+                        <input type="text" class="form-input" id="recipeSourceName" placeholder="e.g., BBC Good Food">
+                    </div>
+                    <div class="form-group form-group-large">
+                        <label class="form-label" for="recipeSourceUrl">Source URL</label>
+                        <input type="url" class="form-input" id="recipeSourceUrl" placeholder="https://...">
+                    </div>
+                </div>
+
+                <!-- Ingredients -->
+                <div class="form-group">
+                    <label class="form-label">Ingredients</label>
+                    <div class="ingredients-editor" id="ingredientsEditor">
+                        <div class="ingredient-category" data-category="protein">
+                            <h4 class="ingredient-category-header">Protein</h4>
+                            <div class="ingredient-list-editor" id="proteinIngredients"></div>
+                            <button type="button" class="btn btn-text add-ingredient-btn" data-category="protein">+ Add Protein</button>
+                        </div>
+                        <div class="ingredient-category" data-category="vegetables">
+                            <h4 class="ingredient-category-header">Vegetables</h4>
+                            <div class="ingredient-list-editor" id="vegetablesIngredients"></div>
+                            <button type="button" class="btn btn-text add-ingredient-btn" data-category="vegetables">+ Add Vegetable</button>
+                        </div>
+                        <div class="ingredient-category" data-category="carbs">
+                            <h4 class="ingredient-category-header">Carbs</h4>
+                            <div class="ingredient-list-editor" id="carbsIngredients"></div>
+                            <button type="button" class="btn btn-text add-ingredient-btn" data-category="carbs">+ Add Carb</button>
+                        </div>
+                        <div class="ingredient-category" data-category="sauce">
+                            <h4 class="ingredient-category-header">Sauce / Seasonings</h4>
+                            <div class="ingredient-list-editor" id="sauceIngredients"></div>
+                            <button type="button" class="btn btn-text add-ingredient-btn" data-category="sauce">+ Add Sauce/Seasoning</button>
+                        </div>
+                        <div class="ingredient-category" data-category="pantry">
+                            <h4 class="ingredient-category-header">Pantry</h4>
+                            <div class="ingredient-list-editor" id="pantryIngredients"></div>
+                            <button type="button" class="btn btn-text add-ingredient-btn" data-category="pantry">+ Add Pantry Item</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Steps -->
+                <div class="form-group">
+                    <label class="form-label">Steps</label>
+                    <div class="steps-editor" id="stepsEditor"></div>
+                    <button type="button" class="btn btn-text" id="addStepBtn">+ Add Step</button>
+                </div>
+
+                <!-- Notes -->
+                <div class="form-group">
+                    <label class="form-label" for="recipeNotes">Personal Notes</label>
+                    <textarea class="form-input form-textarea" id="recipeNotes" rows="2" placeholder="Any tips or modifications..."></textarea>
+                </div>
+            </form>
+        </div>
+
+        <footer class="modal-footer">
+            <button class="btn btn-secondary" id="recipeEditorCancel">Cancel</button>
+            <button class="btn btn-danger" id="recipeEditorDelete" style="display: none;">Delete Recipe</button>
+            <button class="btn btn-primary" id="recipeEditorSave">Save Recipe</button>
+        </footer>
+    </div>
+</div>

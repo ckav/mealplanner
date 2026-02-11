@@ -1,0 +1,370 @@
+{
+  "tables": [
+    {
+      "name": "Recipes",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "singleLineText",
+          "required": true
+        },
+        {
+          "name": "Description",
+          "type": "singleLineText"
+        },
+        {
+          "name": "CookingTime",
+          "type": "number",
+          "description": "Time in minutes"
+        },
+        {
+          "name": "PrepTime",
+          "type": "number",
+          "description": "Time in minutes"
+        },
+        {
+          "name": "Servings",
+          "type": "number",
+          "default": 4
+        },
+        {
+          "name": "Calories",
+          "type": "number"
+        },
+        {
+          "name": "CuisineType",
+          "type": "multipleSelects",
+          "options": [
+            "Asian",
+            "Italian",
+            "Mexican",
+            "Mediterranean",
+            "British",
+            "Indian",
+            "Thai",
+            "Chinese",
+            "Japanese"
+          ]
+        },
+        {
+          "name": "DietaryTags",
+          "type": "multipleSelects",
+          "options": [
+            "Vegetarian",
+            "Vegan",
+            "GlutenFree",
+            "DairyFree",
+            "LowCalorie",
+            "HighProtein",
+            "Quick",
+            "Healthy"
+          ]
+        },
+        {
+          "name": "MainProtein",
+          "type": "singleSelect",
+          "options": [
+            "Chicken",
+            "Beef",
+            "Pork",
+            "Fish",
+            "Seafood",
+            "Tofu",
+            "Beans",
+            "Eggs",
+            "None"
+          ]
+        },
+        {
+          "name": "ImageURL",
+          "type": "url"
+        },
+        {
+          "name": "ImageAttribution",
+          "type": "singleLineText"
+        },
+        {
+          "name": "SourceName",
+          "type": "singleLineText"
+        },
+        {
+          "name": "SourceURL",
+          "type": "url"
+        },
+        {
+          "name": "DateAdded",
+          "type": "date"
+        },
+        {
+          "name": "LastCooked",
+          "type": "date"
+        },
+        {
+          "name": "Rating",
+          "type": "rating",
+          "max": 5
+        },
+        {
+          "name": "Notes",
+          "type": "multilineText"
+        },
+        {
+          "name": "Ingredients",
+          "type": "linkedRecord",
+          "linkedTable": "Ingredients"
+        },
+        {
+          "name": "Steps",
+          "type": "linkedRecord",
+          "linkedTable": "RecipeSteps"
+        }
+      ]
+    },
+    {
+      "name": "Ingredients",
+      "fields": [
+        {
+          "name": "RecipeID",
+          "type": "linkedRecord",
+          "linkedTable": "Recipes"
+        },
+        {
+          "name": "IngredientName",
+          "type": "singleLineText",
+          "required": true
+        },
+        {
+          "name": "Quantity",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Unit",
+          "type": "singleSelect",
+          "options": [
+            "g",
+            "kg",
+            "ml",
+            "l",
+            "tbsp",
+            "tsp",
+            "cup",
+            "piece",
+            "can",
+            "pack",
+            "bunch"
+          ]
+        },
+        {
+          "name": "Category",
+          "type": "singleSelect",
+          "options": [
+            "Proteins",
+            "Produce",
+            "Dairy",
+            "Pantry",
+            "Spices",
+            "Condiments",
+            "Grains",
+            "Frozen",
+            "Beverages",
+            "Other"
+          ]
+        },
+        {
+          "name": "IsOptional",
+          "type": "checkbox"
+        },
+        {
+          "name": "Notes",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "name": "RecipeSteps",
+      "fields": [
+        {
+          "name": "RecipeID",
+          "type": "linkedRecord",
+          "linkedTable": "Recipes"
+        },
+        {
+          "name": "StepNumber",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "Instruction",
+          "type": "multilineText",
+          "required": true
+        },
+        {
+          "name": "TimeRequired",
+          "type": "singleLineText"
+        },
+        {
+          "name": "Tips",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "name": "MealPlans",
+      "fields": [
+        {
+          "name": "PlanName",
+          "type": "singleLineText"
+        },
+        {
+          "name": "WeekStarting",
+          "type": "date"
+        },
+        {
+          "name": "Recipes",
+          "type": "linkedRecord",
+          "linkedTable": "Recipes",
+          "multiple": true
+        },
+        {
+          "name": "NumberOfPortions",
+          "type": "number",
+          "default": 1
+        },
+        {
+          "name": "ShoppingListGenerated",
+          "type": "checkbox"
+        },
+        {
+          "name": "Notes",
+          "type": "multilineText"
+        }
+      ]
+    },
+    {
+      "name": "PantryItems",
+      "fields": [
+        {
+          "name": "ItemName",
+          "type": "singleLineText",
+          "required": true
+        },
+        {
+          "name": "Category",
+          "type": "singleSelect",
+          "options": [
+            "Oils",
+            "Vinegars",
+            "Spices",
+            "Condiments",
+            "Canned Goods",
+            "Grains",
+            "Pasta",
+            "Baking",
+            "Other"
+          ]
+        },
+        {
+          "name": "InStock",
+          "type": "checkbox",
+          "default": true
+        },
+        {
+          "name": "LastPurchased",
+          "type": "date"
+        },
+        {
+          "name": "ExpiryDate",
+          "type": "date"
+        },
+        {
+          "name": "Notes",
+          "type": "singleLineText"
+        }
+      ]
+    },
+    {
+      "name": "ShoppingLists",
+      "fields": [
+        {
+          "name": "ListName",
+          "type": "singleLineText"
+        },
+        {
+          "name": "DateCreated",
+          "type": "date"
+        },
+        {
+          "name": "MealPlan",
+          "type": "linkedRecord",
+          "linkedTable": "MealPlans"
+        },
+        {
+          "name": "Items",
+          "type": "multilineText",
+          "description": "JSON array of shopping items"
+        },
+        {
+          "name": "Supermarket",
+          "type": "singleSelect",
+          "options": [
+            "Tesco",
+            "Sainsbury's",
+            "ASDA",
+            "Morrisons",
+            "Waitrose",
+            "Ocado",
+            "Other"
+          ]
+        },
+        {
+          "name": "TotalEstimatedCost",
+          "type": "currency",
+          "symbol": "£"
+        },
+        {
+          "name": "Completed",
+          "type": "checkbox"
+        }
+      ]
+    }
+  ],
+  "views": [
+    {
+      "table": "Recipes",
+      "name": "Quick Meals",
+      "type": "grid",
+      "filter": "CookingTime <= 20"
+    },
+    {
+      "table": "Recipes",
+      "name": "Vegetarian",
+      "type": "grid",
+      "filter": "DietaryTags CONTAINS 'Vegetarian'"
+    },
+    {
+      "table": "Recipes",
+      "name": "Recently Added",
+      "type": "grid",
+      "sort": "DateAdded DESC"
+    },
+    {
+      "table": "Recipes",
+      "name": "Top Rated",
+      "type": "grid",
+      "filter": "Rating >= 4",
+      "sort": "Rating DESC"
+    },
+    {
+      "table": "PantryItems",
+      "name": "Out of Stock",
+      "type": "grid",
+      "filter": "InStock = FALSE"
+    },
+    {
+      "table": "PantryItems",
+      "name": "Expiring Soon",
+      "type": "grid",
+      "filter": "ExpiryDate <= TODAY() + 7"
+    }
+  ]
+}

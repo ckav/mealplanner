@@ -1,0 +1,103 @@
+{
+  "name": "Recipe Web Scraper",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "={{ $json[\"recipe_url\"] }}",
+        "options": {}
+      },
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "mode": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "title",
+              "cssSelector": "h1.recipe-name",
+              "returnValue": "text"
+            },
+            {
+              "key": "ingredients",
+              "cssSelector": "ul.recipe-ingredients li",
+              "returnValue": "text",
+              "multiple": true
+            },
+            {
+              "key": "instructions",
+              "cssSelector": "ol.recipe-instructions li",
+              "returnValue": "text",
+              "multiple": true
+            },
+            {
+              "key": "cookTime",
+              "cssSelector": ".recipe-time",
+              "returnValue": "text"
+            },
+            {
+              "key": "servings",
+              "cssSelector": ".recipe-yield",
+              "returnValue": "text"
+            },
+            {
+              "key": "image",
+              "cssSelector": ".recipe-image img",
+              "returnValue": "attribute",
+              "attribute": "src"
+            }
+          ]
+        }
+      },
+      "name": "HTML Extract",
+      "type": "n8n-nodes-base.htmlExtract",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "application": "appXXXXXXXXXXXXXX",
+        "table": "Recipes",
+        "options": {}
+      },
+      "name": "Airtable",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 1,
+      "position": [650, 300],
+      "credentials": {
+        "airtableApi": {
+          "id": "1",
+          "name": "Airtable account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTML Extract",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Extract": {
+      "main": [
+        [
+          {
+            "node": "Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

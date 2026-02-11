@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Planner - Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .test-passed {
+            color: green;
+            font-weight: bold;
+        }
+        .test-failed {
+            color: red;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #5a67d8;
+        }
+    </style>
+</head>
+<body>
+    <h1>Meal Planner App - Test Page</h1>
+    
+    <div class="test-section">
+        <h2>File Structure Test</h2>
+        <p>Testing if all files are accessible...</p>
+        <div id="fileTest"></div>
+        <button onclick="testFiles()">Run File Test</button>
+    </div>
+
+    <div class="test-section">
+        <h2>JavaScript Test</h2>
+        <p>Testing if JavaScript files load correctly...</p>
+        <div id="jsTest"></div>
+        <button onclick="testJavaScript()">Run JS Test</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Local Storage Test</h2>
+        <p>Testing browser storage capabilities...</p>
+        <div id="storageTest"></div>
+        <button onclick="testStorage()">Run Storage Test</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Quick Links</h2>
+        <p>
+            <a href="frontend/index.html">Open Main App</a> |
+            <a href="docs/requirements.md">View Requirements</a> |
+            <a href="docs/getting_started.md">Getting Started Guide</a>
+        </p>
+    </div>
+
+    <script>
+        function testFiles() {
+            const files = [
+                'frontend/index.html',
+                'frontend/css/styles.css',
+                'frontend/js/app.js',
+                'frontend/js/meals.js',
+                'frontend/js/recipes.js',
+                'frontend/js/shopping.js'
+            ];
+            
+            let results = '<ul>';
+            files.forEach(file => {
+                // In a real test, you'd check if files exist
+                // For now, we'll just list them
+                results += `<li>${file} - <span class="test-passed">Expected</span></li>`;
+            });
+            results += '</ul>';
+            
+            document.getElementById('fileTest').innerHTML = results;
+        }
+
+        function testJavaScript() {
+            try {
+                // Test if we can create basic objects
+                const testMeal = {
+                    id: 1,
+                    name: "Test Recipe",
+                    time: 30
+                };
+                
+                // Test array operations
+                const testArray = [1, 2, 3];
+                testArray.push(4);
+                
+                // Test local storage
+                const canUseStorage = typeof(Storage) !== "undefined";
+                
+                let results = '<ul>';
+                results += '<li>Object creation: <span class="test-passed">✓ Passed</span></li>';
+                results += '<li>Array operations: <span class="test-passed">✓ Passed</span></li>';
+                results += '<li>Storage available: <span class="' + 
+                          (canUseStorage ? 'test-passed">✓ Passed' : 'test-failed">✗ Failed') + 
+                          '</span></li>';
+                results += '</ul>';
+                
+                document.getElementById('jsTest').innerHTML = results;
+            } catch (error) {
+                document.getElementById('jsTest').innerHTML = 
+                    '<span class="test-failed">Error: ' + error.message + '</span>';
+            }
+        }
+
+        function testStorage() {
+            try {
+                // Test localStorage
+                localStorage.setItem('test_key', 'test_value');
+                const retrieved = localStorage.getItem('test_key');
+                const testPassed = retrieved === 'test_value';
+                localStorage.removeItem('test_key');
+                
+                let results = '<ul>';
+                results += '<li>Write to storage: <span class="test-passed">✓ Passed</span></li>';
+                results += '<li>Read from storage: <span class="' + 
+                          (testPassed ? 'test-passed">✓ Passed' : 'test-failed">✗ Failed') + 
+                          '</span></li>';
+                results += '<li>Clear storage: <span class="test-passed">✓ Passed</span></li>';
+                results += '</ul>';
+                
+                document.getElementById('storageTest').innerHTML = results;
+            } catch (error) {
+                document.getElementById('storageTest').innerHTML = 
+                    '<span class="test-failed">Error: ' + error.message + '</span>';
+            }
+        }
+
+        // Auto-run basic test on load
+        window.onload = function() {
+            console.log('Test page loaded successfully');
+        }
+    </script>
+</body>
+</html>

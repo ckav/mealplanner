@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipe Filter Preview</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="app preview-app">
+    <div class="preview-header">
+      <div>
+        <div class="preview-title">Recipe Filter UX Preview</div>
+        <div class="preview-subtitle">Compare Claude’s prototype with the enhancement layer.</div>
+      </div>
+      <div class="preview-tabs">
+        <button class="preview-tab active" data-mode="prototype">Claude Prototype</button>
+        <button class="preview-tab" data-mode="enhanced">Enhancements Layer</button>
+      </div>
+    </div>
+
+    <div class="preview-shell">
+      <div class="preview-search">
+        <span class="preview-search-icon">🔍</span>
+        <input id="previewSearch" class="preview-search-input" placeholder="Search recipes..." />
+        <button id="previewSearchClear" class="preview-search-clear" aria-label="Clear search">✕</button>
+      </div>
+
+      <div id="previewResume" class="preview-resume">
+        <span>Last time you filtered by: <strong>Asian, Under 30 min</strong></span>
+        <div class="preview-resume-actions">
+          <button id="previewResumeApply" class="btn btn-primary btn-sm">Apply</button>
+          <button id="previewResumeDismiss" class="btn btn-ghost btn-sm">Dismiss</button>
+        </div>
+      </div>
+
+      <div id="previewChipBar" class="preview-chipbar"></div>
+
+      <div class="preview-results">
+        <div id="previewResultCount" class="preview-result-count"></div>
+        <button id="previewClearAll" class="preview-clear-all">Clear all</button>
+      </div>
+
+      <div id="previewCurated" class="preview-curated">
+        <div class="preview-section-title">For you tonight</div>
+        <div class="preview-rail" id="previewRailTonight"></div>
+        <div class="preview-section-title">Quick & Easy picks</div>
+        <div class="preview-rail" id="previewRailQuick"></div>
+        <div class="preview-section-title">New this week</div>
+        <div class="preview-rail" id="previewRailNew"></div>
+      </div>
+
+      <div class="preview-section-title">All recipes</div>
+      <div id="previewGrid" class="preview-grid"></div>
+      <button id="previewLoadMore" class="btn btn-secondary preview-load-more">Load more</button>
+    </div>
+  </div>
+
+  <div id="previewSheet" class="preview-sheet">
+    <div class="preview-sheet-backdrop"></div>
+    <div class="preview-sheet-panel">
+      <div class="preview-sheet-handle"></div>
+      <div class="preview-sheet-title" id="previewSheetTitle"></div>
+      <div class="preview-sheet-body" id="previewSheetBody"></div>
+      <div class="preview-sheet-footer" id="previewSheetFooter"></div>
+    </div>
+  </div>
+
+  <script>
+    const CUISINES = ["Asian", "Italian", "Mexican", "Indian", "Thai", "Mediterranean", "British", "American", "Middle Eastern", "Japanese", "Chinese", "Korean", "African", "Caribbean", "French"];
+    const DIETARY = ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free"];
+    const COOK_TIMES = [
+      { label: "15 min", value: 15 },
+      { label: "30 min", value: 30 },
+      { label: "45 min", value: 45 },
+      { label: "Any", value: null },
+    ];
+    const EFFORTS = [
+      { label: "Quick & Easy", hint: "≤5 ingredients" },
+      { label: "Weeknight", hint: "≤8 ingredients" },
+      { label: "Weekend Project", hint: "Any complexity" },
+    ];
+    const SORTS = ["Recommended", "Recently Added", "Quick & Easy", "Most Cooked", "Never Tried", "Surprise Me 🎲"];
+
+    const RECIPES = [
+      { id: 1, name: "Thai Green Curry", cuisine: "Thai", cookTime: 25, ingredients: 7, dietary: [], cooked: 8, added: "2026-01-22" },
+      { id: 2, name: "Spaghetti Carbonara", cuisine: "Italian", cookTime: 20, ingredients: 6, dietary: [], cooked: 12, added: "2026-02-01" },
+      { id: 3, name: "Fish Tacos", cuisine: "Mexican", cookTime: 30, ingredients: 8, dietary: [], cooked: 3, added: "2026-01-15" },
+      { id: 4, name: "Butter Chicken", cuisine: "Indian", cookTime: 40, ingredients: 9, dietary: [], cooked: 6, added: "2026-01-10" },
+      { id: 5, name: "Veggie Stir Fry", cuisine: "Asian", cookTime: 15, ingredients: 5, dietary: ["Vegan", "Gluten-Free"], cooked: 0, added: "2026-02-05" },
+      { id: 6, name: "Margherita Pizza", cuisine: "Italian", cookTime: 35, ingredients: 10, dietary: ["Vegetarian"], cooked: 5, added: "2026-01-05" },
+      { id: 7, name: "Teriyaki Salmon", cuisine: "Japanese", cookTime: 20, ingredients: 6, dietary: [], cooked: 7, added: "2026-02-07" },
+      { id: 8, name: "Chicken Fajitas", cuisine: "Mexican", cookTime: 25, ingredients: 8, dietary: [], cooked: 4, added: "2026-01-28" },
+      { id: 9, name: "Pad Thai", cuisine: "Thai", cookTime: 30, ingredients: 9, dietary: [], cooked: 2, added: "2026-01-20" },
+      { id: 10, name: "Mediterranean Bowl", cuisine: "Mediterranean", cookTime: 15, ingredients: 6, dietary: ["Vegetarian", "Vegan"], cooked: 0, added: "2026-02-08" },
+      { id: 11, name: "Beef Stir Fry", cuisine: "Chinese", cookTime: 20, ingredients: 7, dietary: [], cooked: 9, added: "2026-01-12" },
+      { id: 12, name: "Mushroom Risotto", cuisine: "Italian", cookTime: 45, ingredients: 11, dietary: ["Vegetarian"], cooked: 1, added: "2026-01-18" },
+      { id: 13, name: "Korean Bibimbap", cuisine: "Korean", cookTime: 35, ingredients: 9, dietary: [], cooked: 0, added: "2026-02-09" },
+      { id: 14, name: "Jerk Chicken", cuisine: "Caribbean", cookTime: 50, ingredients: 12, dietary: [], cooked: 3, added: "2026-01-02" },
+      { id: 15, name: "Falafel Wrap", cuisine: "Middle Eastern", cookTime: 25, ingredients: 7, dietary: ["Vegan"], cooked: 2, added: "2026-02-02" },
+      { id: 16, name: "Fish & Chips", cuisine: "British", cookTime: 40, ingredients: 10, dietary: [], cooked: 6, added: "2026-01-25" },
+      { id: 17, name: "Chickpea Tagine", cuisine: "African", cookTime: 35, ingredients: 9, dietary: ["Vegan", "Gluten-Free"], cooked: 0, added: "2026-02-03" },
+      { id: 18, name: "Greek Chicken Orzo", cuisine: "Mediterranean", cookTime: 30, ingredients: 8, dietary: [], cooked: 4, added: "2026-01-30" },
+      { id: 19, name: "Katsu Curry", cuisine: "Japanese", cookTime: 35, ingredients: 9, dietary: [], cooked: 3, added: "2026-01-08" },
+      { id: 20, name: "Roasted Veggie Traybake", cuisine: "British", cookTime: 25, ingredients: 6, dietary: ["Vegetarian"], cooked: 5, added: "2026-02-06" },
+      { id: 21, name: "Bulgur Salad", cuisine: "Middle Eastern", cookTime: 15, ingredients: 5, dietary: ["Vegan"], cooked: 0, added: "2026-02-04" },
+      { id: 22, name: "Steak & Chimichurri", cuisine: "American", cookTime: 30, ingredients: 7, dietary: [], cooked: 2, added: "2026-01-14" },
+      { id: 23, name: "Halloumi Tacos", cuisine: "Mexican", cookTime: 25, ingredients: 6, dietary: ["Vegetarian"], cooked: 1, added: "2026-02-10" },
+      { id: 24, name: "Kimchi Fried Rice", cuisine: "Korean", cookTime: 20, ingredients: 6, dietary: [], cooked: 8, added: "2026-01-16" },
+    ];
+
+    const state = {
+      mode: "prototype",
+      search: "",
+      cuisines: [],
+      cookTime: null,
+      effort: null,
+      dietary: [],
+      sort: "Recommended",
+      loadCount: 12,
+      resumeVisible: true,
+    };
+
+    const chipBar = document.getElementById("previewChipBar");
+    const grid = document.getElementById("previewGrid");
+    const resultCount = document.getElementById("previewResultCount");
+    const clearAll = document.getElementById("previewClearAll");
+    const loadMore = document.getElementById("previewLoadMore");
+    const searchInput = document.getElementById("previewSearch");
+    const searchClear = document.getElementById("previewSearchClear");
+    const resume = document.getElementById("previewResume");
+    const resumeApply = document.getElementById("previewResumeApply");
+    const resumeDismiss = document.getElementById("previewResumeDismiss");
+    const curated = document.getElementById("previewCurated");
+
+    const sheet = document.getElementById("previewSheet");
+    const sheetTitle = document.getElementById("previewSheetTitle");
+    const sheetBody = document.getElementById("previewSheetBody");
+    const sheetFooter = document.getElementById("previewSheetFooter");
+
+    const tabs = document.querySelectorAll(".preview-tab");
+    tabs.forEach(tab => tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      state.mode = tab.dataset.mode;
+      state.loadCount = 12;
+      render();
+    }));
+
+    searchInput.addEventListener("input", (e) => {
+      state.search = e.target.value.trim();
+      render();
+    });
+    searchClear.addEventListener("click", () => {
+      state.search = "";
+      searchInput.value = "";
+      render();
+    });
+
+    resumeApply.addEventListener("click", () => {
+      state.cuisines = ["Asian"];
+      state.cookTime = 30;
+      state.resumeVisible = false;
+      render();
+    });
+    resumeDismiss.addEventListener("click", () => {
+      state.resumeVisible = false;
+      render();
+    });
+
+    clearAll.addEventListener("click", () => {
+      state.search = "";
+      state.cuisines = [];
+      state.cookTime = null;
+      state.effort = null;
+      state.dietary = [];
+      state.sort = "Recommended";
+      searchInput.value = "";
+      render();
+    });
+
+    loadMore.addEventListener("click", () => {
+      state.loadCount += 8;
+      render();
+    });
+
+    sheet.querySelector(".preview-sheet-backdrop").addEventListener("click", closeSheet);
+
+    function openSheet(type) {
+      sheet.dataset.type = type;
+      sheet.classList.add("open");
+      renderSheet(type);
+    }
+    function closeSheet() {
+      sheet.classList.remove("open");
+      sheet.dataset.type = "";
+    }
+
+    function renderSheet(type) {
+      sheetBody.innerHTML = "";
+      sheetFooter.innerHTML = "";
+      if (type === "cuisine") {
+        sheetTitle.textContent = "Cuisine";
+        const temp = new Set(state.cuisines);
+        const wrap = document.createElement("div");
+        wrap.className = "preview-sheet-chips";
+        CUISINES.forEach(c => {
+          const chip = document.createElement("button");
+          chip.className = "preview-chip" + (temp.has(c) ? " active" : "");
+          chip.textContent = c;
+          chip.addEventListener("click", () => {
+            if (temp.has(c)) temp.delete(c); else temp.add(c);
+            chip.classList.toggle("active");
+          });
+          wrap.appendChild(chip);
+        });
+        sheetBody.appendChild(wrap);
+        const done = document.createElement("button");
+        done.className = "btn btn-primary preview-sheet-done";
+        done.textContent = `Done (${temp.size} selected)`;
+        done.addEventListener("click", () => {
+          state.cuisines = Array.from(temp);
+          closeSheet();
+          render();
+        });
+        sheetFooter.appendChild(done);
+        return;
+      }
+      if (type === "cookTime") {
+        sheetTitle.textContent = "Cook Time";
+        const wrap = document.createElement("div");
+        wrap.className = "preview-sheet-chips";
+        COOK_TIMES.forEach(ct => {
+          const chip = document.createElement("button");
+          chip.className = "preview-chip" + (state.cookTime === ct.value ? " active" : "");
+          chip.textContent = ct.label;
+          chip.addEventListener("click", () => {
+            state.cookTime = ct.value;
+            closeSheet();
+            render();
+          });
+          wrap.appendChild(chip);
+        });
+        sheetBody.appendChild(wrap);
+        return;
+      }
+      if (type === "effort") {
+        sheetTitle.textContent = "Effort";
+        const wrap = document.createElement("div");
+        wrap.className = "preview-effort-list";
+        EFFORTS.forEach(e => {
+          const card = document.createElement("div");
+          card.className = "preview-effort-card" + (state.effort === e.label ? " active" : "");
+          card.innerHTML = `<div class="preview-effort-title">${e.label}</div><div class="preview-effort-hint">${e.hint}</div>`;
+          card.addEventListener("click", () => {
+            state.effort = e.label;
+            closeSheet();
+            render();
+          });
+          wrap.appendChild(card);
+        });
+        sheetBody.appendChild(wrap);
+        return;
+      }
+      if (type === "dietary") {
+        sheetTitle.textContent = "Dietary";
+        const temp = new Set(state.dietary);
+        const wrap = document.createElement("div");
+        wrap.className = "preview-sheet-chips";
+        DIETARY.forEach(d => {
+          const chip = document.createElement("button");
+          chip.className = "preview-chip" + (temp.has(d) ? " active" : "");
+          chip.textContent = d;
+          chip.addEventListener("click", () => {
+            if (temp.has(d)) temp.delete(d); else temp.add(d);
+            chip.classList.toggle("active");
+          });
+          wrap.appendChild(chip);
+        });
+        sheetBody.appendChild(wrap);
+        const done = document.createElement("button");
+        done.className = "btn btn-primary preview-sheet-done";
+        done.textContent = `Done (${temp.size} selected)`;
+        done.addEventListener("click", () => {
+          state.dietary = Array.from(temp);
+          closeSheet();
+          render();
+        });
+        sheetFooter.appendChild(done);
+        return;
+      }
+      if (type === "sort") {
+        sheetTitle.textContent = "Sort by";
+        const wrap = document.createElement("div");
+        wrap.className = "preview-sort-list";
+        SORTS.forEach(s => {
+          const row = document.createElement("div");
+          row.className = "preview-sort-row" + (state.sort === s ? " active" : "");
+          row.innerHTML = `<span>${s}</span><span class="preview-radio"></span>`;
+          row.addEventListener("click", () => {
+            state.sort = s;
+            closeSheet();
+            render();
+          });
+          wrap.appendChild(row);
+        });
+        sheetBody.appendChild(wrap);
+        return;
+      }
+    }
+
+    function matchEffort(recipe) {
+      if (!state.effort) return true;
+      if (state.effort === "Quick & Easy") return recipe.ingredients <= 5;
+      if (state.effort === "Weeknight") return recipe.ingredients <= 8;
+      return true;
+    }
+
+    function applyFilters(list) {
+      return list.filter(r => {
+        if (state.search && !r.name.toLowerCase().includes(state.search.toLowerCase())) return false;
+        if (state.cuisines.length > 0 && !state.cuisines.includes(r.cuisine)) return false;
+        if (state.cookTime && r.cookTime > state.cookTime) return false;
+        if (!matchEffort(r)) return false;
+        if (state.dietary.length > 0 && !state.dietary.every(d => r.dietary.includes(d))) return false;
+        return true;
+      });
+    }
+
+    function applySort(list) {
+      const sorted = [...list];
+      if (state.sort === "Quick & Easy") sorted.sort((a,b) => a.cookTime - b.cookTime);
+      if (state.sort === "Most Cooked") sorted.sort((a,b) => b.cooked - a.cooked);
+      if (state.sort === "Never Tried") sorted.sort((a,b) => a.cooked - b.cooked);
+      if (state.sort === "Recently Added") sorted.sort((a,b) => new Date(b.added) - new Date(a.added));
+      if (state.sort === "Surprise Me 🎲") sorted.sort(() => Math.random() - 0.5);
+      return sorted;
+    }
+
+    function renderChips() {
+      chipBar.innerHTML = "";
+      const hasFilters = hasActiveFilters();
+      if (state.search) {
+        chipBar.appendChild(makeChip(`🔍 "${state.search}"`, () => { state.search = ""; searchInput.value = ""; render(); }, true));
+      }
+      state.cuisines.forEach(c => chipBar.appendChild(makeChip(c, () => { state.cuisines = state.cuisines.filter(x => x !== c); render(); }, true)));
+      if (state.cookTime) chipBar.appendChild(makeChip(`≤${state.cookTime} min`, () => { state.cookTime = null; render(); }, true));
+      if (state.effort) chipBar.appendChild(makeChip(state.effort, () => { state.effort = null; render(); }, true));
+      state.dietary.forEach(d => chipBar.appendChild(makeChip(d, () => { state.dietary = state.dietary.filter(x => x !== d); render(); }, true)));
+
+      if (state.cuisines.length === 0) chipBar.appendChild(makeChip("Cuisine ▾", () => openSheet("cuisine"), false));
+      if (!state.cookTime) chipBar.appendChild(makeChip("Cook Time ▾", () => openSheet("cookTime"), false));
+      if (!state.effort) chipBar.appendChild(makeChip("Effort ▾", () => openSheet("effort"), false));
+      if (state.dietary.length === 0) chipBar.appendChild(makeChip("Dietary ▾", () => openSheet("dietary"), false));
+      chipBar.appendChild(makeChip(state.sort === "Recommended" ? "Sort ▾" : `Sort: ${state.sort}`, () => openSheet("sort"), state.sort !== "Recommended"));
+
+      clearAll.style.display = hasFilters ? "inline-flex" : "none";
+    }
+
+    function makeChip(label, onClick, active) {
+      const chip = document.createElement("button");
+      chip.className = "preview-chip" + (active ? " active" : "");
+      chip.textContent = label;
+      chip.addEventListener("click", onClick);
+      return chip;
+    }
+
+    function renderRails(filtered) {
+      const railTonight = document.getElementById("previewRailTonight");
+      const railQuick = document.getElementById("previewRailQuick");
+      const railNew = document.getElementById("previewRailNew");
+      const toCard = (r) => `<div class="preview-rail-card"><div class="preview-rail-title">${r.name}</div><div class="preview-rail-meta">${r.cuisine} · ${r.cookTime}m</div></div>`;
+      railTonight.innerHTML = filtered.slice(0, 6).map(toCard).join("");
+      railQuick.innerHTML = filtered.filter(r => r.cookTime <= 25).slice(0, 6).map(toCard).join("");
+      railNew.innerHTML = filtered.slice().sort((a,b) => new Date(b.added) - new Date(a.added)).slice(0, 6).map(toCard).join("");
+    }
+
+    function renderGrid(list) {
+      grid.innerHTML = list.map(r => `
+        <div class="preview-card">
+          <div class="preview-card-title">${r.name}</div>
+          <div class="preview-card-meta">${r.cuisine} · ${r.cookTime} min · ${r.ingredients} ingredients</div>
+          <div class="preview-card-tags">
+            ${r.dietary.map(d => `<span class="preview-tag">${d}</span>`).join("")}
+            ${r.cooked === 0 ? `<span class="preview-tag alt">Never tried</span>` : ``}
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function hasActiveFilters() {
+      return state.search || state.cuisines.length > 0 || state.cookTime || state.effort || state.dietary.length > 0 || state.sort !== "Recommended";
+    }
+
+    function render() {
+      const filtered = applyFilters(RECIPES);
+      const sorted = applySort(filtered);
+
+      resume.style.display = state.resumeVisible && !hasActiveFilters() ? "flex" : "none";
+      curated.style.display = state.mode === "enhanced" ? "block" : "none";
+
+      renderChips();
+      renderRails(sorted);
+
+      const total = sorted.length;
+      if (state.mode === "enhanced") {
+        const visible = sorted.slice(0, state.loadCount);
+        renderGrid(visible);
+        loadMore.style.display = total > visible.length ? "inline-flex" : "none";
+        resultCount.textContent = `Showing ${visible.length} of ${total} recipes`;
+      } else {
+        renderGrid(sorted);
+        loadMore.style.display = "none";
+        resultCount.textContent = `Showing ${total} recipes`;
+      }
+    }
+
+    render();
+  </script>
+</body>
+</html>
