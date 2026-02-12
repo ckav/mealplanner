@@ -162,6 +162,10 @@
                 </div>
             </div>
         </div>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--c-gray-200);">
+            <button class="btn btn-ghost btn-sm" id="resetAllDataBtn" style="color:var(--c-danger);">🗑 Reset all data</button>
+            <span style="font-size:.7rem;color:var(--c-gray-400);margin-left:6px;">Clear everything and start fresh (triggers setup wizard)</span>
+        </div>
     </section>
 </div>
 
@@ -294,6 +298,14 @@
         </div>
         <div class="modal-body">
             <form id="addRecipeForm">
+                <div class="url-import-section">
+                    <label class="form-label">Import from URL</label>
+                    <div style="display:flex;gap:6px;">
+                        <input class="form-input" id="recipeUrlInput" placeholder="Paste a recipe URL...">
+                        <button type="button" class="btn btn-secondary btn-sm" id="fetchRecipeBtn">Fetch</button>
+                    </div>
+                    <div id="urlFetchStatus" style="font-size:.75rem;margin-top:4px;min-height:1em;"></div>
+                </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                     <div>
                         <label class="form-label">Recipe name</label>
@@ -393,6 +405,112 @@
             <div class="modal-footer" style="padding:0;margin-top:12px;">
                 <button class="btn btn-secondary" id="allergenClearBtn">Clear</button>
                 <button class="btn btn-primary" id="allergenApplyBtn">Apply</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =================== ONBOARDING WIZARD =================== -->
+<div class="modal-overlay" id="onboardingModal">
+    <div class="modal modal-md onboarding-wizard">
+        <div class="modal-body" style="padding:28px;">
+            <!-- Progress -->
+            <div class="wizard-progress">
+                <span class="wizard-dot current active"></span>
+                <span class="wizard-dot"></span>
+                <span class="wizard-dot"></span>
+                <span class="wizard-dot"></span>
+                <span class="wizard-dot"></span>
+            </div>
+
+            <!-- Step 1: Welcome -->
+            <div class="wizard-step active" id="wizard-step-1">
+                <div style="text-align:center;padding:20px 0;">
+                    <div style="font-size:3rem;margin-bottom:12px;">🍽️</div>
+                    <h2 style="font-size:1.5rem;margin-bottom:8px;">Welcome to Meal Planner</h2>
+                    <p style="color:var(--c-gray-500);margin-bottom:24px;max-width:360px;margin-left:auto;margin-right:auto;">
+                        Plan your meals, generate shopping lists, and cook with confidence. Let's set up your household in a few quick steps.
+                    </p>
+                    <button class="btn btn-primary" data-wizard-action="start" style="padding:12px 32px;font-size:1rem;">Get Started</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Profiles -->
+            <div class="wizard-step" id="wizard-step-2">
+                <h2 style="font-size:1.2rem;margin-bottom:4px;">👨‍👩‍👧‍👦 Who's in your household?</h2>
+                <p style="font-size:.8rem;color:var(--c-gray-500);margin-bottom:16px;">Add each person so we can filter out recipes with their allergens and dislikes.</p>
+
+                <div id="onboardingProfileList"></div>
+
+                <div class="card" style="padding:14px;margin-top:8px;">
+                    <div style="margin-bottom:8px;">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-input" id="onboardingProfileName" placeholder="e.g., Tom">
+                    </div>
+                    <div style="margin-bottom:8px;">
+                        <label class="form-label">Allergens to Avoid</label>
+                        <div class="allergen-grid" id="onboardingAllergenGrid"></div>
+                    </div>
+                    <div style="margin-bottom:8px;">
+                        <label class="form-label">Dislikes (comma separated)</label>
+                        <input type="text" class="form-input" id="onboardingProfileDislikes" placeholder="e.g., mushrooms, olives">
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm" data-wizard-action="add-profile" style="width:100%;">+ Add Person</button>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;margin-top:16px;">
+                    <button class="btn btn-ghost" data-wizard-action="back">← Back</button>
+                    <button class="btn btn-primary" data-wizard-action="next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Pantry Staples -->
+            <div class="wizard-step" id="wizard-step-3">
+                <h2 style="font-size:1.2rem;margin-bottom:4px;">🏠 Cupboard Staples</h2>
+                <p style="font-size:.8rem;color:var(--c-gray-500);margin-bottom:16px;">Things you always have at home. These won't appear on your shopping list.</p>
+
+                <div class="pantry-items" id="onboardingPantryItems" style="margin-bottom:12px;"></div>
+
+                <div style="display:flex;gap:6px;">
+                    <input type="text" class="form-input" id="onboardingPantryInput" placeholder="Add a staple..." style="flex:1;">
+                    <button class="btn btn-secondary btn-sm" id="onboardingPantryAdd">Add</button>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;margin-top:16px;">
+                    <button class="btn btn-ghost" data-wizard-action="back">← Back</button>
+                    <button class="btn btn-primary" data-wizard-action="next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Fridge -->
+            <div class="wizard-step" id="wizard-step-4">
+                <h2 style="font-size:1.2rem;margin-bottom:4px;">🧊 What's in your fridge?</h2>
+                <p style="font-size:.8rem;color:var(--c-gray-500);margin-bottom:16px;">Optional — add items you want to use up and we'll suggest recipes that include them.</p>
+
+                <div id="onboardingFridgeItems" style="margin-bottom:12px;"></div>
+
+                <div style="display:flex;gap:6px;">
+                    <input type="text" class="form-input" id="onboardingFridgeInput" placeholder="e.g., chicken, broccoli" style="flex:1;">
+                    <button class="btn btn-secondary btn-sm" id="onboardingFridgeAdd">Add</button>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;margin-top:16px;">
+                    <button class="btn btn-ghost" data-wizard-action="back">← Back</button>
+                    <div style="display:flex;gap:6px;">
+                        <button class="btn btn-secondary" data-wizard-action="skip">Skip</button>
+                        <button class="btn btn-primary" data-wizard-action="next">Next →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Done -->
+            <div class="wizard-step" id="wizard-step-5">
+                <div style="text-align:center;padding:12px 0;">
+                    <div style="font-size:3rem;margin-bottom:12px;">🎉</div>
+                    <h2 style="font-size:1.3rem;margin-bottom:12px;">You're all set!</h2>
+                    <div id="onboardingSummary" style="margin-bottom:20px;"></div>
+                    <button class="btn btn-primary" data-wizard-action="complete" style="padding:12px 32px;font-size:1rem;">Start Planning</button>
+                </div>
             </div>
         </div>
     </div>

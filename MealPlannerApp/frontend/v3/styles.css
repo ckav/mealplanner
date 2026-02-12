@@ -631,4 +631,38 @@ textarea.form-input { resize: vertical; min-height: 60px; }
     .tab-btn .tab-label { display: none; }
     .filter-bar { flex-direction: column; align-items: stretch; }
     .sort-section { margin-left: 0; }
+    .onboarding-wizard { margin: 12px; }
+}
+
+/* =========================================
+   ONBOARDING WIZARD
+   ========================================= */
+.onboarding-wizard { max-width: 560px; }
+.wizard-step { display: none; }
+.wizard-step.active { display: block; }
+.wizard-progress {
+    display: flex; justify-content: center; gap: 8px; margin-bottom: 20px;
+}
+.wizard-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--c-gray-200); transition: all var(--transition);
+}
+.wizard-dot.active { background: var(--c-primary-light); }
+.wizard-dot.current { background: var(--c-primary); transform: scale(1.2); }
+
+/* =========================================
+   URL IMPORT
+   ========================================= */
+.url-import-section {
+    margin-bottom: 16px; padding-bottom: 16px;
+    border-bottom: 1px solid var(--c-gray-200);
+}
+
+/* =========================================
+   PLANNER HINT
+   ========================================= */
+.planner-hint {
+    text-align: center; padding: 12px; margin-top: 8px;
+    font-size: .85rem; color: var(--c-gray-400);
+    background: var(--c-gray-50); border-radius: var(--radius-md);
 }

@@ -60,6 +60,7 @@ let state = {
     safetyFilter: 'allergens',
     hideIngredientList: false,
     defaultPortions: 2,
+    onboardingComplete: false,
     pickerDay: null, pickerSlot: null, pickerSelected: null, pickerPortions: 2, pickerMode: 'slot',
     pickerExclusions: [], pickerSwapNote: '',
     cookRecipeId: null, cookStep: 0,
@@ -83,6 +84,7 @@ function saveState() {
         hideIngredientList: state.hideIngredientList,
         defaultPortions: state.defaultPortions,
         currentView: state.currentView,
+        onboardingComplete: state.onboardingComplete,
     };
     localStorage.setItem('mealPlannerV3', JSON.stringify(s));
 }
@@ -103,6 +105,7 @@ function loadState() {
             if (typeof s.hideIngredientList === 'boolean') state.hideIngredientList = s.hideIngredientList;
             if (s.defaultPortions) state.defaultPortions = s.defaultPortions;
             if (s.currentView) state.currentView = s.currentView;
+            if (typeof s.onboardingComplete === 'boolean') state.onboardingComplete = s.onboardingComplete;
         }
     } catch(e) { console.warn('Failed to load state:', e); }
 }
@@ -166,6 +169,103 @@ function parseIngredientLine(line) {
     let amount = rawAmount ? parseFloat(rawAmount.replace('¼','0.25').replace('½','0.5').replace('¾','0.75').replace('⅓','0.33').replace('⅔','0.66')) : null;
     if (Number.isNaN(amount)) amount = null;
     return { name, amount, unit, category: 'other' };
+}
+
+
+// =========================================
+// URL RECIPE IMPORT
+// =========================================
+function extractSiteName(url) {
+    try {
+        const domain = new URL(url).hostname.replace(/^www\./, '');
+        const sites = {
+            'bbc.co.uk': 'BBC Food', 'bbcgoodfood.com': 'BBC Good Food',
+            'allrecipes.com': 'AllRecipes', 'jamieoliver.com': 'Jamie Oliver',
+            'deliciousmagazine.co.uk': 'Delicious Magazine', 'foodnetwork.com': 'Food Network',
+            'epicurious.com': 'Epicurious', 'bonappetit.com': 'Bon Appétit',
+            'seriouseats.com': 'Serious Eats', 'tasty.co': 'Tasty',
+            'simplyrecipes.com': 'Simply Recipes', 'recipetineats.com': 'RecipeTin Eats',
+            'mob.co.uk': 'MOB Kitchen', 'theguardian.com': 'The Guardian',
+        };
+        return sites[domain] || domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1);
+    } catch { return 'Website'; }
+}
+
+function parseISO8601Duration(str) {
+    if (!str) return null;
+    const m = str.match(/PT(?:(\d+)H)?(?:(\d+)M)?/);
+    if (!m) return null;
+    return (parseInt(m[1] || 0) * 60) + parseInt(m[2] || 0);
+}
+
+async function fetchRecipeFromUrl(url) {
+    const status = document.getElementById('urlFetchStatus');
+    status.textContent = 'Fetching...';
+    status.style.color = 'var(--c-gray-500)';
+
+    try {
+        const resp = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url));
+        if (!resp.ok) throw new Error('Network error');
+        const data = await resp.json();
+        const html = data.contents;
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+
+        // Try JSON-LD Recipe schema
+        let recipe = null;
+        doc.querySelectorAll('script[type="application/ld+json"]').forEach(script => {
+            try {
+                let json = JSON.parse(script.textContent);
+                // Handle @graph arrays
+                if (json['@graph']) json = json['@graph'];
+                if (Array.isArray(json)) json = json.find(item => item['@type'] === 'Recipe' || (Array.isArray(item['@type']) && item['@type'].includes('Recipe')));
+                if (json && (json['@type'] === 'Recipe' || (Array.isArray(json['@type']) && json['@type'].includes('Recipe')))) recipe = json;
+            } catch {}
+        });
+
+        if (recipe) {
+            // Pre-fill form from JSON-LD
+            document.getElementById('recipeNameInput').value = recipe.name || '';
+            const img = Array.isArray(recipe.image) ? recipe.image[0] : (typeof recipe.image === 'object' ? recipe.image.url : recipe.image || '');
+            document.getElementById('recipeImageInput').value = img;
+            const cookTime = parseISO8601Duration(recipe.cookTime || recipe.totalTime);
+            if (cookTime) document.getElementById('recipeCookTimeInput').value = cookTime;
+            const servings = parseInt(recipe.recipeYield);
+            if (servings) document.getElementById('recipeServingsInput').value = servings;
+
+            // Ingredients
+            if (recipe.recipeIngredient) {
+                document.getElementById('recipeIngredientsInput').value = recipe.recipeIngredient.join('\n');
+            }
+
+            // Steps
+            if (recipe.recipeInstructions) {
+                const steps = recipe.recipeInstructions.map(s =>
+                    typeof s === 'string' ? s : (s.text || s.name || '')
+                ).filter(Boolean);
+                document.getElementById('recipeStepsInput').value = steps.join('\n');
+            }
+
+            // Source
+            document.getElementById('recipeSourceInput').value = extractSiteName(url);
+            // Store URL for later
+            document.getElementById('recipeUrlInput').dataset.resolvedUrl = url;
+
+            status.textContent = 'Recipe imported — review and save below.';
+            status.style.color = 'var(--c-success)';
+        } else {
+            // Fallback: Open Graph
+            const ogTitle = doc.querySelector('meta[property="og:title"]');
+            const ogImage = doc.querySelector('meta[property="og:image"]');
+            if (ogTitle) document.getElementById('recipeNameInput').value = ogTitle.content;
+            if (ogImage) document.getElementById('recipeImageInput').value = ogImage.content;
+            document.getElementById('recipeSourceInput').value = extractSiteName(url);
+            status.textContent = 'Partial import — no structured recipe data found. Fill in the details manually.';
+            status.style.color = 'var(--c-warning)';
+        }
+    } catch (err) {
+        status.textContent = 'Could not fetch recipe. Check the URL and try again.';
+        status.style.color = 'var(--c-danger)';
+    }
 }
 
 
@@ -276,6 +376,16 @@ function renderPlanner() {
     document.getElementById('mealCountNum').textContent = filled;
     document.getElementById('mealCountTotal').textContent = total;
     document.getElementById('mealCounter').classList.toggle('complete', filled === total && total > 0);
+
+    // Show hint when no meals planned
+    const existingHint = grid.querySelector('.planner-hint');
+    if (existingHint) existingHint.remove();
+    if (filled === 0) {
+        const hint = document.createElement('div');
+        hint.className = 'planner-hint';
+        hint.innerHTML = '💡 Tap an empty slot to add a meal, or browse <strong>Recipes</strong> to get started.';
+        grid.appendChild(hint);
+    }
 }
 
 
@@ -588,6 +698,142 @@ function renderFridge() {
     list.innerHTML = state.fridgeItems.map(item =>
         `<span class="fridge-item">${item} <span class="remove-fridge" data-item="${item}">×</span></span>`
     ).join('');
+}
+
+
+// =========================================
+// ONBOARDING WIZARD
+// =========================================
+let onboardingStep = 1;
+
+function showOnboarding() {
+    onboardingStep = 1;
+    renderOnboardingStep(1);
+    renderOnboardingAllergenGrid();
+    renderOnboardingPantry();
+    renderOnboardingFridge();
+    document.getElementById('onboardingModal').classList.add('open');
+}
+
+function renderOnboardingStep(step) {
+    onboardingStep = step;
+    document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById('wizard-step-' + step);
+    if (el) el.classList.add('active');
+    // Update progress dots
+    document.querySelectorAll('.wizard-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i < step);
+        dot.classList.toggle('current', i === step - 1);
+    });
+    if (step === 2) renderOnboardingProfiles();
+    if (step === 5) renderOnboardingSummary();
+}
+
+function renderOnboardingAllergenGrid() {
+    const grid = document.getElementById('onboardingAllergenGrid');
+    if (!grid) return;
+    grid.innerHTML = Object.entries(ALLERGENS).map(([name, data]) =>
+        `<label class="allergen-checkbox"><input type="checkbox" value="${name}"> ${data.icon} ${name}</label>`
+    ).join('');
+}
+
+function renderOnboardingProfiles() {
+    const list = document.getElementById('onboardingProfileList');
+    if (!list) return;
+    if (state.profiles.length === 0) {
+        list.innerHTML = '<p style="font-size:.8rem;color:var(--c-gray-400);margin-bottom:8px;">No profiles added yet. Add at least one person.</p>';
+        return;
+    }
+    list.innerHTML = state.profiles.map(p => {
+        const allergenIcons = p.allergens.map(a => ALLERGENS[a] ? ALLERGENS[a].icon : '').join(' ');
+        return `<div class="profile-card-item active" style="margin-bottom:6px;">
+            <div>
+                <div class="profile-name">${p.name}</div>
+                <div class="profile-detail">
+                    ${p.allergens.length ? allergenIcons + ' ' + p.allergens.join(', ') : 'No allergens'}
+                    ${p.dislikes.length ? ' · Dislikes: ' + p.dislikes.join(', ') : ''}
+                </div>
+            </div>
+            <button class="btn btn-ghost btn-sm wizard-remove-profile" data-id="${p.id}">×</button>
+        </div>`;
+    }).join('');
+}
+
+function addOnboardingProfile() {
+    const nameInput = document.getElementById('onboardingProfileName');
+    const dislikesInput = document.getElementById('onboardingProfileDislikes');
+    const name = nameInput.value.trim();
+    if (!name) { nameInput.focus(); return; }
+
+    const allergens = Array.from(document.querySelectorAll('#onboardingAllergenGrid input:checked')).map(c => c.value);
+    const dislikes = dislikesInput.value.split(',').map(d => d.trim().toLowerCase()).filter(Boolean);
+
+    const profile = { id: 'profile_' + Date.now(), name, allergens, dislikes };
+    state.profiles.push(profile);
+    state.activeProfileIds.push(profile.id);
+    saveState();
+
+    // Reset form
+    nameInput.value = '';
+    dislikesInput.value = '';
+    document.querySelectorAll('#onboardingAllergenGrid input:checked').forEach(c => c.checked = false);
+
+    renderOnboardingProfiles();
+}
+
+function renderOnboardingPantry() {
+    const container = document.getElementById('onboardingPantryItems');
+    if (!container) return;
+    container.innerHTML = state.pantryItems.map(item =>
+        `<span class="pantry-item">${item} <span class="remove-pantry wizard-pantry-remove" data-item="${item}">×</span></span>`
+    ).join('');
+}
+
+function renderOnboardingFridge() {
+    const container = document.getElementById('onboardingFridgeItems');
+    if (!container) return;
+    if (state.fridgeItems.length === 0) {
+        container.innerHTML = '<p style="font-size:.8rem;color:var(--c-gray-400);">No fridge items yet.</p>';
+        return;
+    }
+    container.innerHTML = state.fridgeItems.map(item =>
+        `<span class="fridge-item">${item} <span class="remove-fridge wizard-fridge-remove" data-item="${item}">×</span></span>`
+    ).join('');
+}
+
+function renderOnboardingSummary() {
+    const el = document.getElementById('onboardingSummary');
+    if (!el) return;
+    const profileCount = state.profiles.length;
+    const pantryCount = state.pantryItems.length;
+    const fridgeCount = state.fridgeItems.length;
+    el.innerHTML = `
+        <div style="display:grid;gap:12px;text-align:left;">
+            <div class="card" style="padding:12px;">
+                <strong>👨‍👩‍👧‍👦 ${profileCount} profile${profileCount !== 1 ? 's' : ''}</strong>
+                <div style="font-size:.8rem;color:var(--c-gray-500);margin-top:2px;">
+                    ${state.profiles.map(p => p.name).join(', ') || 'None'}
+                </div>
+            </div>
+            <div class="card" style="padding:12px;">
+                <strong>🏠 ${pantryCount} cupboard staple${pantryCount !== 1 ? 's' : ''}</strong>
+                <div style="font-size:.8rem;color:var(--c-gray-500);margin-top:2px;">Won't appear on your shopping list</div>
+            </div>
+            ${fridgeCount > 0 ? `<div class="card" style="padding:12px;">
+                <strong>🧊 ${fridgeCount} fridge item${fridgeCount !== 1 ? 's' : ''}</strong>
+                <div style="font-size:.8rem;color:var(--c-gray-500);margin-top:2px;">${state.fridgeItems.join(', ')}</div>
+            </div>` : ''}
+        </div>`;
+}
+
+function completeOnboarding() {
+    state.onboardingComplete = true;
+    saveState();
+    document.getElementById('onboardingModal').classList.remove('open');
+    switchView('recipes');
+    renderProfiles();
+    renderPantry();
+    renderFridge();
 }
 
 
@@ -1194,7 +1440,7 @@ function setupEvents() {
             difficulty,
             tags,
             cuisine,
-            source: { name: sourceName || 'User recipe', url: '#' },
+            source: { name: sourceName || 'User recipe', url: document.getElementById('recipeUrlInput')?.value.trim() || '#' },
             favourite: false,
             timesCooked: 0,
             ingredients,
@@ -1206,6 +1452,8 @@ function setupEvents() {
         saveState();
         renderRecipes();
         document.getElementById('addRecipeForm').reset();
+        document.getElementById('recipeUrlInput').value = '';
+        document.getElementById('urlFetchStatus').textContent = '';
         document.getElementById('addRecipeModal').classList.remove('open');
     });
 
@@ -1503,6 +1751,99 @@ function setupEvents() {
         renderProfiles();
         renderRecipes(); // Re-filter
     });
+
+    // --- Onboarding wizard ---
+    const onboardingModal = document.getElementById('onboardingModal');
+    if (onboardingModal) {
+        onboardingModal.addEventListener('click', e => {
+            const action = e.target.dataset.wizardAction;
+            if (action === 'next') renderOnboardingStep(onboardingStep + 1);
+            if (action === 'back') renderOnboardingStep(onboardingStep - 1);
+            if (action === 'skip') renderOnboardingStep(onboardingStep + 1);
+            if (action === 'start') renderOnboardingStep(2);
+            if (action === 'complete') completeOnboarding();
+            if (action === 'add-profile') addOnboardingProfile();
+
+            // Remove profile from wizard
+            if (e.target.classList.contains('wizard-remove-profile')) {
+                const id = e.target.dataset.id;
+                state.profiles = state.profiles.filter(p => p.id !== id);
+                state.activeProfileIds = state.activeProfileIds.filter(a => a !== id);
+                saveState();
+                renderOnboardingProfiles();
+            }
+            // Remove pantry item from wizard
+            if (e.target.classList.contains('wizard-pantry-remove')) {
+                removePantryItem(e.target.dataset.item);
+                renderOnboardingPantry();
+            }
+            // Remove fridge item from wizard
+            if (e.target.classList.contains('wizard-fridge-remove')) {
+                const item = e.target.dataset.item;
+                state.fridgeItems = state.fridgeItems.filter(i => i !== item);
+                saveState();
+                renderOnboardingFridge();
+            }
+        });
+
+        // Onboarding pantry add
+        const wizPantryBtn = document.getElementById('onboardingPantryAdd');
+        const wizPantryInput = document.getElementById('onboardingPantryInput');
+        if (wizPantryBtn && wizPantryInput) {
+            wizPantryBtn.addEventListener('click', () => {
+                if (wizPantryInput.value.trim()) {
+                    addPantryItem(wizPantryInput.value);
+                    wizPantryInput.value = '';
+                    renderOnboardingPantry();
+                }
+            });
+            wizPantryInput.addEventListener('keydown', e => {
+                if (e.key === 'Enter') { e.preventDefault(); wizPantryBtn.click(); }
+            });
+        }
+
+        // Onboarding fridge add
+        const wizFridgeBtn = document.getElementById('onboardingFridgeAdd');
+        const wizFridgeInput = document.getElementById('onboardingFridgeInput');
+        if (wizFridgeBtn && wizFridgeInput) {
+            wizFridgeBtn.addEventListener('click', () => {
+                const items = wizFridgeInput.value.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+                items.forEach(item => {
+                    if (!state.fridgeItems.includes(item)) state.fridgeItems.push(item);
+                });
+                saveState();
+                wizFridgeInput.value = '';
+                renderOnboardingFridge();
+            });
+            wizFridgeInput.addEventListener('keydown', e => {
+                if (e.key === 'Enter') { e.preventDefault(); wizFridgeBtn.click(); }
+            });
+        }
+
+        // Onboarding profile name Enter key
+        document.getElementById('onboardingProfileName')?.addEventListener('keydown', e => {
+            if (e.key === 'Enter') { e.preventDefault(); addOnboardingProfile(); }
+        });
+    }
+
+    // --- URL recipe import ---
+    document.getElementById('fetchRecipeBtn')?.addEventListener('click', () => {
+        const url = document.getElementById('recipeUrlInput').value.trim();
+        if (!url) return;
+        try { new URL(url); } catch { document.getElementById('urlFetchStatus').textContent = 'Please enter a valid URL.'; return; }
+        fetchRecipeFromUrl(url);
+    });
+    document.getElementById('recipeUrlInput')?.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); document.getElementById('fetchRecipeBtn').click(); }
+    });
+
+    // --- Reset all data ---
+    document.getElementById('resetAllDataBtn')?.addEventListener('click', () => {
+        if (confirm('This will remove all your profiles, meal plans, and settings. Are you sure?')) {
+            localStorage.removeItem('mealPlannerV3');
+            location.reload();
+        }
+    });
 }
 
 
@@ -1527,4 +1868,5 @@ document.addEventListener('DOMContentLoaded', () => {
     renderFridge();
     setupEvents();
     updateTimerDisplay();
+    if (!state.onboardingComplete) showOnboarding();
 });
