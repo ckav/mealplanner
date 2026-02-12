@@ -1,12 +1,14 @@
 # Meal Planner App - Feature Comparison Analysis
 
 ## Overview
-This document compares three versions of the Meal Planner application:
-1. **Old Version** - `olderMealPlanner/MealPlannerApp/frontend/`
-2. **Current v2** - `MealPlannerApp/frontend/v2/`
-3. **Root Index** - `index.html` (standalone prototype with advanced features)
+This document compares all prototype versions of the Meal Planner application.
 
-**New Prototype**: **v3 merged prototype** - `MealPlannerApp/frontend/v3/`
+**Current version**: **v3 merged prototype** — `MealPlannerApp/frontend/v3/`
+
+Earlier versions (now in `archive/` for reference):
+1. **Old Version** — `archive/olderMealPlanner/` (timer, pantry, cook mode)
+2. **v2** — `MealPlannerApp/frontend/v2/` (modern UI, recipe editor, favourites)
+3. **Root Index** — `archive/root-prototype/` (weekly planner, family profiles)
 
 ---
 
@@ -197,23 +199,34 @@ This document compares three versions of the Meal Planner application:
 
 ---
 
-## CRITICAL FEATURES MISSING FROM v2 THAT EXIST IN OTHER VERSIONS
+## FEATURE MATRIX ACROSS ALL VERSIONS
 
-| Feature | Old | v2 | Root | Priority |
-|---------|-----|----|----|----------|
-| **Weekly Meal Planner** | ❌ | ❌ | ✅ | **HIGH** |
-| **Family Profiles** | ❌ | ❌ | ✅ | **HIGH** |
-| **Per-Profile Allergens** | ❌ | ❌ | ✅ | **HIGH** |
-| **Pantry Management** | ✅ | ❌ | ✅ | **HIGH** |
-| **Recipe Fetching from URL** | ❌ | ❌ | ✅ | **MEDIUM** |
-| **Timer Controls** | ✅ | ❌ | ❌ | **MEDIUM** |
-| **Cooking View (Steps)** | ✅ | ❌ | ❌ | **MEDIUM** |
-| **Copy Shopping List** | ✅ | ❌ | ✅ | **MEDIUM** |
-| **Supermarket Integration** | ✅ | ❌ | ❌ | **LOW** |
-| **Recipe Editor** | ❌ | ✅ | ❌ | **MEDIUM** |
-| **Favourites System** | ❌ | ✅ | ❌ | **MEDIUM** |
-| **Times Cooked Tracking** | ❌ | ✅ | ❌ | **LOW** |
-| **Share Recipes** | ❌ | ✅ | ❌ | **LOW** |
+| Feature | Old | v2 | Root | **v3 (current)** |
+|---------|-----|----|----|-----------------|
+| **Weekly Meal Planner** | ❌ | ❌ | ✅ | ✅ |
+| **Family Profiles** | ❌ | ❌ | ✅ | ✅ |
+| **Per-Profile Allergens** | ❌ | ❌ | ✅ | ✅ |
+| **Pantry Management** | ✅ | ❌ | ✅ | ✅ |
+| **Recipe Fetching from URL** | ❌ | ❌ | ✅ | ❌ |
+| **Timer Controls** | ✅ | ❌ | ❌ | ✅ |
+| **Cooking View (Steps)** | ✅ | ❌ | ❌ | ✅ |
+| **Copy Shopping List** | ✅ | ❌ | ✅ | ✅ |
+| **Supermarket Integration** | ✅ | ❌ | ❌ | ✅ |
+| **Recipe Editor (advanced)** | ❌ | ✅ | ❌ | ⚠️ basic |
+| **Favourites System** | ❌ | ✅ | ❌ | ✅ |
+| **Times Cooked Tracking** | ❌ | ✅ | ❌ | ✅ |
+| **Drag & Drop Planner** | ❌ | ❌ | ❌ | ✅ |
+| **Fridge Matching** | ❌ | ✅ | ❌ | ✅ |
+| **Per-Meal Exclusions** | ❌ | ❌ | ❌ | ✅ |
+| **Allergen Detection** | ❌ | ❌ | ✅ | ✅ |
+| **localStorage Persistence** | ✅ | ❌ | ❌ | ✅ |
+| **Responsive Design** | ❌ | ✅ | ✅ | ✅ |
+| **Share Recipes** | ❌ | ✅ | ❌ | ❌ |
+
+### Remaining gaps in v3
+- **Recipe Editor**: v2 has a richer editor with URL import, advanced fields (in `v2/features/recipe-editor/`)
+- **Share Recipes**: Exists in v2, not yet in v3
+- **Per-day "Cooking for" overrides**: UI exists but not fully wired
 
 ---
 
@@ -242,24 +255,21 @@ This document compares three versions of the Meal Planner application:
 
 ---
 
-## RECOMMENDATIONS FOR MIGRATION
+## REMAINING WORK FOR v3
 
-### Phase 1: Essential Features to Preserve
-1. **Weekly Meal Planner** (from Root) - Core feature
-2. **Family Profiles + Per-Profile Allergens** (from Root) - Critical UX
-3. **Pantry Management** (from Old/Root) - Essential shopping feature
-4. **Recipe Editor** (from v2) - Already modern implementation
-5. **Favourites System** (from v2) - User engagement
+v3 has successfully merged nearly all features from prior versions. Remaining work:
 
-### Phase 2: Cooking Enhancements
-1. **Timer Controls** (from Old) - Practical cooking feature
-2. **Step-by-Step View** (from Old) - Enhance recipe display
-3. **Portion Multiplier** (from Root) - Shopping list accuracy
+### Priority 1: Port from v2
+1. **Recipe Editor** — v2's editor (`v2/features/recipe-editor/`) supports URL import, advanced fields, image upload. v3 has only basic manual entry.
 
-### Phase 3: Integration Features
-1. **Recipe Fetching from URL** (from Root) - Convenience feature
-2. **Supermarket Integration** (from Old) - Optional enhancement
-3. **Share/Export** (from v2) - Social features
+### Priority 2: Polish
+1. **Per-day "Cooking for"** — The cooking-for selector exists in the header but doesn't override portions per day in the planner
+2. **Booking-style filter UX** — Bottom-sheet filter approach (Deliveroo-style) not yet implemented
+3. **"Relax filters" prompt** — When filters return zero results
+
+### Priority 3: Nice-to-have
+1. **Share/Export recipes** — Existed in v2
+2. **URL recipe import** — Existed in root prototype (needs CORS proxy)
 
 ---
 
@@ -294,8 +304,9 @@ ShoppingItem {
 
 ## Summary
 
-**Old Version Strengths**: Cooking-focused, practical pantry integration
-**v2 Strengths**: Modern UI, recipe management, favorite tracking
-**Root Strengths**: Comprehensive planning, family profiles, allergen management
+**v3 is the canonical version.** It successfully merges the strengths of all prior prototypes:
+- Root's planning architecture (weekly planner, family profiles, allergens)
+- v2's modern UI patterns (recipe cards, modals, filter pills, favourites)
+- Old version's practical cooking features (timer, step-by-step, pantry, supermarket links)
 
-**Recommended Approach**: Merge root's planning architecture with v2's UI patterns and add old version's cooking features.
+The main gap is the v2 recipe editor, which has richer functionality not yet ported to v3.
