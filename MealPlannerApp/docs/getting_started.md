@@ -16,6 +16,10 @@ C:\Users\clair\ClaudeProjects\MealPlannerApp\frontend\index.html
 - Generate shopping lists
 - View cooking instructions
 
+## Documentation Index
+
+Use [docs/FEATURE_INDEX.md](docs/FEATURE_INDEX.md) for direct links to the latest feature specs and wireframes.
+
 ## Project Structure Overview
 
 ```
