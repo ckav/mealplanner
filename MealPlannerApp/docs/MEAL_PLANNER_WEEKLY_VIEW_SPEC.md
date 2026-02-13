@@ -2,7 +2,7 @@
 
 > ⚠️ **This file has moved.** The canonical version is now at:
 > 
-> **`docs/features/meal-planner-weekly/MEAL_PLANNER_WEEKLY_VIEW_SPEC.md`**
+> **`docs/features/cook-forward/MEAL_PLANNER_WEEKLY_VIEW_SPEC.md`**
 > 
 > This file is kept as a redirect. Please update any references to point to the new location.
 > 

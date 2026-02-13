@@ -31,7 +31,7 @@ The core weekly planning interface — a grid of days × meal slots where users 
 
 **Documentation:**
 - 📖 [README.md](./meal-planner-weekly/README.md) - Feature overview & phase summary
-- 📋 [MEAL_PLANNER_WEEKLY_VIEW_SPEC.md](./meal-planner-weekly/MEAL_PLANNER_WEEKLY_VIEW_SPEC.md) - Full specification (layout, states, data model, acceptance criteria, Cook Forward integration)
+- 📋 [MEAL_PLANNER_WEEKLY_VIEW_SPEC.md](./cook-forward/MEAL_PLANNER_WEEKLY_VIEW_SPEC.md) - Full specification (layout, states, data model, acceptance criteria, Cook Forward integration)
 
 **Status:** 📐 Design complete — Phases 1–7 defined
 
@@ -67,9 +67,49 @@ Linked meal system where today's cooking effort makes tomorrow easier. Three lay
 
 ---
 
-### Future Features (documented but not yet specced)
+### 4. [Card Select](./card-select/)
+Recipe card browsing and selection experience — three-tier system (Browse → Saved → This Week's Meals) with multiple browse modes.
+
+**Location:** `docs/features/card-select/`
+
+**Documentation:**
+- 📖 [README.md](./card-select/README.md) - Feature handoff summary (three-tier system, browse modes, actions, dismiss flow)
+- 🖥️ [recipe-card-wireframe-v8.html](./card-select/recipe-card-wireframe-v8.html) - Latest tappable HTML wireframe
+- 🖥️ [recipe-card-wireframe-v5.html](./card-select/recipe-card-wireframe-v5.html) - Earlier wireframe iteration
+
+**Status:** 📐 UX specification complete — ready for Flutter implementation
+
+**Quick Facts:**
+- Three tiers: Browse (indigo), Saved for Later (amber), This Week's Meals (green)
+- Three browse modes: Full Card, Quick View (swipe rows), Swipe Mode
+- "Not for me" dismiss flow with optional pattern learning
+- Day picker for assigning recipes to specific days
+- Footer bar with saved recipe thumbnails and count
+
+---
+
+### 5. [Use It Up](./use-it-up/)
+Fridge-aware recipe suggestions — surface recipes that use ingredients the user already has, reducing food waste.
+
+**Location:** `docs/features/use-it-up/`
+
+**Documentation:**
+- 📋 [USE_IT_UP_SUMMARY_HANDOFF.md](./use-it-up/USE_IT_UP_SUMMARY_HANDOFF.md) - Feature summary and handoff notes
+- 📋 [USE_IT_UP_UX_FLOW.md](./use-it-up/USE_IT_UP_UX_FLOW.md) - Detailed UX flow and interaction design
+- 🖥️ [use-it-up-wireframe.html](./use-it-up/use-it-up-wireframe.html) - Tappable HTML wireframe
+
+**Status:** 📐 Design complete — UX flow and wireframe ready
+
+**Quick Facts:**
+- "What's in my fridge" ingredient entry
+- Recipe matching and ranking by ingredient overlap
+- Fridge item chips with inline remove
+- Integration with recipe browsing filters
+
+---
+
+### Future Features (not yet specced)
 - **Sort My Week** — Guided planning flow (wireframe exists, feature folder TBD)
-- **Use It Up** — Perishable ingredient management (wireframe exists, feature folder TBD)
 - **Shopping List** — Auto-generated from weekly plan with Cook Forward savings
 - **Cook Mode** — Step-by-step cooking interface with Cook Forward nudges
 - **Freezer Stash** — Standalone view (part of Cook Forward, may get own feature folder)
