@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cook Forward — UX Wireframe Prototype</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <style>
+/* ============================================
+   COOK FORWARD WIREFRAME
+   Design System: DM Sans, Indigo #4338ca
+   Pattern: Phone-frame tappable wireframe
+   ============================================ */
+
+:root {
+    --c-primary: #4338ca;
+    --c-primary-hover: #3730a3;
+    --c-primary-light: #e0e7ff;
+    --c-primary-50: #eef2ff;
+    --c-link: #7c3aed;
+    --c-link-light: #f5f3ff;
+    --c-link-border: #ddd6fe;
+    --c-success: #16a34a;
+    --c-success-light: #dcfce7;
+    --c-warning: #d97706;
+    --c-warning-light: #fef3c7;
+    --c-freezer: #0891b2;
+    --c-freezer-light: #ecfeff;
+    --c-freezer-border: #a5f3fc;
+    --c-white: #ffffff;
+    --c-gray-50: #f8fafc;
+    --c-gray-100: #f1f5f9;
+    --c-gray-200: #e2e8f0;
+    --c-gray-300: #cbd5e1;
+    --c-gray-400: #94a3b8;
+    --c-gray-500: #64748b;
+    --c-gray-600: #475569;
+    --c-gray-700: #334155;
+    --c-gray-800: #1e293b;
+    --c-gray-900: #0f172a;
+    --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-full: 9999px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: var(--font);
+    background: #1a1a2e;
+    color: var(--c-gray-800);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.page-title {
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-align: center;
+}
+.page-subtitle {
+    color: rgba(255,255,255,.6);
+    font-size: 14px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Screen navigation */
+.screen-nav {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 900px;
+}
+.screen-nav button {
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    border: 1.5px solid rgba(255,255,255,.2);
+    background: rgba(255,255,255,.05);
+    color: rgba(255,255,255,.6);
+    cursor: pointer;
+    transition: all 200ms ease;
+    white-space: nowrap;
+}
+.screen-nav button:hover {
+    background: rgba(255,255,255,.1);
+    color: white;
+}
+.screen-nav button.active {
+    background: var(--c-primary);
+    border-color: var(--c-primary);
+    color: white;
+}
+
+/* Persona toggle */
+.persona-toggle {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+.persona-btn {
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: var(--radius-full);
+    border: 2px solid rgba(255,255,255,.2);
+    background: rgba(255,255,255,.05);
+    color: rgba(255,255,255,.6);
+    cursor: pointer;
+    transition: all 200ms ease;
+}
+.persona-btn:hover {
+    background: rgba(255,255,255,.1);
+    color: white;
+}
+.persona-btn.active {
+    background: white;
+    border-color: white;
+    color: var(--c-primary);
+}
+.persona-label {
+    color: rgba(255,255,255,.4);
+    font-size: 11px;
+    margin-bottom: 6px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Phone frame */
+.phone-frame {
+    width: 375px;
+    min-height: 740px;
+    max-height: 780px;
+    background: var(--c-white);
+    border-radius: 40px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 0 0 4px #333, 0 20px 60px rgba(0,0,0,.4);
+    position: relative;
+}
+
+.phone-frame::-webkit-scrollbar { width: 0; }
+
+/* Status bar */
+.status-bar {
+    height: 50px;
+    background: var(--c-primary);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 24px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* App header */
+.app-header {
+    background: var(--c-primary);
+    color: white;
+    padding: 8px 20px 16px;
+}
+.app-header h1 {
+    font-size: 20px;
+    font-weight: 700;
+}
+.app-header p {
+    font-size: 13px;
+    opacity: .8;
+    margin-top: 2px;
+}
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.meal-counter {
+    font-size: 12px;
+    font-weight: 500;
+    background: rgba(255,255,255,.2);
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+}
+
+/* Screen container */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* Content area */
+.screen-content {
+    padding: 16px 20px 100px;
+}
+
+/* Section headers */
+.section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-gray-800);
+    margin-bottom: 8px;
+}
+.section-subtitle {
+    font-size: 13px;
+    color: var(--c-gray-500);
+    margin-bottom: 14px;
+    line-height: 1.5;
+}
+
+/* ── WEEKLY VIEW: Day rows ── */
+.day-row {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--c-gray-100);
+}
+.day-row:last-child { border-bottom: none; }
+
+.day-label {
+    width: 44px;
+    flex-shrink: 0;
+    padding-top: 2px;
+}
+.day-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--c-gray-400);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+.day-date {
+    font-size: 10px;
+    color: var(--c-gray-300);
+}
+
+.day-content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Meal cards in weekly view */
+.meal-card {
+    background: var(--c-white);
+    border: 1.5px solid var(--c-gray-200);
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: all 200ms ease;
+}
+.meal-card:hover {
+    border-color: var(--c-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.meal-card-filled {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.meal-thumb {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    background: var(--c-gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+.meal-info {
+    flex: 1;
+    min-width: 0;
+}
+.meal-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-800);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.meal-meta {
+    font-size: 11px;
+    color: var(--c-gray-400);
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.portions-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--c-primary);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* Cook Forward chain badge */
+.chain-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    background: var(--c-link-light);
+    color: var(--c-link);
+    border: 1px solid var(--c-link-border);
+    white-space: nowrap;
+}
+
+/* Freezer badge */
+.freezer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    background: var(--c-freezer-light);
+    color: var(--c-freezer);
+    border: 1px solid var(--c-freezer-border);
+    white-space: nowrap;
+}
+
+/* Empty meal slot */
+.meal-empty {
+    border: 1.5px dashed var(--c-gray-200);
+    border-radius: var(--radius-md);
+    padding: 14px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 200ms;
+}
+.meal-empty:hover {
+    border-color: var(--c-primary);
+    background: var(--c-primary-50);
+}
+.meal-empty-text {
+    font-size: 12px;
+    color: var(--c-gray-400);
+}
+.meal-empty-plus {
+    font-size: 18px;
+    color: var(--c-gray-300);
+    margin-bottom: 2px;
+}
+
+/* Skipped slot */
+.meal-skipped {
+    border: 1.5px solid var(--c-gray-100);
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    background: var(--c-gray-50);
+}
+.meal-skipped-text {
+    font-size: 12px;
+    color: var(--c-gray-400);
+    font-style: italic;
+}
+
+/* Chain connector line */
+.chain-connector {
+    width: 2px;
+    height: 16px;
+    background: linear-gradient(to bottom, var(--c-link-border), var(--c-link));
+    margin: -4px 0 -4px 32px;
+    border-radius: 1px;
+    position: relative;
+}
+.chain-connector::after {
+    content: '🔗';
+    font-size: 10px;
+    position: absolute;
+    left: -7px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* ── RECIPE PICKER MODAL ── */
+.modal-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--c-gray-100);
+}
+.modal-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-gray-800);
+}
+.modal-context {
+    font-size: 12px;
+    color: var(--c-gray-500);
+    margin-top: 2px;
+}
+
+/* Cook Forward suggestion panel in picker */
+.cf-suggestion-panel {
+    background: var(--c-link-light);
+    border: 1px solid var(--c-link-border);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    margin-bottom: 16px;
+}
+.cf-suggestion-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+.cf-suggestion-icon {
+    font-size: 16px;
+}
+.cf-suggestion-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-link);
+}
+.cf-suggestion-subtitle {
+    font-size: 11px;
+    color: var(--c-gray-500);
+    margin-bottom: 10px;
+}
+
+/* Mini recipe cards (horizontal scroll) */
+.recipe-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+}
+.recipe-scroll::-webkit-scrollbar { display: none; }
+
+.recipe-mini {
+    width: 130px;
+    flex-shrink: 0;
+    background: white;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1.5px solid var(--c-gray-200);
+    cursor: pointer;
+    transition: all 200ms;
+    position: relative;
+}
+.recipe-mini:hover {
+    border-color: var(--c-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+.recipe-mini.selected {
+    border-color: var(--c-primary);
+    border-width: 2px;
+    box-shadow: 0 0 0 3px var(--c-primary-light);
+}
+
+.recipe-mini-img {
+    height: 80px;
+    background: var(--c-gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+}
+.recipe-mini-body {
+    padding: 8px 10px;
+}
+.recipe-mini-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--c-gray-800);
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+.recipe-mini-meta {
+    font-size: 10px;
+    color: var(--c-gray-400);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.recipe-mini-chain {
+    font-size: 9px;
+    color: var(--c-link);
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+/* Time saved indicator */
+.time-saved {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--c-success);
+    background: var(--c-success-light);
+    padding: 2px 6px;
+    border-radius: var(--radius-full);
+}
+
+/* ── COOK MODE ── */
+.cook-header {
+    background: var(--c-gray-900);
+    color: white;
+    padding: 12px 20px 16px;
+}
+.cook-header h1 {
+    font-size: 18px;
+    font-weight: 700;
+}
+.cook-step-indicator {
+    font-size: 12px;
+    opacity: .6;
+    margin-top: 2px;
+}
+
+.cook-content {
+    padding: 20px;
+    padding-bottom: 100px;
+}
+
+.cook-step {
+    margin-bottom: 20px;
+}
+.cook-step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--c-primary);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+.cook-step-text {
+    font-size: 15px;
+    color: var(--c-gray-800);
+    line-height: 1.6;
+}
+.cook-step-text strong {
+    color: var(--c-gray-900);
+}
+
+/* Cook Forward nudge card */
+.cf-nudge {
+    background: linear-gradient(135deg, var(--c-link-light), #faf5ff);
+    border: 1.5px solid var(--c-link-border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin: 16px 0;
+    position: relative;
+}
+.cf-nudge-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+.cf-nudge-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    box-shadow: var(--shadow-sm);
+}
+.cf-nudge-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--c-link);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.cf-nudge-body {
+    font-size: 14px;
+    color: var(--c-gray-700);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+.cf-nudge-body strong {
+    color: var(--c-gray-900);
+}
+.cf-nudge-reason {
+    font-size: 11px;
+    color: var(--c-gray-500);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.cf-nudge-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Freezer nudge */
+.cf-nudge-freezer {
+    background: linear-gradient(135deg, var(--c-freezer-light), #f0fdfa);
+    border-color: var(--c-freezer-border);
+}
+.cf-nudge-freezer .cf-nudge-label {
+    color: var(--c-freezer);
+}
+
+/* Buttons */
+.btn-primary {
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    background: var(--c-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all 200ms;
+}
+.btn-primary:hover { background: var(--c-primary-hover); }
+
+.btn-secondary {
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    background: transparent;
+    color: var(--c-gray-500);
+    border: 1.5px solid var(--c-gray-200);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all 200ms;
+}
+.btn-secondary:hover {
+    border-color: var(--c-gray-300);
+    color: var(--c-gray-700);
+}
+
+.btn-link {
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-link);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 16px;
+}
+
+.btn-success {
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    background: var(--c-success);
+    color: white;
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+}
+
+/* Divider */
+.divider {
+    height: 1px;
+    background: var(--c-gray-100);
+    margin: 16px 0;
+}
+.divider-text {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--c-gray-400);
+    font-size: 11px;
+    font-weight: 500;
+    margin: 16px 0;
+}
+.divider-text::before, .divider-text::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--c-gray-200);
+}
+
+/* Search bar */
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--c-gray-50);
+    border: 1.5px solid var(--c-gray-200);
+    border-radius: var(--radius-full);
+    padding: 10px 16px;
+    margin-bottom: 16px;
+}
+.search-bar input {
+    flex: 1;
+    border: none;
+    background: none;
+    font-family: var(--font);
+    font-size: 14px;
+    color: var(--c-gray-800);
+    outline: none;
+}
+.search-bar input::placeholder { color: var(--c-gray-400); }
+.search-icon { color: var(--c-gray-400); font-size: 14px; }
+
+/* Quick filter chips */
+.chip-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+.chip {
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: var(--radius-full);
+    border: 1.5px solid var(--c-gray-200);
+    background: white;
+    color: var(--c-gray-600);
+    cursor: pointer;
+    transition: all 200ms;
+    white-space: nowrap;
+}
+.chip:hover { border-color: var(--c-primary); color: var(--c-primary); }
+.chip.active {
+    background: var(--c-primary-light);
+    border-color: var(--c-primary);
+    color: var(--c-primary);
+    font-weight: 600;
+}
+
+/* Annotation box */
+.annotation {
+    background: #fffbeb;
+    border-left: 3px solid var(--c-warning);
+    padding: 10px 14px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin: 14px 0;
+    font-size: 12px;
+    color: var(--c-gray-600);
+    line-height: 1.5;
+}
+.annotation strong { color: var(--c-gray-800); }
+
+/* Success annotation */
+.annotation-success {
+    background: #f0fdf4;
+    border-left-color: var(--c-success);
+}
+
+/* Info annotation */
+.annotation-info {
+    background: var(--c-primary-50);
+    border-left-color: var(--c-primary);
+}
+
+/* Weekly summary bar */
+.week-summary {
+    background: var(--c-gray-50);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.week-summary-stat {
+    text-align: center;
+}
+.week-summary-num {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-primary);
+}
+.week-summary-label {
+    font-size: 10px;
+    color: var(--c-gray-400);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+/* Toast */
+.toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--c-gray-800);
+    color: white;
+    padding: 10px 20px;
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    transition: all 300ms ease;
+    pointer-events: none;
+    z-index: 100;
+    white-space: nowrap;
+}
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* Completed nudge state */
+.cf-nudge.done {
+    background: var(--c-success-light);
+    border-color: #bbf7d0;
+}
+.cf-nudge.done .cf-nudge-label { color: var(--c-success); }
+
+/* Checklist style */
+.cf-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.cf-check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    background: white;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--c-gray-100);
+    cursor: pointer;
+    transition: all 200ms;
+}
+.cf-check-item:hover { border-color: var(--c-link-border); }
+.cf-check-item.checked {
+    background: var(--c-success-light);
+    border-color: #bbf7d0;
+}
+.cf-check-item.checked .cf-check-text { text-decoration: line-through; color: var(--c-gray-400); }
+.cf-check-item.checked .cf-check-box { background: var(--c-success); border-color: var(--c-success); color: white; }
+
+.cf-check-box {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 2px solid var(--c-gray-300);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 12px;
+    transition: all 200ms;
+}
+.cf-check-text {
+    font-size: 13px;
+    color: var(--c-gray-700);
+    line-height: 1.4;
+}
+.cf-check-detail {
+    font-size: 11px;
+    color: var(--c-gray-400);
+    margin-top: 2px;
+}
+
+/* Persona indicator */
+.persona-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--c-gray-50);
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--c-gray-500);
+    margin-bottom: 12px;
+    width: fit-content;
+}
+
+/* Shopping savings */
+.savings-card {
+    background: var(--c-success-light);
+    border: 1px solid #bbf7d0;
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-top: 14px;
+}
+.savings-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--c-success);
+    margin-bottom: 4px;
+}
+.savings-text {
+    font-size: 12px;
+    color: var(--c-gray-600);
+    line-height: 1.4;
+}
+
+/* Bottom nav */
+.bottom-nav {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    border-top: 1px solid var(--c-gray-100);
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0 20px;
+}
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 10px;
+    color: var(--c-gray-400);
+    cursor: pointer;
+    padding: 4px 8px;
+}
+.bottom-nav-item.active { color: var(--c-primary); }
+.bottom-nav-icon { font-size: 20px; }
+    </style>
+</head>
+<body>
+
+<h1 class="page-title">Cook Forward</h1>
+<p class="page-subtitle">Linked meals, prep nudges &amp; freezer stash · Tappable wireframe</p>
+
+<div class="persona-label">Viewing as</div>
+<div class="persona-toggle">
+    <button class="persona-btn active" onclick="setPersona('claire')">🧑‍🍳 Claire (solo)</button>
+    <button class="persona-btn" onclick="setPersona('luciana')">👨‍👩‍👧‍👦 Luciana (family)</button>
+</div>
+
+<nav class="screen-nav" id="screenNav">
+    <button class="active" data-screen="1">1. Weekly View</button>
+    <button data-screen="2">2. Pick Meal</button>
+    <button data-screen="3">3. Linked Chosen</button>
+    <button data-screen="4">4. Cook Mode</button>
+    <button data-screen="5">5. Nudges</button>
+    <button data-screen="6">6. Freezer</button>
+    <button data-screen="7">7. Week Done</button>
+</nav>
+
+<div class="phone-frame">
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SCREEN 1: WEEKLY VIEW (with gaps)      -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="screen active" id="screen1">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>⚡ 📶</span>
+        </div>
+        <div class="app-header">
+            <div class="header-row">
+                <h1>My Week</h1>
+                <span class="meal-counter" id="mealCounter">3 of 5 meals</span>
+            </div>
+            <p id="weekLabel">Mon 10 – Sun 16 Feb</p>
+        </div>
+
+        <div class="screen-content">
+            <div class="persona-indicator" id="personaTag">🧑‍🍳 Claire · Cooking for 1</div>
+
+            <!-- CLAIRE'S WEEK -->
+            <div id="claireWeek">
+                <!-- Sunday - filled, anchor meal -->
+                <div class="day-row">
+                    <div class="day-label">
+                        <div class="day-name">Sun</div>
+                        <div class="day-date">10th</div>
+                    </div>
+                    <div class="day-content">
+                        <div class="meal-card" onclick="showScreen(4)">
+                            <div class="meal-card-filled">
+                                <div class="meal-thumb">🍗</div>
+                                <div class="meal-info">
+                                    <div class="meal-name">Lemon Herb Roast Chicken</div>
+                                    <div class="meal-meta">
+                                        <span>60 min</span>
+                                        <span>·</span>
+                                        <span class="chain-badge">🔗 Feeds Mon, Wed</span>
+                                    </div>
+                                </div>
+                                <div class="portions-badge">1</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chain-connector"></div>
+
+                <!-- Monday - filled via chain -->
+                <div class="day-row">
+                    <div class="day-label">
+                        <div class="day-name">Mon</div>
+                        <div class="day-date">11th</div>
+                    </div>
+                    <div class="day-content">
+                        <div class="meal-card">
+                            <div class="meal-card-filled">
+                                <div class="meal-thumb">🍚</div>
+                                <div class="meal-info">
+                                    <div class="meal-name">Chicken Fried Rice</div>
+                                    <div class="meal-meta">
+                                        <span>15 min</span>
+                                        <span>·</span>
+                                        <span class="chain-badge">🔗 Sun's chicken</span>
+                                    </div>
+                                </div>
+                                <div class="portions-badge">1</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tuesday - empty -->
+                <div class="day-row">
+                    <div class="day-label">
+                        <div class="day-name">Tue</div>
+                        <div class="day-date">12th</div>
+                    </div>
+                    <div class="day-content">
+                        <div class="meal-empty" onclick="showScreen(2)">
+                            <div class="meal-empty-plus">+</div>
+                            <div class="meal-empty-text">Tap to add</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chain-connector"></div>
+
+                <!-- Wednesday - filled via chain -->
+                <div class="day-row">
+                    <div class="day-label">
+                        <div class="day-name">Wed</div>
+                        <div class="day-date">13th</div>
+                    </div>
+                    <div class="day-content">
+                        <div class="meal-card">
+                            <div class="meal-card-filled">
+                                <div class="meal-thumb">🍜</div>
+                                <div class="meal-info">
+                                    <div class="meal-name">Quick Chicken Noodle Soup</div>
+                                    <div class="meal-meta">
+                                        <span>20 min</span>
+                                        <span>·</span>
+                                        <span class="chain-badge">🔗 Sun's stock</span>
+                                    </div>
+                                </div>
+                                <div class="portions-badge">1</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thursday - skipped -->
+                <div class="day-row">
+                    <div class="day-label">
+                        <div class="day-name">Thu</div>
+                        <div class="day-date">14th</div>
+                    </div>
+                    <div class="day-content">
+                        <div class="meal-skipped">
+                            <div class="meal-skipped-text">⏭ Eating out</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Friday - empty -->
+                <div class="day-row">
+                    <div class="day-label">
+                        <div class="day-name">Fri</div>
+                        <div class="day-date">15th</div>
+                    </div>
+                    <div class="day-content">
+                        <div class="meal-empty" onclick="showScreen(2)">
+                            <div class="meal-empty-plus">+</div>
+                            <div class="meal-empty-text">Tap to add</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saturday - skipped -->
+                <div class="day-row">
+                    <div class="day-label">
+                        <div class="day-name">Sat</div>
+                        <div class="day-date">16th</div>
+                    </div>
+                    <div class="day-content">
+                        <div class="meal-skipped">
+                            <div class="meal-skipped-text">⏭ Leftovers / fridge raid</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LUCIANA'S WEEK -->
+            <div id="lucianaWeek" style="display:none;">
+                <!-- Monday -->
+                <div class="day-row">
+                    <div class="day-label">
+                        <div class="day-name">Mon</div>
+                        <div class="day-date">10th</div>
+                    </div>
+                    <div class="day-content">
+                        <div class="meal-card">
+                            <div class="meal-card-filled">
+                                <div class="meal-thumb">🍝</div>
+                                <div class="meal-info">
+                                    <div class="meal-name">Bolognese</div>
+                                    <div class="meal-meta">
+                                        <span>35 min</span>
+                                        <span>·</span>
+                                        <span>👨‍👩‍👧‍👦 Everyone</span>
+                                    </div>
+                                    <div style="margin-top:4px;">
+                                        <span class="chain-badge">🔗 Double sauce → Wed</span>
+                                    </div>
+                                </div>
+                                <div class="portions-badge">4</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tuesday -->
+                <div class="day-row">
+                    <div class="day-label">
+                        <div class="day-name">Tue</div>
+                        <div class="day-date">11th</div>
+                    </div>
+                    <div class="day-content">
+                        <div class="meal-card">
+                            <div class="meal-card-filled">
+                                <div class="meal-thumb">🍛</div>
+                                <div class="meal-info">
+                                    <div class="meal-name">Creamy Chicken Korma</div>
+                                    <div class="meal-meta">
+                                        <span>30 min</span>
+                                        <span>·</span>
+                                        <span>👫 No Fynn (3)</span>
+                                    </div>
+                                </div>
+                                <div class="portions-badge">3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chain-connector"></div>
+
+                <!-- Wednesday -->
+                <div class="day-row">
+                    <div class="day-label">
+                        <div class="day-name">Wed</div>
+                        <div class="day-date">12th</div>
+                    </div>
+                    <div class="day-content">
+                        <div class="meal-card">
+                            <div class="meal-card-filled">
+                                <div class="meal-thumb">🫓</div>
+                                <div class="meal-info">
+                                    <div class="meal-name">Lasagne</div>
+                                    <div class="meal-meta">
+                                        <span>25 min prep</span>
+                                        <span>·</span>
+                                        <span>👨‍👩‍👧‍👦 Everyone</span>
+                                    </div>
+                                    <div style="margin-top:4px;">
+                                        <span class="chain-badge">🔗 Mon's sauce</span>
+                                        <span class="time-saved">⏱ 20 min saved</span>
+                                    </div>
+                                </div>
+                                <div class="portions-badge">4</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thursday -->
+                <div class="day-row">
+                    <div class="day-label">
+                        <div class="day-name">Thu</div>
+                        <div class="day-date">13th</div>
+                    </div>
+                    <div class="day-content">
+                        <div class="meal-skipped">
+                            <div class="meal-skipped-text">⏭ David doing sandwiches</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Friday -->
+                <div class="day-row">
+                    <div class="day-label">
+                        <div class="day-name">Fri</div>
+                        <div class="day-date">14th</div>
+                    </div>
+                    <div class="day-content">
+                        <div class="meal-empty" onclick="showScreen(2)">
+                            <div class="meal-empty-plus">+</div>
+                            <div class="meal-empty-text">Tap to add</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saturday -->
+                <div class="day-row">
+                    <div class="day-label">
+                        <div class="day-name">Sat</div>
+                        <div class="day-date">15th</div>
+                    </div>
+                    <div class="day-content">
+                        <div class="meal-skipped">
+                            <div class="meal-skipped-text">⏭ Eating out</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sunday -->
+                <div class="day-row">
+                    <div class="day-label">
+                        <div class="day-name">Sun</div>
+                        <div class="day-date">16th</div>
+                    </div>
+                    <div class="day-content">
+                        <div class="meal-empty" onclick="showScreen(2)">
+                            <div class="meal-empty-plus">+</div>
+                            <div class="meal-empty-text">Tap to add</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="annotation" style="margin-top:16px;">
+                <strong>💡 UX note:</strong> The 🔗 chain badges and connector lines show how Sunday's roast chicken feeds into Monday and Wednesday. One purchase (a whole chicken) → 3 different meals.
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="bottom-nav-item active"><span class="bottom-nav-icon">📅</span>Plan</div>
+            <div class="bottom-nav-item"><span class="bottom-nav-icon">📖</span>Recipes</div>
+            <div class="bottom-nav-item"><span class="bottom-nav-icon">🛒</span>Shop</div>
+            <div class="bottom-nav-item"><span class="bottom-nav-icon">⚙️</span>Settings</div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SCREEN 2: RECIPE PICKER with CF panel  -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="screen" id="screen2">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>⚡ 📶</span>
+        </div>
+
+        <div class="modal-header">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div class="modal-title" id="pickerTitle">Add meal for Tuesday</div>
+                    <div class="modal-context" id="pickerContext">Cooking for 1</div>
+                </div>
+                <button class="btn-secondary" onclick="showScreen(1)" style="padding:6px 12px; font-size:12px;">✕</button>
+            </div>
+        </div>
+
+        <div class="screen-content" style="padding-top:12px;">
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Search recipes...">
+            </div>
+
+            <div class="chip-row">
+                <span class="chip">⚡ Under 20 min</span>
+                <span class="chip">❤️ Favourites</span>
+                <span class="chip active">🔗 Cook Forward</span>
+                <span class="chip">🕐 Recent</span>
+            </div>
+
+            <!-- COOK FORWARD SUGGESTION PANEL -->
+            <div class="cf-suggestion-panel" id="cfPanel">
+                <div class="cf-suggestion-header">
+                    <span class="cf-suggestion-icon">🔗</span>
+                    <span class="cf-suggestion-title">Cook Forward suggestions</span>
+                </div>
+                <div class="cf-suggestion-subtitle" id="cfPanelSubtitle">These work with what you're already cooking this week</div>
+
+                <div class="recipe-scroll">
+                    <!-- Claire suggestions -->
+                    <div class="recipe-mini" id="cfRecipe1" onclick="selectRecipe(this)">
+                        <div class="recipe-mini-img">🥘</div>
+                        <div class="recipe-mini-body">
+                            <div class="recipe-mini-name">One-Pot Pasta</div>
+                            <div class="recipe-mini-meta">⏱ 20 min</div>
+                            <div class="recipe-mini-chain">🧅 Same onion prep as Wed</div>
+                        </div>
+                    </div>
+                    <div class="recipe-mini" onclick="selectRecipe(this)">
+                        <div class="recipe-mini-img">🍲</div>
+                        <div class="recipe-mini-body">
+                            <div class="recipe-mini-name">Veggie Stir Fry</div>
+                            <div class="recipe-mini-meta">⏱ 15 min</div>
+                            <div class="recipe-mini-chain">🍚 Uses Mon's leftover rice</div>
+                        </div>
+                    </div>
+                    <div class="recipe-mini" onclick="selectRecipe(this)">
+                        <div class="recipe-mini-img">🥗</div>
+                        <div class="recipe-mini-body">
+                            <div class="recipe-mini-name">Chicken Caesar Wrap</div>
+                            <div class="recipe-mini-meta">⏱ 10 min</div>
+                            <div class="recipe-mini-chain">🍗 Uses Sun's chicken</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider-text">or browse all recipes</div>
+
+            <!-- Regular recipe grid -->
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <div class="recipe-mini" onclick="selectRecipe(this)" style="width:calc(50% - 5px);">
+                    <div class="recipe-mini-img">🌮</div>
+                    <div class="recipe-mini-body">
+                        <div class="recipe-mini-name">Fish Tacos</div>
+                        <div class="recipe-mini-meta">⏱ 25 min</div>
+                    </div>
+                </div>
+                <div class="recipe-mini" onclick="selectRecipe(this)" style="width:calc(50% - 5px);">
+                    <div class="recipe-mini-img">🍕</div>
+                    <div class="recipe-mini-body">
+                        <div class="recipe-mini-name">Flatbread Pizza</div>
+                        <div class="recipe-mini-meta">⏱ 20 min</div>
+                    </div>
+                </div>
+                <div class="recipe-mini" onclick="selectRecipe(this)" style="width:calc(50% - 5px);">
+                    <div class="recipe-mini-img">🥙</div>
+                    <div class="recipe-mini-body">
+                        <div class="recipe-mini-name">Halloumi Wraps</div>
+                        <div class="recipe-mini-meta">⏱ 15 min</div>
+                    </div>
+                </div>
+                <div class="recipe-mini" onclick="selectRecipe(this)" style="width:calc(50% - 5px);">
+                    <div class="recipe-mini-img">🍜</div>
+                    <div class="recipe-mini-body">
+                        <div class="recipe-mini-name">Prawn Pad Thai</div>
+                        <div class="recipe-mini-meta">⏱ 25 min</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="annotation" style="margin-top:16px;">
+                <strong>💡 UX note:</strong> The "Cook Forward suggestions" panel appears at the top when the app detects ingredient overlaps or chain opportunities with the current week's plan. The 🔗 chip filter lets users toggle this section. Non-linked recipes are always available below.
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SCREEN 3: LINKED RECIPE CHOSEN         -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="screen" id="screen3">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>⚡ 📶</span>
+        </div>
+
+        <div class="modal-header">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div class="modal-title">Tuesday — Veggie Stir Fry</div>
+                    <div class="modal-context">Added to your plan</div>
+                </div>
+                <button class="btn-primary" onclick="showScreen(4)" style="padding:6px 14px;">Done ✓</button>
+            </div>
+        </div>
+
+        <div class="screen-content" style="padding-top:12px;">
+            <div style="text-align:center; padding:20px 0;">
+                <div style="font-size:64px; margin-bottom:12px;">🍲</div>
+                <div style="font-size:18px; font-weight:700; color:var(--c-gray-800);">Veggie Stir Fry</div>
+                <div style="font-size:14px; color:var(--c-gray-500); margin-top:4px;">15 min · 1 portion</div>
+            </div>
+
+            <!-- Cook Forward link explanation -->
+            <div class="cf-suggestion-panel" style="text-align:left;">
+                <div class="cf-suggestion-header">
+                    <span class="cf-suggestion-icon">🔗</span>
+                    <span class="cf-suggestion-title">Cook Forward link</span>
+                </div>
+                <div style="font-size:13px; color:var(--c-gray-600); line-height:1.6;">
+                    This uses <strong>leftover rice from Monday's Chicken Fried Rice</strong>. When you cook Monday's rice, just make an extra cup — it takes 0 extra effort and saves you 12 minutes on Tuesday.
+                </div>
+                <div style="margin-top:10px;">
+                    <span class="time-saved">⏱ Saves 12 min on Tuesday</span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- What the chain looks like now -->
+            <div class="section-title">Your chain this week</div>
+            <div class="section-subtitle">One chicken, three meals — plus shared prep</div>
+
+            <div style="display:flex; flex-direction:column; gap:6px;">
+                <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--c-primary-50); border-radius:var(--radius-sm); border-left:3px solid var(--c-primary);">
+                    <span style="font-size:11px; font-weight:700; color:var(--c-gray-400); width:32px;">SUN</span>
+                    <span style="font-size:13px; font-weight:600;">🍗 Roast Chicken</span>
+                    <span style="margin-left:auto; font-size:10px; color:var(--c-link); font-weight:600;">ANCHOR</span>
+                </div>
+                <div style="margin-left:16px; width:2px; height:8px; background:var(--c-link-border);"></div>
+                <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--c-gray-50); border-radius:var(--radius-sm); border-left:3px solid var(--c-link-border);">
+                    <span style="font-size:11px; font-weight:700; color:var(--c-gray-400); width:32px;">MON</span>
+                    <span style="font-size:13px; font-weight:500;">🍚 Chicken Fried Rice</span>
+                    <span class="chain-badge" style="margin-left:auto;">🔗 chicken + rice</span>
+                </div>
+                <div style="margin-left:16px; width:2px; height:8px; background:var(--c-link-border);"></div>
+                <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--c-success-light); border-radius:var(--radius-sm); border-left:3px solid var(--c-success);">
+                    <span style="font-size:11px; font-weight:700; color:var(--c-gray-400); width:32px;">TUE</span>
+                    <span style="font-size:13px; font-weight:600;">🍲 Veggie Stir Fry</span>
+                    <span style="margin-left:auto; font-size:10px; color:var(--c-success); font-weight:600;">✓ JUST ADDED</span>
+                </div>
+                <div style="margin-left:16px; width:2px; height:8px; background:var(--c-link-border);"></div>
+                <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--c-gray-50); border-radius:var(--radius-sm); border-left:3px solid var(--c-link-border);">
+                    <span style="font-size:11px; font-weight:700; color:var(--c-gray-400); width:32px;">WED</span>
+                    <span style="font-size:13px; font-weight:500;">🍜 Chicken Noodle Soup</span>
+                    <span class="chain-badge" style="margin-left:auto;">🔗 stock</span>
+                </div>
+            </div>
+
+            <div class="savings-card">
+                <div class="savings-title">🔗 Cook Forward this week</div>
+                <div class="savings-text">1 chicken → 3 meals · Extra rice → 2 meals<br>Estimated <strong>35 min saved</strong> across the week</div>
+            </div>
+
+            <div class="annotation" style="margin-top:16px;">
+                <strong>💡 UX note:</strong> This confirmation screen reinforces the chain — showing the user the smart thing they just did. "Anchor" meal is the one that starts the chain. The time-saved metric provides the dopamine hit.
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SCREEN 4: COOK MODE — before cooking   -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="screen" id="screen4">
+        <div class="status-bar" style="background:var(--c-gray-900);">
+            <span>18:30</span>
+            <span>⚡ 📶</span>
+        </div>
+        <div class="cook-header">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h1>🍗 Roast Chicken</h1>
+                    <div class="cook-step-indicator">Sunday · Cooking for 1</div>
+                </div>
+                <button class="btn-secondary" onclick="showScreen(1)" style="border-color:rgba(255,255,255,.3); color:white;">✕</button>
+            </div>
+        </div>
+
+        <div class="cook-content">
+            <!-- Pre-cooking Cook Forward checklist -->
+            <div class="cf-nudge">
+                <div class="cf-nudge-header">
+                    <div class="cf-nudge-icon">🔗</div>
+                    <span class="cf-nudge-label">Before you start</span>
+                </div>
+                <div class="cf-nudge-body">
+                    A few things to prep now that'll make <strong>Mon, Tue &amp; Wed much easier</strong>:
+                </div>
+
+                <div class="cf-checklist">
+                    <div class="cf-check-item" onclick="toggleCheck(this)">
+                        <div class="cf-check-box">✓</div>
+                        <div>
+                            <div class="cf-check-text">Cook 1 extra cup of rice</div>
+                            <div class="cf-check-detail">→ Monday's Fried Rice + Tuesday's Stir Fry · Saves 20 min</div>
+                        </div>
+                    </div>
+                    <div class="cf-check-item" onclick="toggleCheck(this)">
+                        <div class="cf-check-box">✓</div>
+                        <div>
+                            <div class="cf-check-text">Dice 2 extra onions</div>
+                            <div class="cf-check-detail">→ Monday + Wednesday · Saves 10 min</div>
+                        </div>
+                    </div>
+                    <div class="cf-check-item" onclick="toggleCheck(this)">
+                        <div class="cf-check-box">✓</div>
+                        <div>
+                            <div class="cf-check-text">Save the chicken carcass</div>
+                            <div class="cf-check-detail">→ Wednesday's soup stock · Pop in a pot with water overnight</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:10px; text-align:right;">
+                    <button class="btn-link" style="font-size:12px; color:var(--c-gray-400); padding:4px 0;">Skip all — just cook tonight</button>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Regular cook steps -->
+            <div class="cook-step">
+                <div class="cook-step-num">1</div>
+                <div class="cook-step-text">
+                    Preheat oven to <strong>200°C</strong>. Pat the chicken dry and rub with <strong>olive oil, lemon zest, thyme, salt and pepper</strong>.
+                </div>
+            </div>
+
+            <div class="cook-step">
+                <div class="cook-step-num">2</div>
+                <div class="cook-step-text">
+                    Place chicken in a roasting tin. Scatter <strong>halved lemons and garlic cloves</strong> around it.
+                </div>
+            </div>
+
+            <div class="cook-step">
+                <div class="cook-step-num">3</div>
+                <div class="cook-step-text">
+                    Roast for <strong>60 minutes</strong> until golden and juices run clear.
+                </div>
+            </div>
+
+            <div class="annotation">
+                <strong>💡 UX note:</strong> The Cook Forward checklist appears BEFORE the recipe steps — it's the "while you're getting set up" moment. Each item is tappable to mark done. "Skip all" is always available with zero guilt. The time-saved callouts reinforce the value.
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SCREEN 5: MID-COOK NUDGE               -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="screen" id="screen5">
+        <div class="status-bar" style="background:var(--c-gray-900);">
+            <span>19:15</span>
+            <span>⚡ 📶</span>
+        </div>
+        <div class="cook-header">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h1>🍗 Roast Chicken</h1>
+                    <div class="cook-step-indicator">Step 3 of 5 · Chicken is in the oven</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cook-content">
+            <div class="cook-step">
+                <div class="cook-step-num">3</div>
+                <div class="cook-step-text">
+                    Chicken is in the oven. <strong>45 minutes remaining.</strong>
+                </div>
+            </div>
+
+            <!-- Mid-cook nudge: oven is on -->
+            <div class="cf-nudge">
+                <div class="cf-nudge-header">
+                    <div class="cf-nudge-icon">🔥</div>
+                    <span class="cf-nudge-label">While the oven's on</span>
+                </div>
+                <div class="cf-nudge-body">
+                    Your oven's at 200°C for another 45 min. Want to <strong>roast some butternut squash</strong> at the same time?
+                </div>
+                <div class="cf-nudge-reason">
+                    💡 Goes perfectly in Friday's soup — or just have it as a side this week
+                </div>
+                <div class="cf-nudge-actions">
+                    <button class="btn-primary" onclick="nudgeDone(this)">Good idea ✓</button>
+                    <button class="btn-secondary">Not today</button>
+                </div>
+            </div>
+
+            <!-- Freezer opportunity nudge -->
+            <div class="cf-nudge cf-nudge-freezer" style="margin-top:12px;">
+                <div class="cf-nudge-header">
+                    <div class="cf-nudge-icon">❄️</div>
+                    <span class="cf-nudge-label">Freezer stash</span>
+                </div>
+                <div class="cf-nudge-body">
+                    When you shred the chicken later, you could <strong>freeze a portion</strong> for a quick meal on a busy day.
+                </div>
+                <div class="cf-nudge-reason">
+                    ❄️ Cooked chicken freezes well for up to 3 months
+                </div>
+                <div class="cf-nudge-actions">
+                    <button class="btn-primary" style="background:var(--c-freezer);" onclick="nudgeDone(this)">Freeze some ❄️</button>
+                    <button class="btn-secondary">Skip</button>
+                </div>
+            </div>
+
+            <div class="annotation" style="margin-top:16px;">
+                <strong>💡 UX note:</strong> These nudges appear contextually — the oven one only shows because the oven is on. The freezer one appears because the recipe produces surplus. Both are instantly dismissible. Max 2 nudges at a time to avoid overwhelm.
+            </div>
+
+            <div class="annotation-success annotation" style="margin-top:12px;">
+                <strong>🧠 ADHD note:</strong> These act like "body doubling" — a gentle external voice saying "while you're here, how about..." Zero initiation cost because you're already in the kitchen, already cooking, already waiting.
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SCREEN 6: FREEZER STASH VIEW           -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="screen" id="screen6">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>⚡ 📶</span>
+        </div>
+        <div class="app-header" style="background:var(--c-freezer);">
+            <h1>❄️ Freezer Stash</h1>
+            <p>Your future-self safety net</p>
+        </div>
+
+        <div class="screen-content">
+            <div class="section-subtitle">Meals you've frozen from Cook Forward suggestions. Tap to use one on a busy day.</div>
+
+            <!-- Freezer items -->
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <div class="meal-card" style="border-color:var(--c-freezer-border);">
+                    <div class="meal-card-filled">
+                        <div class="meal-thumb" style="background:var(--c-freezer-light);">🍗</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Shredded Chicken</div>
+                            <div class="meal-meta">
+                                <span>Frozen 10 Feb</span>
+                                <span>·</span>
+                                <span>1 portion</span>
+                            </div>
+                            <div style="margin-top:4px;">
+                                <span class="freezer-badge">❄️ Good for 3 months</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meal-card" style="border-color:var(--c-freezer-border);">
+                    <div class="meal-card-filled">
+                        <div class="meal-thumb" style="background:var(--c-freezer-light);">🍲</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Beef Chilli (from last week)</div>
+                            <div class="meal-meta">
+                                <span>Frozen 3 Feb</span>
+                                <span>·</span>
+                                <span>2 portions</span>
+                            </div>
+                            <div style="margin-top:4px;">
+                                <span class="freezer-badge">❄️ Good for 3 months</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meal-card" style="border-color:var(--c-warning-light); border-color:#fde68a;">
+                    <div class="meal-card-filled">
+                        <div class="meal-thumb" style="background:var(--c-warning-light);">🥘</div>
+                        <div class="meal-info">
+                            <div class="meal-name">Butternut Squash Soup</div>
+                            <div class="meal-meta">
+                                <span>Frozen 15 Jan</span>
+                                <span>·</span>
+                                <span>1 portion</span>
+                            </div>
+                            <div style="margin-top:4px;">
+                                <span style="font-size:10px; font-weight:600; padding:2px 8px; border-radius:var(--radius-full); background:var(--c-warning-light); color:var(--c-warning); border:1px solid #fde68a;">⚠️ Use within 2 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section-title">Quick wins</div>
+            <div class="section-subtitle">Recipes that work with what's in your freezer</div>
+
+            <div class="recipe-scroll">
+                <div class="recipe-mini" style="width:140px;">
+                    <div class="recipe-mini-img">🌯</div>
+                    <div class="recipe-mini-body">
+                        <div class="recipe-mini-name">Chicken Quesadilla</div>
+                        <div class="recipe-mini-meta">⏱ 10 min</div>
+                        <div class="recipe-mini-chain">❄️ Uses frozen chicken</div>
+                    </div>
+                </div>
+                <div class="recipe-mini" style="width:140px;">
+                    <div class="recipe-mini-img">🍚</div>
+                    <div class="recipe-mini-body">
+                        <div class="recipe-mini-name">Chilli Rice Bowl</div>
+                        <div class="recipe-mini-meta">⏱ 5 min reheat</div>
+                        <div class="recipe-mini-chain">❄️ Uses frozen chilli</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="annotation" style="margin-top:16px;">
+                <strong>💡 UX note:</strong> The freezer stash is a simple inventory. Items are added when the user accepts a "freeze" nudge during cooking. The "use within" warning uses amber to create gentle urgency. "Quick wins" suggests recipes using frozen items — perfect for empty/unplanned days.
+            </div>
+
+            <div class="annotation-success annotation" style="margin-top:12px;">
+                <strong>🧠 ADHD note:</strong> On a bad day when executive function is low, opening the freezer stash and seeing "Chilli Rice Bowl · 5 min reheat" could be the difference between eating a proper meal and not eating at all. This is future-you insurance.
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="bottom-nav-item"><span class="bottom-nav-icon">📅</span>Plan</div>
+            <div class="bottom-nav-item"><span class="bottom-nav-icon">📖</span>Recipes</div>
+            <div class="bottom-nav-item"><span class="bottom-nav-icon">🛒</span>Shop</div>
+            <div class="bottom-nav-item active"><span class="bottom-nav-icon">❄️</span>Freezer</div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SCREEN 7: WEEK COMPLETE + SAVINGS       -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="screen" id="screen7">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>⚡ 📶</span>
+        </div>
+        <div class="app-header" style="background: linear-gradient(135deg, var(--c-primary), #7c3aed);">
+            <div class="header-row">
+                <h1>My Week</h1>
+                <span class="meal-counter">5 of 5 meals ✓</span>
+            </div>
+            <p>Mon 10 – Sun 16 Feb · All planned!</p>
+        </div>
+
+        <div class="screen-content">
+            <div class="week-summary">
+                <div class="week-summary-stat">
+                    <div class="week-summary-num">5</div>
+                    <div class="week-summary-label">Meals</div>
+                </div>
+                <div class="week-summary-stat">
+                    <div class="week-summary-num">3</div>
+                    <div class="week-summary-label">Linked 🔗</div>
+                </div>
+                <div class="week-summary-stat">
+                    <div class="week-summary-num">35m</div>
+                    <div class="week-summary-label">Saved</div>
+                </div>
+                <div class="week-summary-stat">
+                    <div class="week-summary-num">1</div>
+                    <div class="week-summary-label">Frozen ❄️</div>
+                </div>
+            </div>
+
+            <!-- Filled week -->
+            <div style="display:flex; flex-direction:column; gap:2px;">
+                <div class="day-row">
+                    <div class="day-label"><div class="day-name">Sun</div></div>
+                    <div class="day-content">
+                        <div class="meal-card" style="border-left:3px solid var(--c-primary);">
+                            <div class="meal-card-filled">
+                                <div class="meal-thumb">🍗</div>
+                                <div class="meal-info">
+                                    <div class="meal-name">Roast Chicken</div>
+                                    <div class="meal-meta"><span>60 min</span><span class="chain-badge">🔗 ANCHOR</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chain-connector"></div>
+                <div class="day-row">
+                    <div class="day-label"><div class="day-name">Mon</div></div>
+                    <div class="day-content">
+                        <div class="meal-card">
+                            <div class="meal-card-filled">
+                                <div class="meal-thumb">🍚</div>
+                                <div class="meal-info">
+                                    <div class="meal-name">Chicken Fried Rice</div>
+                                    <div class="meal-meta"><span>15 min</span><span class="chain-badge">🔗</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chain-connector"></div>
+                <div class="day-row">
+                    <div class="day-label"><div class="day-name">Tue</div></div>
+                    <div class="day-content">
+                        <div class="meal-card">
+                            <div class="meal-card-filled">
+                                <div class="meal-thumb">🍲</div>
+                                <div class="meal-info">
+                                    <div class="meal-name">Veggie Stir Fry</div>
+                                    <div class="meal-meta"><span>15 min</span><span class="chain-badge">🔗 rice</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chain-connector"></div>
+                <div class="day-row">
+                    <div class="day-label"><div class="day-name">Wed</div></div>
+                    <div class="day-content">
+                        <div class="meal-card">
+                            <div class="meal-card-filled">
+                                <div class="meal-thumb">🍜</div>
+                                <div class="meal-info">
+                                    <div class="meal-name">Chicken Noodle Soup</div>
+                                    <div class="meal-meta"><span>20 min</span><span class="chain-badge">🔗 stock</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="day-row">
+                    <div class="day-label"><div class="day-name">Thu</div></div>
+                    <div class="day-content">
+                        <div class="meal-skipped"><div class="meal-skipped-text">⏭ Eating out</div></div>
+                    </div>
+                </div>
+                <div class="day-row">
+                    <div class="day-label"><div class="day-name">Fri</div></div>
+                    <div class="day-content">
+                        <div class="meal-card">
+                            <div class="meal-card-filled">
+                                <div class="meal-thumb">🌮</div>
+                                <div class="meal-info">
+                                    <div class="meal-name">Fish Tacos</div>
+                                    <div class="meal-meta"><span>25 min</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="day-row">
+                    <div class="day-label"><div class="day-name">Sat</div></div>
+                    <div class="day-content">
+                        <div class="meal-skipped"><div class="meal-skipped-text">⏭ Leftovers</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="savings-card" style="margin-top:16px;">
+                <div class="savings-title">🔗 Cook Forward Summary</div>
+                <div class="savings-text">
+                    <strong>1 whole chicken → 3 different meals</strong><br>
+                    Extra rice → used twice<br>
+                    Oven used once → potential bonus veg roasted<br>
+                    Chicken portion → frozen for a rainy day ❄️<br><br>
+                    <strong>~35 minutes saved</strong> across the week
+                </div>
+            </div>
+
+            <div style="margin-top:16px; display:flex; gap:10px;">
+                <button class="btn-primary" style="flex:1;">🛒 Generate Shopping List</button>
+            </div>
+
+            <div class="annotation" style="margin-top:16px;">
+                <strong>💡 UX note:</strong> The completed week view shows the full chain visually. The summary stats (5 meals, 3 linked, 35 min saved, 1 frozen) provide satisfying closure. This is the "I was smart about this" dopamine moment.
+            </div>
+
+            <div class="annotation-success annotation" style="margin-top:8px;">
+                <strong>🔄 Persona toggle:</strong> Use the buttons above the phone to switch between Claire (solo, ADHD lens, cooking for 1) and Luciana (family of 4, allergy constraints, bolognese → lasagne chain). The same system adapts — portions change, chain recipes differ, "who's eating" labels appear.
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="bottom-nav-item active"><span class="bottom-nav-icon">📅</span>Plan</div>
+            <div class="bottom-nav-item"><span class="bottom-nav-icon">📖</span>Recipes</div>
+            <div class="bottom-nav-item"><span class="bottom-nav-icon">🛒</span>Shop</div>
+            <div class="bottom-nav-item"><span class="bottom-nav-icon">⚙️</span>Settings</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="toast" id="toast">✓ Added to plan</div>
+
+<script>
+// Screen navigation
+function showScreen(num) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.screen-nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById('screen' + num).classList.add('active');
+    document.querySelector('.screen-nav button[data-screen="' + num + '"]').classList.add('active');
+    document.querySelector('.phone-frame').scrollTop = 0;
+}
+
+document.querySelectorAll('.screen-nav button').forEach(btn => {
+    btn.addEventListener('click', () => showScreen(btn.dataset.screen));
+});
+
+// Persona toggle
+function setPersona(persona) {
+    document.querySelectorAll('.persona-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+
+    const claireWeek = document.getElementById('claireWeek');
+    const lucianaWeek = document.getElementById('lucianaWeek');
+    const personaTag = document.getElementById('personaTag');
+    const mealCounter = document.getElementById('mealCounter');
+    const pickerContext = document.getElementById('pickerContext');
+    const cfPanelSubtitle = document.getElementById('cfPanelSubtitle');
+
+    if (persona === 'claire') {
+        claireWeek.style.display = 'block';
+        lucianaWeek.style.display = 'none';
+        personaTag.innerHTML = '🧑‍🍳 Claire · Cooking for 1';
+        mealCounter.textContent = '3 of 5 meals';
+        pickerContext.textContent = 'Cooking for 1';
+        cfPanelSubtitle.textContent = "These work with what you're already cooking this week";
+    } else {
+        claireWeek.style.display = 'none';
+        lucianaWeek.style.display = 'block';
+        personaTag.innerHTML = '👨‍👩‍👧‍👦 Luciana · Family of 4 · Allergies active';
+        mealCounter.textContent = '3 of 5 meals';
+        pickerContext.textContent = 'Cooking for 4 · 👨‍👩‍👧‍👦 Everyone · Allergies: dairy-free (Fynn)';
+        cfPanelSubtitle.textContent = "Safe for everyone eating Friday · Works with this week's plan";
+    }
+}
+
+// Recipe selection
+function selectRecipe(el) {
+    document.querySelectorAll('.recipe-mini').forEach(r => r.classList.remove('selected'));
+    el.classList.add('selected');
+    showToast('✓ Tap "Add to Plan" to confirm');
+    setTimeout(() => showScreen(3), 800);
+}
+
+// Check item toggle
+function toggleCheck(el) {
+    el.classList.toggle('checked');
+}
+
+// Nudge done
+function nudgeDone(btn) {
+    const nudge = btn.closest('.cf-nudge');
+    nudge.classList.add('done');
+    btn.textContent = 'Done ✓';
+    btn.disabled = true;
+    showToast('✓ Nice one — future you says thanks');
+}
+
+// Toast
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// Chip toggle
+document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => chip.classList.toggle('active'));
+});
+</script>
+
+</body>
+</html>

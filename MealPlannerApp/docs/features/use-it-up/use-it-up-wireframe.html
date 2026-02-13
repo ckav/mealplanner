@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Use It Up — UX Wireframe</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #4338ca;
+    --primary-light: #eef2ff;
+    --primary-mid: #a5b4fc;
+    --success: #16a34a;
+    --success-light: #f0fdf4;
+    --success-border: #bbf7d0;
+    --warning: #d97706;
+    --warning-light: #fffbeb;
+    --warning-border: #fde68a;
+    --danger: #dc2626;
+    --danger-light: #fef2f2;
+    --grey-50: #f9fafb;
+    --grey-100: #f3f4f6;
+    --grey-200: #e5e7eb;
+    --grey-300: #d1d5db;
+    --grey-400: #9ca3af;
+    --grey-500: #6b7280;
+    --grey-600: #4b5563;
+    --grey-700: #374151;
+    --grey-800: #1f2937;
+    --grey-900: #111827;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-lg: 16px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f0f0f5;
+    color: var(--grey-800);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 20px 40px;
+  }
+
+  /* ── Screen Navigation ── */
+  .screen-nav {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 24px;
+    max-width: 800px;
+  }
+
+  .screen-nav button {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border: 1.5px solid var(--grey-200);
+    border-radius: 20px;
+    background: white;
+    color: var(--grey-500);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .screen-nav button:hover {
+    border-color: var(--primary-mid);
+    color: var(--primary);
+  }
+
+  .screen-nav button.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+
+  /* ── Phone Frame ── */
+  .phone {
+    width: 375px;
+    min-height: 750px;
+    background: white;
+    border-radius: 40px;
+    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0,0,0,0.05);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .phone-notch {
+    width: 150px;
+    height: 28px;
+    background: black;
+    border-radius: 0 0 20px 20px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+  }
+
+  .phone-header {
+    background: var(--primary);
+    color: white;
+    padding: 12px 20px 16px;
+    margin-top: -8px;
+  }
+
+  .phone-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .phone-header h2 {
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .phone-header .back-btn {
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .phone-header .back-btn:hover { color: white; }
+
+  .phone-body {
+    padding: 20px;
+    min-height: 600px;
+    overflow-y: auto;
+  }
+
+  /* ── Screen Container ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── Flow indicator ── */
+  .flow-indicator {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .flow-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--grey-200);
+  }
+
+  .flow-dot.active { background: var(--primary); }
+  .flow-dot.done { background: var(--success); }
+
+  /* ── Common Elements ── */
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--grey-800);
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--grey-500);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--grey-400);
+    margin: 20px 0 10px;
+  }
+
+  /* ── Buttons ── */
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+  .btn-primary:hover { background: #3730a3; }
+
+  .btn-secondary {
+    background: var(--grey-100);
+    color: var(--grey-700);
+  }
+  .btn-secondary:hover { background: var(--grey-200); }
+
+  .btn-ghost {
+    background: none;
+    color: var(--grey-500);
+    font-weight: 500;
+    padding: 8px;
+  }
+  .btn-ghost:hover { color: var(--grey-700); }
+
+  .btn-outline {
+    background: white;
+    color: var(--primary);
+    border: 1.5px solid var(--primary-mid);
+  }
+  .btn-outline:hover { background: var(--primary-light); }
+
+  .btn-sm {
+    font-size: 12px;
+    padding: 8px 14px;
+    width: auto;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .btn-row .btn { flex: 1; }
+
+  /* ── Cards ── */
+  .card {
+    background: white;
+    border: 1px solid var(--grey-200);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+  }
+
+  .card:hover { border-color: var(--grey-300); }
+
+  .card-highlight {
+    border-color: var(--primary-mid);
+    background: var(--primary-light);
+  }
+
+  /* ── Banner (Screen 1) ── */
+  .use-up-banner {
+    background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    border: 1px solid var(--primary-mid);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    text-align: center;
+  }
+
+  .use-up-banner .banner-emoji {
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+
+  .use-up-banner h3 {
+    font-size: 15px;
+    color: var(--grey-800);
+    margin-bottom: 4px;
+  }
+
+  .use-up-banner .subtitle {
+    font-size: 12.5px;
+    margin-bottom: 16px;
+  }
+
+  .input-methods {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .input-method-btn {
+    flex: 1;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 10px 6px;
+    border: 1.5px solid var(--primary-mid);
+    border-radius: var(--radius-sm);
+    background: white;
+    color: var(--primary);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .input-method-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+
+  .input-method-btn .method-icon { font-size: 18px; }
+
+  .skip-link {
+    font-size: 12px;
+    color: var(--grey-400);
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+  }
+  .skip-link:hover { color: var(--grey-600); }
+
+  /* ── Planner Grid (Screen 1 + 7) ── */
+  .planner-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 0 2px;
+  }
+
+  .planner-header .week-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--grey-500);
+  }
+
+  .planner-header .meal-counter {
+    font-size: 12px;
+    color: var(--grey-400);
+  }
+
+  .planner-header .meal-counter strong {
+    color: var(--primary);
+  }
+
+  .planner-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    align-items: stretch;
+  }
+
+  .day-label {
+    width: 52px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--grey-500);
+    padding-top: 10px;
+    flex-shrink: 0;
+  }
+
+  .meal-slot {
+    flex: 1;
+    border: 1.5px dashed var(--grey-200);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-size: 11px;
+    color: var(--grey-400);
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .meal-slot:hover {
+    border-color: var(--primary-mid);
+    background: var(--primary-light);
+  }
+
+  .meal-slot-filled {
+    border: 1.5px solid var(--grey-200);
+    border-style: solid;
+    background: white;
+    color: var(--grey-700);
+    font-weight: 500;
+    justify-content: flex-start;
+    text-align: left;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .meal-slot-filled .slot-time {
+    font-size: 10px;
+    color: var(--grey-400);
+    font-weight: 400;
+  }
+
+  .meal-slot-nudge {
+    border-color: var(--warning-border);
+    background: var(--warning-light);
+    color: var(--warning);
+    font-size: 10.5px;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meal-slot-nudge .nudge-text {
+    font-size: 10px;
+    color: var(--warning);
+    opacity: 0.8;
+  }
+
+  /* ── Chips ── */
+  .chip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .chip {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12.5px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border: 1.5px solid var(--grey-200);
+    border-radius: 20px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+  }
+
+  .chip:hover { border-color: var(--grey-300); }
+
+  .chip.selected {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  .chip .chip-emoji { font-size: 14px; }
+  .chip .chip-remove {
+    font-size: 12px;
+    opacity: 0.6;
+    margin-left: 2px;
+  }
+
+  /* ── Search bar ── */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--grey-200);
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+    background: var(--grey-50);
+  }
+
+  .search-bar input {
+    flex: 1;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--grey-700);
+    outline: none;
+  }
+
+  .search-bar input::placeholder { color: var(--grey-400); }
+  .search-bar .search-icon { color: var(--grey-400); font-size: 14px; }
+
+  /* ── Added Items Tray ── */
+  .added-tray {
+    background: var(--grey-50);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    margin-top: 16px;
+  }
+
+  .added-tray-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--grey-400);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .added-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .added-chip {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 16px;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .added-chip .remove {
+    opacity: 0.7;
+    cursor: pointer;
+    font-size: 11px;
+  }
+  .added-chip .remove:hover { opacity: 1; }
+
+  /* ── Urgency Items (Screen 3) ── */
+  .urgency-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--grey-200);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+    background: white;
+  }
+
+  .urgency-item .item-emoji { font-size: 20px; flex-shrink: 0; }
+
+  .urgency-item .item-info { flex: 1; }
+
+  .urgency-item .item-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--grey-800);
+  }
+
+  .urgency-select {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border: 1.5px solid var(--grey-200);
+    border-radius: 14px;
+    background: white;
+    cursor: pointer;
+    color: var(--grey-600);
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .urgency-soon {
+    border-color: #fca5a5;
+    background: var(--danger-light);
+    color: var(--danger);
+  }
+
+  .urgency-week {
+    border-color: var(--warning-border);
+    background: var(--warning-light);
+    color: var(--warning);
+  }
+
+  .urgency-home {
+    border-color: var(--success-border);
+    background: var(--success-light);
+    color: var(--success);
+  }
+
+  .urgency-item .remove-btn {
+    font-size: 14px;
+    color: var(--grey-300);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .urgency-item .remove-btn:hover { color: var(--grey-500); }
+
+  /* ── Recipe Match Teaser ── */
+  .match-teaser {
+    background: var(--success-light);
+    border: 1px solid var(--success-border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .match-teaser .teaser-icon { font-size: 20px; }
+
+  .match-teaser .teaser-text {
+    font-size: 12.5px;
+    color: var(--grey-700);
+    line-height: 1.5;
+  }
+
+  .match-teaser .teaser-text strong { color: var(--success); }
+
+  /* ── Recipe Cards (Screen 4) ── */
+  .recipe-result {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid var(--grey-200);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .recipe-result:hover {
+    border-color: var(--primary-mid);
+    background: var(--primary-light);
+  }
+
+  .recipe-thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+  }
+
+  .recipe-thumb-warm { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+  .recipe-thumb-cool { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+  .recipe-thumb-green { background: linear-gradient(135deg, #dcfce7, #bbf7d0); }
+  .recipe-thumb-red { background: linear-gradient(135deg, #fee2e2, #fecaca); }
+
+  .recipe-info { flex: 1; }
+
+  .recipe-info .recipe-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--grey-800);
+    margin-bottom: 3px;
+  }
+
+  .recipe-info .recipe-meta {
+    font-size: 11px;
+    color: var(--grey-400);
+    margin-bottom: 6px;
+  }
+
+  .recipe-info .uses-badges {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .uses-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--success-light);
+    color: var(--success);
+    border: 1px solid var(--success-border);
+  }
+
+  .recipe-add-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border: 1.5px solid var(--primary-mid);
+    border-radius: 14px;
+    background: white;
+    color: var(--primary);
+    cursor: pointer;
+    white-space: nowrap;
+    align-self: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  .recipe-add-btn:hover {
+    background: var(--primary);
+    color: white;
+  }
+
+  /* ── Filter Chips Row ── */
+  .filter-chips {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin-bottom: 14px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filter-chips::-webkit-scrollbar { display: none; }
+
+  .filter-chip {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11.5px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border: 1.5px solid var(--grey-200);
+    border-radius: 16px;
+    background: white;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.15s;
+  }
+
+  .filter-chip.active {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  .filter-chip .chip-x {
+    font-size: 10px;
+    opacity: 0.6;
+  }
+
+  /* ── Use-Up Progress (Screen 7) ── */
+  .useup-progress {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    background: var(--grey-50);
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+  }
+
+  .useup-progress-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--grey-500);
+    width: 100%;
+    margin-bottom: 4px;
+  }
+
+  .useup-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .useup-tag-done {
+    background: var(--success-light);
+    color: var(--success);
+    border: 1px solid var(--success-border);
+  }
+
+  .useup-tag-pending {
+    background: var(--warning-light);
+    color: var(--warning);
+    border: 1px solid var(--warning-border);
+  }
+
+  /* ── Voice Input (Screen 2b) ── */
+  .voice-examples {
+    margin: 12px 0 16px;
+  }
+
+  .voice-example {
+    font-size: 12px;
+    color: var(--grey-500);
+    font-style: italic;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--grey-100);
+    line-height: 1.4;
+  }
+
+  .voice-example:last-child { border-bottom: none; }
+
+  .voice-input-area {
+    border: 1.5px solid var(--grey-200);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin: 16px 0;
+    min-height: 80px;
+    position: relative;
+  }
+
+  .voice-input-area .placeholder-text {
+    font-size: 13px;
+    color: var(--grey-400);
+  }
+
+  .voice-input-area .typed-text {
+    font-size: 13px;
+    color: var(--grey-800);
+    line-height: 1.6;
+  }
+
+  .mic-btn {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .mic-btn:hover { background: #3730a3; }
+
+  /* ── Shopping List (Screen 6) ── */
+  .shop-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--grey-100);
+    font-size: 13px;
+  }
+
+  .shop-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--grey-300);
+    border-radius: 4px;
+    flex-shrink: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .shop-checkbox.checked {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+    font-size: 11px;
+  }
+
+  .shop-item-name { flex: 1; color: var(--grey-700); }
+  .shop-item-qty { color: var(--grey-400); font-size: 12px; }
+
+  .shop-excluded {
+    color: var(--grey-300);
+    text-decoration: line-through;
+  }
+
+  .shop-section-header {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--grey-400);
+    padding: 14px 0 6px;
+    border-bottom: 1px solid var(--grey-200);
+  }
+
+  /* ── Toast notification ── */
+  .toast {
+    position: fixed;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--grey-800);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-lg);
+    transition: bottom 0.3s ease;
+    z-index: 200;
+    white-space: nowrap;
+  }
+
+  .toast.show { bottom: 40px; }
+
+  .toast-undo {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary-mid);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 4px;
+  }
+
+  .toast-undo:hover { color: white; }
+
+  /* ── Added state for recipe cards ── */
+  .recipe-result.added {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .recipe-add-btn.added {
+    background: var(--success);
+    color: white;
+    border-color: var(--success);
+  }
+
+  /* ── Details on demand toggle ── */
+  .details-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--grey-400);
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+    width: 100%;
+    transition: color 0.2s;
+  }
+
+  .details-toggle:hover { color: var(--grey-600); }
+
+  .details-count {
+    background: var(--grey-200);
+    color: var(--grey-500);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 8px;
+  }
+
+  /* ── Savings banner ── */
+  .savings-banner {
+    background: var(--success-light);
+    border: 1px solid var(--success-border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .savings-banner .savings-icon { font-size: 20px; }
+
+  .savings-banner .savings-text {
+    font-size: 12px;
+    color: var(--grey-600);
+    line-height: 1.5;
+  }
+
+  .savings-banner .savings-amount {
+    font-weight: 700;
+    color: var(--success);
+  }
+
+  /* ── Day picker dropdown ── */
+  .day-picker {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: white;
+    border: 1px solid var(--grey-200);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+    padding: 6px;
+    z-index: 100;
+    min-width: 140px;
+  }
+
+  .day-picker-option {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 8px 12px;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 6px;
+    color: var(--grey-700);
+    transition: background 0.1s;
+  }
+
+  .day-picker-option:hover { background: var(--primary-light); }
+
+  .day-picker-option.suggested {
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  /* ── Info note ── */
+  .info-note {
+    font-size: 11.5px;
+    color: var(--grey-400);
+    padding: 8px 12px;
+    background: var(--grey-50);
+    border-radius: var(--radius-sm);
+    margin-top: 10px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  /* ── Transitions ── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .screen.active { animation: fadeIn 0.25s ease; }
+</style>
+</head>
+<body>
+
+<!-- Screen Navigation -->
+<div class="screen-nav">
+  <button class="active" onclick="showScreen('planner')">① Planner Prompt</button>
+  <button onclick="showScreen('manual')">② Manual Add</button>
+  <button onclick="showScreen('voice')">③ Voice Input</button>
+  <button onclick="showScreen('confirm')">④ Confirm Items</button>
+  <button onclick="showScreen('recipes')">⑤ Recipe Matches</button>
+  <button onclick="showScreen('shopping')">⑥ Shopping List</button>
+  <button onclick="showScreen('planned')">⑦ Planner Updated</button>
+</div>
+
+<!-- Phone Frame -->
+<div class="phone">
+  <div class="phone-notch"></div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SCREEN 1: Planner with Use-Up Prompt -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="screen active" id="screen-planner">
+    <div class="phone-header">
+      <div class="phone-header-row">
+        <h2>🍽️ Meal Planner</h2>
+        <span style="font-size: 12px; opacity: 0.8;">0 of 14 meals</span>
+      </div>
+    </div>
+    <div class="phone-body">
+
+      <!-- Use It Up Banner -->
+      <div class="use-up-banner" style="margin-bottom: 20px;">
+        <div class="banner-emoji">🧊</div>
+        <h3>Got anything to use up this week?</h3>
+        <p class="subtitle">We'll suggest recipes that help you waste less and save money.</p>
+        <div class="input-methods">
+          <button class="input-method-btn" onclick="showScreen('manual')">
+            <span class="method-icon">📸</span>
+            Snap fridge
+          </button>
+          <button class="input-method-btn" onclick="showScreen('voice')">
+            <span class="method-icon">💬</span>
+            Tell me
+          </button>
+          <button class="input-method-btn" onclick="showScreen('manual')">
+            <span class="method-icon">✏️</span>
+            Add items
+          </button>
+        </div>
+        <button class="skip-link">Skip for now</button>
+      </div>
+
+      <!-- Planner Grid Preview -->
+      <div class="planner-header">
+        <span class="week-label">← 10 – 16 Feb →</span>
+        <span class="meal-counter"><strong>0</strong> of 14 meals</span>
+      </div>
+
+      <div class="planner-row">
+        <div class="day-label">Mon</div>
+        <div class="meal-slot">+ Add meal</div>
+      </div>
+      <div class="planner-row">
+        <div class="day-label">Tue</div>
+        <div class="meal-slot">+ Add meal</div>
+      </div>
+      <div class="planner-row">
+        <div class="day-label">Wed</div>
+        <div class="meal-slot">+ Add meal</div>
+      </div>
+      <div class="planner-row">
+        <div class="day-label">Thu</div>
+        <div class="meal-slot">+ Add meal</div>
+      </div>
+
+      <div class="info-note">
+        Tap any slot to browse recipes, or tell us what's in your fridge first
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SCREEN 2: Manual Add -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-manual">
+    <div class="phone-header">
+      <div class="phone-header-row">
+        <button class="back-btn" onclick="showScreen('planner')">← Back</button>
+        <h2>What have you got?</h2>
+        <span style="width: 40px;"></span>
+      </div>
+    </div>
+    <div class="phone-body">
+
+      <div class="flow-indicator">
+        <div class="flow-dot active"></div>
+        <div class="flow-dot"></div>
+        <div class="flow-dot"></div>
+      </div>
+
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Search ingredients...">
+      </div>
+
+      <div class="section-label">From your last shop</div>
+      <div class="chip-grid">
+        <div class="chip selected" onclick="this.classList.toggle('selected')">
+          <span class="chip-emoji">🥩</span> Chicken thighs
+        </div>
+        <div class="chip selected" onclick="this.classList.toggle('selected')">
+          <span class="chip-emoji">🍄</span> Mushrooms
+        </div>
+        <div class="chip" onclick="this.classList.toggle('selected')">
+          <span class="chip-emoji">🥦</span> Broccoli
+        </div>
+        <div class="chip" onclick="this.classList.toggle('selected')">
+          <span class="chip-emoji">🫑</span> Peppers
+        </div>
+        <div class="chip" onclick="this.classList.toggle('selected')">
+          <span class="chip-emoji">🥕</span> Carrots
+        </div>
+        <div class="chip" onclick="this.classList.toggle('selected')">
+          <span class="chip-emoji">🧀</span> Cheddar
+        </div>
+      </div>
+
+      <div class="section-label">Common perishables</div>
+      <div class="chip-grid">
+        <div class="chip" onclick="this.classList.toggle('selected')">
+          <span class="chip-emoji">🥑</span> Avocado
+        </div>
+        <div class="chip selected" onclick="this.classList.toggle('selected')">
+          <span class="chip-emoji">🫙</span> Passata (½ jar)
+        </div>
+        <div class="chip" onclick="this.classList.toggle('selected')">
+          <span class="chip-emoji">🍋</span> Lemon
+        </div>
+        <div class="chip selected" onclick="this.classList.toggle('selected')">
+          <span class="chip-emoji">🥥</span> Coconut milk
+        </div>
+        <div class="chip" onclick="this.classList.toggle('selected')">
+          <span class="chip-emoji">🥛</span> Milk
+        </div>
+        <div class="chip" onclick="this.classList.toggle('selected')">
+          <span class="chip-emoji">🌿</span> Fresh herbs
+        </div>
+        <div class="chip" onclick="this.classList.toggle('selected')">
+          <span class="chip-emoji">🥓</span> Bacon
+        </div>
+        <div class="chip" onclick="this.classList.toggle('selected')">
+          <span class="chip-emoji">🐟</span> Fish fillets
+        </div>
+      </div>
+
+      <!-- Added tray -->
+      <div class="added-tray">
+        <div class="added-tray-label">Added (4 items)</div>
+        <div class="added-chips">
+          <div class="added-chip">🥩 Chicken <span class="remove">✕</span></div>
+          <div class="added-chip">🍄 Mushrooms <span class="remove">✕</span></div>
+          <div class="added-chip">🫙 Passata <span class="remove">✕</span></div>
+          <div class="added-chip">🥥 Coconut milk <span class="remove">✕</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <button class="btn btn-primary" onclick="showScreen('confirm')">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SCREEN 3: Voice / Chat Input -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-voice">
+    <div class="phone-header">
+      <div class="phone-header-row">
+        <button class="back-btn" onclick="showScreen('planner')">← Back</button>
+        <h2>What's in your fridge?</h2>
+        <span style="width: 40px;"></span>
+      </div>
+    </div>
+    <div class="phone-body">
+
+      <div class="flow-indicator">
+        <div class="flow-dot active"></div>
+        <div class="flow-dot"></div>
+        <div class="flow-dot"></div>
+      </div>
+
+      <p class="subtitle">Just tell me what you've got — I'll pull out the ingredients.</p>
+
+      <div class="voice-examples">
+        <div class="voice-example">"I've got chicken thighs, half a pepper, and mushrooms"</div>
+        <div class="voice-example">"There's mince in the freezer and some sad courgettes"</div>
+        <div class="voice-example">"Leftover rice and a tin of coconut milk"</div>
+      </div>
+
+      <div class="voice-input-area" id="voice-area">
+        <div class="typed-text" id="voice-text" style="display:none;">I've got some chicken thighs that need using by Wednesday, half a jar of passata, mushrooms that are looking a bit past it, and a tin of coconut milk</div>
+        <div class="placeholder-text" id="voice-placeholder">Type or tap the mic to talk...</div>
+        <button class="mic-btn" onclick="simulateVoice()">🎤</button>
+      </div>
+
+      <div id="voice-extracted" style="display: none;">
+        <div class="section-label" style="margin-top: 12px;">Found these ingredients:</div>
+        <div class="added-tray" style="margin-top: 8px;">
+          <div class="added-chips">
+            <div class="added-chip">🥩 Chicken thighs <span class="remove">✕</span></div>
+            <div class="added-chip">🫙 Passata <span class="remove">✕</span></div>
+            <div class="added-chip">🍄 Mushrooms <span class="remove">✕</span></div>
+            <div class="added-chip">🥥 Coconut milk <span class="remove">✕</span></div>
+          </div>
+        </div>
+
+        <div class="info-note" style="margin-top: 12px;">
+          ✓ Detected urgency: chicken by Wednesday, mushrooms soon
+        </div>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <button class="btn btn-primary" onclick="showScreen('confirm')" id="voice-continue-btn" style="display:none;">Continue →</button>
+        <button class="btn btn-secondary" onclick="simulateVoice()" id="voice-find-btn">Find ingredients →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SCREEN 4: Confirm & Prioritise -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-confirm">
+    <div class="phone-header">
+      <div class="phone-header-row">
+        <button class="back-btn" onclick="showScreen('manual')">← Back</button>
+        <h2>Your use-up list</h2>
+        <span style="width: 40px;"></span>
+      </div>
+    </div>
+    <div class="phone-body">
+
+      <div class="flow-indicator">
+        <div class="flow-dot done"></div>
+        <div class="flow-dot active"></div>
+        <div class="flow-dot"></div>
+      </div>
+
+      <p class="subtitle">Set urgency so we prioritise the right recipes.</p>
+
+      <div class="section-label">Use soon 🔴</div>
+
+      <div class="urgency-item">
+        <div class="item-emoji">🥩</div>
+        <div class="item-info">
+          <div class="item-name">Chicken thighs</div>
+        </div>
+        <select class="urgency-select urgency-soon">
+          <option selected>🔴 Use soon</option>
+          <option>🟡 This week</option>
+          <option>🟢 Have at home</option>
+        </select>
+        <button class="remove-btn">✕</button>
+      </div>
+
+      <div class="urgency-item">
+        <div class="item-emoji">🍄</div>
+        <div class="item-info">
+          <div class="item-name">Mushrooms</div>
+        </div>
+        <select class="urgency-select urgency-soon">
+          <option selected>🔴 Use soon</option>
+          <option>🟡 This week</option>
+          <option>🟢 Have at home</option>
+        </select>
+        <button class="remove-btn">✕</button>
+      </div>
+
+      <div class="section-label" style="margin-top: 16px;">Have at home 🟢</div>
+
+      <div class="urgency-item">
+        <div class="item-emoji">🫙</div>
+        <div class="item-info">
+          <div class="item-name">Passata (half jar)</div>
+        </div>
+        <select class="urgency-select urgency-home">
+          <option>🔴 Use soon</option>
+          <option>🟡 This week</option>
+          <option selected>🟢 Have at home</option>
+        </select>
+        <button class="remove-btn">✕</button>
+      </div>
+
+      <div class="urgency-item">
+        <div class="item-emoji">🥥</div>
+        <div class="item-info">
+          <div class="item-name">Coconut milk</div>
+        </div>
+        <select class="urgency-select urgency-home">
+          <option>🔴 Use soon</option>
+          <option>🟡 This week</option>
+          <option selected>🟢 Have at home</option>
+        </select>
+        <button class="remove-btn">✕</button>
+      </div>
+
+      <button class="btn btn-ghost" style="margin-top: 8px;">+ Add more items</button>
+
+      <!-- Recipe match teaser -->
+      <div class="match-teaser">
+        <div class="teaser-icon">✨</div>
+        <div class="teaser-text">
+          <strong>12 recipes</strong> use your ingredients<br>
+          3 use chicken <em>and</em> mushrooms together
+        </div>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <button class="btn btn-primary" onclick="showScreen('recipes')">Find me recipes →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SCREEN 5: Recipe Matches -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-recipes">
+    <div class="phone-header">
+      <div class="phone-header-row">
+        <button class="back-btn" onclick="showScreen('confirm')">← Back</button>
+        <h2>Recipes for you</h2>
+        <span style="width: 40px;"></span>
+      </div>
+    </div>
+    <div class="phone-body">
+
+      <div class="flow-indicator">
+        <div class="flow-dot done"></div>
+        <div class="flow-dot done"></div>
+        <div class="flow-dot active"></div>
+      </div>
+
+      <!-- Active filter chips -->
+      <div class="filter-chips">
+        <div class="filter-chip active">🥩 Chicken <span class="chip-x">✕</span></div>
+        <div class="filter-chip active">🍄 Mushrooms <span class="chip-x">✕</span></div>
+        <div class="filter-chip active">🫙 Passata <span class="chip-x">✕</span></div>
+        <div class="filter-chip active">🥥 Coconut <span class="chip-x">✕</span></div>
+      </div>
+
+      <div class="section-label">Best matches · uses 2+ items</div>
+
+      <div class="recipe-result" id="recipe-1">
+        <div class="recipe-thumb recipe-thumb-warm">🍝</div>
+        <div class="recipe-info">
+          <div class="recipe-name">Creamy Chicken &amp; Mushroom Pasta</div>
+          <div class="recipe-meta">25 min · Easy</div>
+          <div class="uses-badges">
+            <span class="uses-badge">🥩 chicken</span>
+            <span class="uses-badge">🍄 mushrooms</span>
+          </div>
+        </div>
+        <button class="recipe-add-btn" onclick="addRecipe(this, 'Monday')">+ Add</button>
+      </div>
+
+      <div class="recipe-result" id="recipe-2">
+        <div class="recipe-thumb recipe-thumb-red">🍗</div>
+        <div class="recipe-info">
+          <div class="recipe-name">Chicken Cacciatore</div>
+          <div class="recipe-meta">40 min · Medium</div>
+          <div class="uses-badges">
+            <span class="uses-badge">🥩 chicken</span>
+            <span class="uses-badge">🫙 passata</span>
+          </div>
+        </div>
+        <button class="recipe-add-btn" onclick="addRecipe(this, 'Tuesday')">+ Add</button>
+      </div>
+
+      <div class="recipe-result" id="recipe-3">
+        <div class="recipe-thumb recipe-thumb-cool">🥘</div>
+        <div class="recipe-info">
+          <div class="recipe-name">Thai Coconut Chicken Curry</div>
+          <div class="recipe-meta">30 min · Easy</div>
+          <div class="uses-badges">
+            <span class="uses-badge">🥩 chicken</span>
+            <span class="uses-badge">🥥 coconut</span>
+          </div>
+        </div>
+        <button class="recipe-add-btn" onclick="addRecipe(this, 'Wednesday')">+ Add</button>
+      </div>
+
+      <div class="section-label">Uses one of your items</div>
+
+      <div class="recipe-result" id="recipe-4">
+        <div class="recipe-thumb recipe-thumb-green">🍄</div>
+        <div class="recipe-info">
+          <div class="recipe-name">Mushroom Risotto</div>
+          <div class="recipe-meta">30 min · Easy</div>
+          <div class="uses-badges">
+            <span class="uses-badge">🍄 mushrooms</span>
+          </div>
+        </div>
+        <button class="recipe-add-btn" onclick="addRecipe(this, 'Thursday')">+ Add</button>
+      </div>
+
+      <div class="recipe-result" id="recipe-5">
+        <div class="recipe-thumb recipe-thumb-warm">🌮</div>
+        <div class="recipe-info">
+          <div class="recipe-name">Chicken Fajitas</div>
+          <div class="recipe-meta">20 min · Easy</div>
+          <div class="uses-badges">
+            <span class="uses-badge">🥩 chicken</span>
+          </div>
+        </div>
+        <button class="recipe-add-btn" onclick="addRecipe(this, 'Friday')">+ Add</button>
+      </div>
+
+      <button class="details-toggle">
+        Show all recipes without ingredient filter
+      </button>
+
+      <!-- Toast notification -->
+      <div class="toast" id="add-toast">
+        <span class="toast-text"></span>
+        <button class="toast-undo">Undo</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SCREEN 6: Shopping List -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-shopping">
+    <div class="phone-header">
+      <div class="phone-header-row">
+        <button class="back-btn" onclick="showScreen('planned')">← Back</button>
+        <h2>🛒 Shopping List</h2>
+        <span style="width: 40px;"></span>
+      </div>
+    </div>
+    <div class="phone-body">
+
+      <!-- Savings banner -->
+      <div class="savings-banner">
+        <div class="savings-icon">💰</div>
+        <div class="savings-text">
+          <strong>4 items</strong> from your fridge, <strong>7 items</strong> from your pantry<br>
+          Estimated saving: <span class="savings-amount">~£9.20</span>
+        </div>
+      </div>
+
+      <div class="shop-section-header">🥩 Meat &amp; fish</div>
+      <!-- Chicken NOT here — it's from the fridge -->
+
+      <div class="shop-item">
+        <div class="shop-checkbox"></div>
+        <span class="shop-item-name">Salmon fillet</span>
+        <span class="shop-item-qty">2 × 120g</span>
+      </div>
+
+      <div class="shop-section-header">🥬 Fruit &amp; veg</div>
+
+      <div class="shop-item">
+        <div class="shop-checkbox"></div>
+        <span class="shop-item-name">Spring onions</span>
+        <span class="shop-item-qty">1 bunch</span>
+      </div>
+      <div class="shop-item">
+        <div class="shop-checkbox"></div>
+        <span class="shop-item-name">Pak choi</span>
+        <span class="shop-item-qty">2</span>
+      </div>
+      <div class="shop-item">
+        <div class="shop-checkbox"></div>
+        <span class="shop-item-name">Red chilli</span>
+        <span class="shop-item-qty">1</span>
+      </div>
+      <div class="shop-item">
+        <div class="shop-checkbox"></div>
+        <span class="shop-item-name">Fresh coriander</span>
+        <span class="shop-item-qty">1 bunch</span>
+      </div>
+
+      <div class="shop-section-header">🧈 Dairy &amp; chilled</div>
+
+      <div class="shop-item">
+        <div class="shop-checkbox"></div>
+        <span class="shop-item-name">Double cream</span>
+        <span class="shop-item-qty">150ml</span>
+      </div>
+      <div class="shop-item">
+        <div class="shop-checkbox"></div>
+        <span class="shop-item-name">Parmesan</span>
+        <span class="shop-item-qty">50g</span>
+      </div>
+
+      <div class="shop-section-header">🥫 Cupboard</div>
+
+      <div class="shop-item">
+        <div class="shop-checkbox"></div>
+        <span class="shop-item-name">Penne pasta</span>
+        <span class="shop-item-qty">200g</span>
+      </div>
+      <div class="shop-item">
+        <div class="shop-checkbox"></div>
+        <span class="shop-item-name">Thai curry paste</span>
+        <span class="shop-item-qty">2 tbsp</span>
+      </div>
+
+      <button class="details-toggle">
+        Already have · from fridge &amp; pantry <span class="details-count">11</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SCREEN 7: Planner with Use-Up Context -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-planned">
+    <div class="phone-header">
+      <div class="phone-header-row">
+        <h2>🍽️ Meal Planner</h2>
+        <span style="font-size: 12px; opacity: 0.8;">3 of 14 meals</span>
+      </div>
+    </div>
+    <div class="phone-body">
+
+      <!-- Use-Up progress -->
+      <div class="useup-progress">
+        <div class="useup-progress-label">🧊 Use-up: 3 of 4 items planned</div>
+        <div class="useup-tag useup-tag-done">🥩 Chicken ✓</div>
+        <div class="useup-tag useup-tag-done">🍄 Mushrooms ✓</div>
+        <div class="useup-tag useup-tag-done">🫙 Passata ✓</div>
+        <div class="useup-tag useup-tag-pending">🥥 Coconut milk</div>
+      </div>
+
+      <!-- Planner Grid -->
+      <div class="planner-header">
+        <span class="week-label">← 10 – 16 Feb →</span>
+        <span class="meal-counter"><strong>3</strong> of 14 meals</span>
+      </div>
+
+      <div class="planner-row">
+        <div class="day-label">Mon</div>
+        <div class="meal-slot meal-slot-filled">
+          <span>🍝 Chicken &amp; Mushroom Pasta</span>
+          <span class="slot-time">25 min</span>
+        </div>
+      </div>
+
+      <div class="planner-row">
+        <div class="day-label">Tue</div>
+        <div class="meal-slot meal-slot-filled">
+          <span>🍗 Chicken Cacciatore</span>
+          <span class="slot-time">40 min</span>
+        </div>
+      </div>
+
+      <div class="planner-row">
+        <div class="day-label">Wed</div>
+        <div class="meal-slot meal-slot-filled">
+          <span>🥘 Thai Coconut Curry</span>
+          <span class="slot-time">30 min</span>
+        </div>
+      </div>
+
+      <div class="planner-row">
+        <div class="day-label">Thu</div>
+        <div class="meal-slot meal-slot-nudge">
+          <span>+ Add meal</span>
+          <span class="nudge-text">💡 Coconut milk still to use</span>
+        </div>
+      </div>
+
+      <div class="planner-row">
+        <div class="day-label">Fri</div>
+        <div class="meal-slot">+ Add meal</div>
+      </div>
+
+      <div class="planner-row">
+        <div class="day-label">Sat</div>
+        <div class="meal-slot">+ Add meal</div>
+      </div>
+
+      <div class="planner-row">
+        <div class="day-label">Sun</div>
+        <div class="meal-slot">+ Add meal</div>
+      </div>
+
+      <div class="btn-row" style="margin-top: 20px;">
+        <button class="btn btn-outline btn-sm" onclick="showScreen('shopping')">🛒 Shopping list</button>
+        <button class="btn btn-secondary btn-sm" onclick="showScreen('recipes')">📖 Browse recipes</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function showScreen(id) {
+    // Hide all screens
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    // Show target
+    document.getElementById('screen-' + id).classList.add('active');
+    // Update nav
+    const map = { planner: 0, manual: 1, voice: 2, confirm: 3, recipes: 4, shopping: 5, planned: 6 };
+    document.querySelectorAll('.screen-nav button').forEach((btn, i) => {
+      btn.classList.toggle('active', i === map[id]);
+    });
+    // Scroll phone body to top
+    const body = document.querySelector('#screen-' + id + ' .phone-body');
+    if (body) body.scrollTop = 0;
+  }
+
+  function simulateVoice() {
+    const text = document.getElementById('voice-text');
+    const placeholder = document.getElementById('voice-placeholder');
+    const extracted = document.getElementById('voice-extracted');
+    const continueBtn = document.getElementById('voice-continue-btn');
+    const findBtn = document.getElementById('voice-find-btn');
+
+    if (text.style.display === 'none') {
+      // Show typed text
+      text.style.display = 'block';
+      placeholder.style.display = 'none';
+      findBtn.textContent = 'Find ingredients →';
+    } else if (extracted.style.display === 'none') {
+      // Show extracted ingredients
+      extracted.style.display = 'block';
+      findBtn.style.display = 'none';
+      continueBtn.style.display = 'flex';
+    }
+  }
+
+  function addRecipe(btn, day) {
+    // Change button to "Added" — no day assignment for now
+    btn.textContent = '✓ Added';
+    btn.classList.add('added');
+    
+    // Dim the card slightly
+    btn.closest('.recipe-result').style.opacity = '0.55';
+    
+    // Show toast
+    const toast = document.getElementById('add-toast');
+    toast.querySelector('.toast-text').textContent = '✓ Added to your plan';
+    toast.classList.add('show');
+    
+    // Hide toast after 2s
+    setTimeout(() => { toast.classList.remove('show'); }, 2000);
+  }
+
+  // Checkbox toggling on shopping list
+  document.querySelectorAll('.shop-checkbox').forEach(cb => {
+    cb.addEventListener('click', () => {
+      cb.classList.toggle('checked');
+      cb.textContent = cb.classList.contains('checked') ? '✓' : '';
+    });
+  });
+</script>
+
+</body>
+</html>
