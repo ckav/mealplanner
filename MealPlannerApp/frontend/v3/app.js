@@ -20,6 +20,44 @@ const ALLERGENS = {
     'Molluscs': { icon: '🐚', keywords: ['mussel','oyster','scallop','squid'] },
 };
 
+// --- Filter System Constants ---
+const CUISINE_OPTIONS = [
+    { label: 'Asian', value: 'asian' },
+    { label: 'British', value: 'british' },
+    { label: 'Indian', value: 'indian' },
+    { label: 'Italian', value: 'italian' },
+    { label: 'Japanese', value: 'japanese' },
+    { label: 'Korean', value: 'korean' },
+    { label: 'Mediterranean', value: 'mediterranean' },
+    { label: 'Mexican', value: 'mexican' },
+    { label: 'Middle Eastern', value: 'middle-eastern' },
+    { label: 'Thai', value: 'thai' },
+    { label: 'Fish', value: 'fish' },
+];
+
+const COOK_TIME_OPTIONS = [
+    { label: '15 min', value: 15 },
+    { label: '30 min', value: 30 },
+    { label: '45 min', value: 45 },
+    { label: 'Any', value: null },
+];
+
+const EFFORT_OPTIONS = [
+    { label: 'Quick & Easy', hint: '≤5 ingredients', maxIngredients: 5 },
+    { label: 'Weeknight', hint: '≤8 ingredients', maxIngredients: 8 },
+    { label: 'Weekend Project', hint: 'Any complexity', maxIngredients: null },
+];
+
+const DIETARY_OPTIONS = ['Vegetarian', 'Vegan', 'Dairy-Free', 'Gluten-Free', 'Healthy', 'Fish'];
+
+const SORT_OPTIONS = [
+    { label: 'Recently Added', value: 'recent' },
+    { label: 'Favourites First', value: 'favourites' },
+    { label: 'Quick & Easy', value: 'quick' },
+    { label: 'Never Tried', value: 'never-tried' },
+    { label: 'Surprise Me 🎲', value: 'random' },
+];
+
 const FALLBACK_IMAGE = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(
     `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
         <defs>
@@ -49,17 +87,29 @@ let state = {
     currentView: 'recipes',
     weekOffset: 0,
     mealPlan: {},
-    pantryItems: ['olive oil','salt','pepper','vegetable oil','sesame oil','honey','chilli powder','ground cumin','soy sauce'],
+    pantryItems: [
+        'olive oil','vegetable oil','sesame oil',
+        'salt','pepper','chilli powder','ground cumin','paprika','turmeric','cinnamon','dried mixed herbs','garlic powder','ground coriander',
+        'soy sauce','honey','tomato puree','worcestershire sauce','mustard','balsamic vinegar',
+        'rice','pasta','plain flour','self-raising flour',
+        'sugar',
+        'chicken stock cubes','vegetable stock cubes',
+    ],
     fridgeItems: [],
     fridgeFilterEnabled: false,
     profiles: [],
     activeProfileIds: [],
     favouriteRecipes: ['thai-green-curry','five-bean-chilli','spaghetti-bolognese'],
-    globalAllergenFilters: [],
+    showAllRecipes: false,
+    recipeSearch: '',
+    filterCuisines: [],
+    filterCookTime: null,
+    filterEffort: null,
+    filterDietary: [],
+    filterSort: 'recent',
     customRecipes: [],
-    safetyFilter: 'allergens',
-    hideIngredientList: false,
     defaultPortions: 2,
+    onboardingComplete: false,
     pickerDay: null, pickerSlot: null, pickerSelected: null, pickerPortions: 2, pickerMode: 'slot',
     pickerExclusions: [], pickerSwapNote: '',
     cookRecipeId: null, cookStep: 0,
@@ -77,12 +127,17 @@ function saveState() {
         profiles: state.profiles,
         activeProfileIds: state.activeProfileIds,
         favouriteRecipes: state.favouriteRecipes,
-        globalAllergenFilters: state.globalAllergenFilters,
+        showAllRecipes: state.showAllRecipes,
+        recipeSearch: state.recipeSearch,
+        filterCuisines: state.filterCuisines,
+        filterCookTime: state.filterCookTime,
+        filterEffort: state.filterEffort,
+        filterDietary: state.filterDietary,
+        filterSort: state.filterSort,
         customRecipes: state.customRecipes,
-        safetyFilter: state.safetyFilter,
-        hideIngredientList: state.hideIngredientList,
         defaultPortions: state.defaultPortions,
         currentView: state.currentView,
+        onboardingComplete: state.onboardingComplete,
     };
     localStorage.setItem('mealPlannerV3', JSON.stringify(s));
 }
@@ -97,12 +152,17 @@ function loadState() {
             if (s.profiles) state.profiles = s.profiles;
             if (s.activeProfileIds) state.activeProfileIds = s.activeProfileIds;
             if (s.favouriteRecipes) state.favouriteRecipes = s.favouriteRecipes;
-            if (s.globalAllergenFilters) state.globalAllergenFilters = s.globalAllergenFilters;
+            if (typeof s.showAllRecipes === 'boolean') state.showAllRecipes = s.showAllRecipes;
+            if (typeof s.recipeSearch === 'string') state.recipeSearch = s.recipeSearch;
+            if (Array.isArray(s.filterCuisines)) state.filterCuisines = s.filterCuisines;
+            if (s.filterCookTime !== undefined) state.filterCookTime = s.filterCookTime;
+            if (s.filterEffort !== undefined) state.filterEffort = s.filterEffort;
+            if (Array.isArray(s.filterDietary)) state.filterDietary = s.filterDietary;
+            if (s.filterSort) state.filterSort = s.filterSort;
             if (s.customRecipes) state.customRecipes = s.customRecipes;
-            if (s.safetyFilter) state.safetyFilter = s.safetyFilter;
-            if (typeof s.hideIngredientList === 'boolean') state.hideIngredientList = s.hideIngredientList;
             if (s.defaultPortions) state.defaultPortions = s.defaultPortions;
             if (s.currentView) state.currentView = s.currentView;
+            if (typeof s.onboardingComplete === 'boolean') state.onboardingComplete = s.onboardingComplete;
         }
     } catch(e) { console.warn('Failed to load state:', e); }
 }
@@ -166,6 +226,103 @@ function parseIngredientLine(line) {
     let amount = rawAmount ? parseFloat(rawAmount.replace('¼','0.25').replace('½','0.5').replace('¾','0.75').replace('⅓','0.33').replace('⅔','0.66')) : null;
     if (Number.isNaN(amount)) amount = null;
     return { name, amount, unit, category: 'other' };
+}
+
+
+// =========================================
+// URL RECIPE IMPORT
+// =========================================
+function extractSiteName(url) {
+    try {
+        const domain = new URL(url).hostname.replace(/^www\./, '');
+        const sites = {
+            'bbc.co.uk': 'BBC Food', 'bbcgoodfood.com': 'BBC Good Food',
+            'allrecipes.com': 'AllRecipes', 'jamieoliver.com': 'Jamie Oliver',
+            'deliciousmagazine.co.uk': 'Delicious Magazine', 'foodnetwork.com': 'Food Network',
+            'epicurious.com': 'Epicurious', 'bonappetit.com': 'Bon Appétit',
+            'seriouseats.com': 'Serious Eats', 'tasty.co': 'Tasty',
+            'simplyrecipes.com': 'Simply Recipes', 'recipetineats.com': 'RecipeTin Eats',
+            'mob.co.uk': 'MOB Kitchen', 'theguardian.com': 'The Guardian',
+        };
+        return sites[domain] || domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1);
+    } catch { return 'Website'; }
+}
+
+function parseISO8601Duration(str) {
+    if (!str) return null;
+    const m = str.match(/PT(?:(\d+)H)?(?:(\d+)M)?/);
+    if (!m) return null;
+    return (parseInt(m[1] || 0) * 60) + parseInt(m[2] || 0);
+}
+
+async function fetchRecipeFromUrl(url) {
+    const status = document.getElementById('urlFetchStatus');
+    status.textContent = 'Fetching...';
+    status.style.color = 'var(--c-gray-500)';
+
+    try {
+        const resp = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url));
+        if (!resp.ok) throw new Error('Network error');
+        const data = await resp.json();
+        const html = data.contents;
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+
+        // Try JSON-LD Recipe schema
+        let recipe = null;
+        doc.querySelectorAll('script[type="application/ld+json"]').forEach(script => {
+            try {
+                let json = JSON.parse(script.textContent);
+                // Handle @graph arrays
+                if (json['@graph']) json = json['@graph'];
+                if (Array.isArray(json)) json = json.find(item => item['@type'] === 'Recipe' || (Array.isArray(item['@type']) && item['@type'].includes('Recipe')));
+                if (json && (json['@type'] === 'Recipe' || (Array.isArray(json['@type']) && json['@type'].includes('Recipe')))) recipe = json;
+            } catch {}
+        });
+
+        if (recipe) {
+            // Pre-fill form from JSON-LD
+            document.getElementById('recipeNameInput').value = recipe.name || '';
+            const img = Array.isArray(recipe.image) ? recipe.image[0] : (typeof recipe.image === 'object' ? recipe.image.url : recipe.image || '');
+            document.getElementById('recipeImageInput').value = img;
+            const cookTime = parseISO8601Duration(recipe.cookTime || recipe.totalTime);
+            if (cookTime) document.getElementById('recipeCookTimeInput').value = cookTime;
+            const servings = parseInt(recipe.recipeYield);
+            if (servings) document.getElementById('recipeServingsInput').value = servings;
+
+            // Ingredients
+            if (recipe.recipeIngredient) {
+                document.getElementById('recipeIngredientsInput').value = recipe.recipeIngredient.join('\n');
+            }
+
+            // Steps
+            if (recipe.recipeInstructions) {
+                const steps = recipe.recipeInstructions.map(s =>
+                    typeof s === 'string' ? s : (s.text || s.name || '')
+                ).filter(Boolean);
+                document.getElementById('recipeStepsInput').value = steps.join('\n');
+            }
+
+            // Source
+            document.getElementById('recipeSourceInput').value = extractSiteName(url);
+            // Store URL for later
+            document.getElementById('recipeUrlInput').dataset.resolvedUrl = url;
+
+            status.textContent = 'Recipe imported — review and save below.';
+            status.style.color = 'var(--c-success)';
+        } else {
+            // Fallback: Open Graph
+            const ogTitle = doc.querySelector('meta[property="og:title"]');
+            const ogImage = doc.querySelector('meta[property="og:image"]');
+            if (ogTitle) document.getElementById('recipeNameInput').value = ogTitle.content;
+            if (ogImage) document.getElementById('recipeImageInput').value = ogImage.content;
+            document.getElementById('recipeSourceInput').value = extractSiteName(url);
+            status.textContent = 'Partial import — no structured recipe data found. Fill in the details manually.';
+            status.style.color = 'var(--c-warning)';
+        }
+    } catch (err) {
+        status.textContent = 'Could not fetch recipe. Check the URL and try again.';
+        status.style.color = 'var(--c-danger)';
+    }
 }
 
 
@@ -276,6 +433,19 @@ function renderPlanner() {
     document.getElementById('mealCountNum').textContent = filled;
     document.getElementById('mealCountTotal').textContent = total;
     document.getElementById('mealCounter').classList.toggle('complete', filled === total && total > 0);
+
+    // Show hint when no meals planned
+    const existingHint = grid.querySelector('.planner-hint');
+    if (existingHint) existingHint.remove();
+    if (filled === 0) {
+        const hint = document.createElement('div');
+        hint.className = 'planner-hint';
+        hint.innerHTML = '💡 Tap an empty slot to add a meal, or browse <strong>Recipes</strong> to get started.';
+        grid.appendChild(hint);
+    }
+
+    // Cook Forward tips
+    renderCookForwardTips(grid.parentElement);
 }
 
 
@@ -284,13 +454,9 @@ function renderPlanner() {
 // =========================================
 function renderRecipes() {
     const grid = document.getElementById('recipeGrid');
-    const activeFilters = Array.from(document.querySelectorAll('#filterPills .pill.active')).map(p => p.dataset.filter);
-    const sortBy = document.getElementById('sortSelect').value;
-    const safetyMode = state.safetyFilter || 'all';
-    const hideIngredients = activeFilters.includes('hide-ingredients');
 
-    // Gather blocked allergens from active profiles + global filter
-    const blocked = new Set(state.globalAllergenFilters || []);
+    // Gather blocked allergens from active profiles
+    const blocked = new Set();
     state.activeProfileIds.forEach(pid => {
         const p = state.profiles.find(pr => pr.id === pid);
         if (p) p.allergens.forEach(a => blocked.add(a));
@@ -302,28 +468,43 @@ function renderRecipes() {
         if (p) p.dislikes.forEach(d => dislikes.add(d.toLowerCase()));
     });
 
-    // Filter recipes
+    // Filter recipes using new filter state
     let list = recipes.filter(r => {
-        if (activeFilters.includes('quick') && r.cookTime > 20) return false;
-        if (activeFilters.includes('under5') && r.ingredients.length > 5) return false;
-        if (activeFilters.includes('thai')) {
-            const isThai = r.cuisine === 'thai' || r.tags.some(t => t.toLowerCase().includes('thai')) || r.name.toLowerCase().includes('thai');
-            if (!isThai) return false;
+        // Search — match name, tags, cuisine, ingredients
+        if (state.recipeSearch) {
+            const q = state.recipeSearch.toLowerCase();
+            const searchText = [
+                r.name,
+                r.cuisine,
+                ...r.tags,
+                ...r.ingredients.map(i => i.name),
+            ].join(' ').toLowerCase();
+            if (!searchText.includes(q)) return false;
         }
-        if (activeFilters.includes('vegetarian') && !(r.tags.includes('Vegetarian') || r.tags.includes('Vegan'))) return false;
-        if (activeFilters.includes('asian') && r.cuisine !== 'asian') return false;
-        if (activeFilters.includes('italian') && r.cuisine !== 'italian') return false;
-        if (activeFilters.includes('healthy') && !r.tags.includes('Healthy')) return false;
-        if (activeFilters.includes('fish') && !r.tags.includes('Fish')) return false;
-        if (activeFilters.includes('favourites-only') && !state.favouriteRecipes.includes(r.id)) return false;
+        // Cuisine filter (multi-select)
+        if (state.filterCuisines.length > 0 && !state.filterCuisines.includes(r.cuisine)) return false;
+        // Cook time filter
+        if (state.filterCookTime && r.cookTime > state.filterCookTime) return false;
+        // Effort filter
+        if (state.filterEffort) {
+            const opt = EFFORT_OPTIONS.find(e => e.label === state.filterEffort);
+            if (opt && opt.maxIngredients && r.ingredients.length > opt.maxIngredients) return false;
+        }
+        // Dietary filter (multi-select — recipe must have ALL selected dietary tags)
+        if (state.filterDietary.length > 0) {
+            const match = state.filterDietary.every(d => {
+                if (d === 'Vegetarian') return r.tags.includes('Vegetarian') || r.tags.includes('Vegan');
+                if (d === 'Fish') return r.tags.includes('Fish') || r.cuisine === 'fish';
+                return r.tags.includes(d);
+            });
+            if (!match) return false;
+        }
         return true;
     });
 
-    // Safety filtering
-    if (activeFilters.includes('hide-allergens') || safetyMode === 'allergens' || safetyMode === 'allergens-dislikes') {
+    // Safety filtering — always from active profiles unless "show all" is toggled on
+    if (!state.showAllRecipes) {
         if (blocked.size > 0) list = list.filter(r => !detectAllergens(r).some(a => blocked.has(a)));
-    }
-    if (activeFilters.includes('hide-dislikes') || safetyMode === 'dislikes' || safetyMode === 'allergens-dislikes') {
         if (dislikes.size > 0) {
             list = list.filter(r => {
                 const text = r.ingredients.map(i => `${i.name} ${i.prep || ''}`).join(' ').toLowerCase();
@@ -342,19 +523,47 @@ function renderRecipes() {
     }
 
     // Sort
+    const sortBy = state.filterSort;
     if (sortBy === 'favourites') list.sort((a,b) => (state.favouriteRecipes.includes(b.id)?1:0) - (state.favouriteRecipes.includes(a.id)?1:0));
     if (sortBy === 'quick') list.sort((a,b) => a.cookTime - b.cookTime);
     if (sortBy === 'never-tried') list.sort((a,b) => a.timesCooked - b.timesCooked);
     if (sortBy === 'random') list.sort(() => Math.random() - 0.5);
 
+    // Update result count and chip bar
+    renderFilterChipBar();
+    const resultCount = document.getElementById('filterResultCount');
+    const clearAllBtn = document.getElementById('filterClearAll');
+    if (resultCount) resultCount.textContent = `Showing ${list.length} of ${recipes.length} recipes`;
+    if (clearAllBtn) clearAllBtn.style.display = hasActiveFilters() ? 'inline-flex' : 'none';
+
     if (list.length === 0) {
-        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--c-gray-400);">No recipes match your filters.</div>';
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--c-gray-400);">No recipes match your filters. <button class="btn btn-ghost btn-sm" onclick="clearAllFilters()">Clear all filters</button></div>';
+        renderActiveFiltersInfo(blocked, dislikes);
+        renderUseItUp();
+        saveState();
         return;
     }
 
     grid.innerHTML = list.map(r => {
         const fav = state.favouriteRecipes.includes(r.id);
         const allergens = detectAllergens(r);
+        const defaultP = state.defaultPortions;
+        const recipeServes = r.servings;
+        let portionNote = '';
+        if (defaultP < recipeServes) {
+            const leftover = recipeServes - defaultP;
+            portionNote = `<span class="card-portion-note">🍱 Makes ${recipeServes}, eat ${defaultP} + ${leftover} leftover${leftover > 1 ? 's' : ''}</span>`;
+        } else if (defaultP === recipeServes) {
+            portionNote = `<span class="card-portion-note exact">👌 Perfect for ${defaultP}</span>`;
+        }
+        // Fridge match badges
+        const fridgeMatches = state.fridgeItems.length > 0
+            ? state.fridgeItems.filter(item => {
+                const text = r.ingredients.map(i => `${i.name} ${i.prep||''}`).join(' ').toLowerCase();
+                return text.includes(item.toLowerCase());
+            }) : [];
+        const fridgeBadge = fridgeMatches.length > 0
+            ? `<span class="card-tag" style="background:var(--c-success-light);color:var(--c-success);">🧊 Uses your ${fridgeMatches[0]}</span>` : '';
         return `<div class="recipe-card" data-id="${r.id}">
             <div class="card-img-wrap">
                 <img class="card-img" src="${r.image || FALLBACK_IMAGE}" alt="${r.name}" loading="lazy" ${IMAGE_FALLBACK_ATTR}>
@@ -369,10 +578,12 @@ function renderRecipes() {
                     <span>👤 ${r.servings}</span>
                     <span>📊 ${r.difficulty}</span>
                 </div>
-                ${hideIngredients ? '' : `<div class="card-tags">
+                ${portionNote}
+                <div class="card-tags">
                     ${r.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
                     ${allergens.map(a => `<span class="card-tag" style="background:var(--c-danger-light);color:var(--c-danger);">${ALLERGENS[a]?.icon||''} ${a}</span>`).join('')}
-                </div>`}
+                    ${fridgeBadge}
+                </div>
                 <div class="card-source">📖 ${r.source.name}</div>
                 <div class="card-actions">
                     <button class="btn btn-secondary btn-sm" data-action="view" data-id="${r.id}">View Recipe</button>
@@ -382,8 +593,266 @@ function renderRecipes() {
         </div>`;
     }).join('');
 
-    state.hideIngredientList = hideIngredients;
+    // Add "Add your own recipe" card at end of grid
+    grid.innerHTML += `<div class="recipe-card add-recipe-card" id="addRecipeGridBtn">
+        <div class="add-recipe-card-inner">
+            <div class="add-recipe-icon">+</div>
+            <div class="add-recipe-text">Add your own recipe</div>
+            <div class="add-recipe-hint">Import from a URL or enter manually</div>
+        </div>
+    </div>`;
+
+    renderActiveFiltersInfo(blocked, dislikes);
+    renderUseItUp();
     saveState();
+}
+
+
+// =========================================
+// ACTIVE FILTERS INFO BANNER
+// =========================================
+function renderActiveFiltersInfo(blocked, dislikes) {
+    const el = document.getElementById('activeFiltersInfo');
+    if (!el) return;
+
+    const activeProfiles = state.profiles.filter(p => state.activeProfileIds.includes(p.id));
+    if (activeProfiles.length === 0) {
+        el.innerHTML = '';
+        el.style.display = 'none';
+        return;
+    }
+
+    el.style.display = 'flex';
+    if (state.showAllRecipes) {
+        const names = activeProfiles.map(p => p.name).join(', ');
+        el.innerHTML = `<span>Showing all recipes</span><button class="btn btn-ghost btn-sm" id="reapplyFiltersBtn">Re-apply filters for ${names}</button>`;
+    } else {
+        const profileInfo = activeProfiles.map(p => {
+            const parts = [];
+            if (p.allergens.length > 0) parts.push(p.allergens.map(a => (ALLERGENS[a]?.icon || '') + ' ' + a).join(', '));
+            if (p.dislikes.length > 0) parts.push('Dislikes: ' + p.dislikes.join(', '));
+            return `<strong>${p.name}</strong> (${parts.join(' · ') || 'no restrictions'})`;
+        }).join(', ');
+        el.innerHTML = `<span>Filtering for: ${profileInfo}</span><button class="btn btn-ghost btn-sm" id="showAllRecipesBtn">Show all recipes</button>`;
+    }
+}
+
+
+// =========================================
+// FILTER SYSTEM — CHIP BAR + BOTTOM SHEETS
+// =========================================
+function hasActiveFilters() {
+    return state.recipeSearch || state.filterCuisines.length > 0 || state.filterCookTime ||
+           state.filterEffort || state.filterDietary.length > 0 || state.filterSort !== 'recent';
+}
+
+function clearAllFilters() {
+    state.recipeSearch = '';
+    state.filterCuisines = [];
+    state.filterCookTime = null;
+    state.filterEffort = null;
+    state.filterDietary = [];
+    state.filterSort = 'recent';
+    const searchInput = document.getElementById('recipeSearchInput');
+    if (searchInput) searchInput.value = '';
+    saveState();
+    renderRecipes();
+}
+
+function renderFilterChipBar() {
+    const chipBar = document.getElementById('filterChipBar');
+    if (!chipBar) return;
+    chipBar.innerHTML = '';
+
+    // Active filter chips (removable)
+    if (state.recipeSearch) {
+        chipBar.appendChild(makeFilterChip(`🔍 "${state.recipeSearch}"`, () => {
+            state.recipeSearch = '';
+            const input = document.getElementById('recipeSearchInput');
+            if (input) input.value = '';
+            saveState(); renderRecipes();
+        }, true));
+    }
+    state.filterCuisines.forEach(c => {
+        const opt = CUISINE_OPTIONS.find(o => o.value === c);
+        chipBar.appendChild(makeFilterChip(opt ? opt.label : c, () => {
+            state.filterCuisines = state.filterCuisines.filter(x => x !== c);
+            saveState(); renderRecipes();
+        }, true));
+    });
+    if (state.filterCookTime) {
+        chipBar.appendChild(makeFilterChip(`≤${state.filterCookTime} min`, () => {
+            state.filterCookTime = null;
+            saveState(); renderRecipes();
+        }, true));
+    }
+    if (state.filterEffort) {
+        chipBar.appendChild(makeFilterChip(state.filterEffort, () => {
+            state.filterEffort = null;
+            saveState(); renderRecipes();
+        }, true));
+    }
+    state.filterDietary.forEach(d => {
+        chipBar.appendChild(makeFilterChip(d, () => {
+            state.filterDietary = state.filterDietary.filter(x => x !== d);
+            saveState(); renderRecipes();
+        }, true));
+    });
+
+    // Trigger chips (open bottom sheets)
+    if (state.filterCuisines.length === 0) {
+        chipBar.appendChild(makeFilterChip('Cuisine ▾', () => openFilterSheet('cuisine'), false));
+    }
+    if (!state.filterCookTime) {
+        chipBar.appendChild(makeFilterChip('Cook Time ▾', () => openFilterSheet('cookTime'), false));
+    }
+    if (!state.filterEffort) {
+        chipBar.appendChild(makeFilterChip('Effort ▾', () => openFilterSheet('effort'), false));
+    }
+    if (state.filterDietary.length === 0) {
+        chipBar.appendChild(makeFilterChip('Dietary ▾', () => openFilterSheet('dietary'), false));
+    }
+    // Sort chip — always show, active if not default
+    const sortLabel = state.filterSort === 'recent' ? 'Sort ▾' : `Sort: ${SORT_OPTIONS.find(s => s.value === state.filterSort)?.label || state.filterSort}`;
+    chipBar.appendChild(makeFilterChip(sortLabel, () => openFilterSheet('sort'), state.filterSort !== 'recent'));
+}
+
+function makeFilterChip(label, onClick, active) {
+    const chip = document.createElement('button');
+    chip.className = 'filter-chip' + (active ? ' active' : '');
+    chip.textContent = label;
+    chip.addEventListener('click', onClick);
+    return chip;
+}
+
+function openFilterSheet(type) {
+    const sheet = document.getElementById('filterSheet');
+    const title = document.getElementById('filterSheetTitle');
+    const body = document.getElementById('filterSheetBody');
+    const footer = document.getElementById('filterSheetFooter');
+    if (!sheet) return;
+
+    body.innerHTML = '';
+    footer.innerHTML = '';
+
+    if (type === 'cuisine') {
+        title.textContent = 'Cuisine';
+        const selected = new Set(state.filterCuisines);
+        const wrap = document.createElement('div');
+        wrap.className = 'sheet-chips';
+        CUISINE_OPTIONS.forEach(opt => {
+            const chip = document.createElement('button');
+            chip.className = 'filter-chip' + (selected.has(opt.value) ? ' active' : '');
+            chip.textContent = opt.label;
+            chip.addEventListener('click', () => {
+                if (selected.has(opt.value)) selected.delete(opt.value);
+                else selected.add(opt.value);
+                chip.classList.toggle('active');
+                done.textContent = `Done (${selected.size} selected)`;
+            });
+            wrap.appendChild(chip);
+        });
+        body.appendChild(wrap);
+        const done = document.createElement('button');
+        done.className = 'btn btn-primary sheet-done-btn';
+        done.textContent = `Done (${selected.size} selected)`;
+        done.addEventListener('click', () => {
+            state.filterCuisines = Array.from(selected);
+            closeFilterSheet();
+            saveState(); renderRecipes();
+        });
+        footer.appendChild(done);
+    }
+
+    if (type === 'cookTime') {
+        title.textContent = 'Cook Time';
+        const wrap = document.createElement('div');
+        wrap.className = 'sheet-chips';
+        COOK_TIME_OPTIONS.forEach(opt => {
+            const chip = document.createElement('button');
+            chip.className = 'filter-chip' + (state.filterCookTime === opt.value ? ' active' : '');
+            chip.textContent = opt.label;
+            chip.addEventListener('click', () => {
+                state.filterCookTime = opt.value;
+                closeFilterSheet();
+                saveState(); renderRecipes();
+            });
+            wrap.appendChild(chip);
+        });
+        body.appendChild(wrap);
+    }
+
+    if (type === 'effort') {
+        title.textContent = 'Effort';
+        const wrap = document.createElement('div');
+        wrap.className = 'sheet-effort-list';
+        EFFORT_OPTIONS.forEach(opt => {
+            const card = document.createElement('div');
+            card.className = 'sheet-effort-card' + (state.filterEffort === opt.label ? ' active' : '');
+            card.innerHTML = `<div class="sheet-effort-title">${opt.label}</div><div class="sheet-effort-hint">${opt.hint}</div>`;
+            card.addEventListener('click', () => {
+                state.filterEffort = opt.label;
+                closeFilterSheet();
+                saveState(); renderRecipes();
+            });
+            wrap.appendChild(card);
+        });
+        body.appendChild(wrap);
+    }
+
+    if (type === 'dietary') {
+        title.textContent = 'Dietary';
+        const selected = new Set(state.filterDietary);
+        const wrap = document.createElement('div');
+        wrap.className = 'sheet-chips';
+        DIETARY_OPTIONS.forEach(d => {
+            const chip = document.createElement('button');
+            chip.className = 'filter-chip' + (selected.has(d) ? ' active' : '');
+            chip.textContent = d;
+            chip.addEventListener('click', () => {
+                if (selected.has(d)) selected.delete(d);
+                else selected.add(d);
+                chip.classList.toggle('active');
+                done.textContent = `Done (${selected.size} selected)`;
+            });
+            wrap.appendChild(chip);
+        });
+        body.appendChild(wrap);
+        const done = document.createElement('button');
+        done.className = 'btn btn-primary sheet-done-btn';
+        done.textContent = `Done (${selected.size} selected)`;
+        done.addEventListener('click', () => {
+            state.filterDietary = Array.from(selected);
+            closeFilterSheet();
+            saveState(); renderRecipes();
+        });
+        footer.appendChild(done);
+    }
+
+    if (type === 'sort') {
+        title.textContent = 'Sort by';
+        const wrap = document.createElement('div');
+        wrap.className = 'sheet-sort-list';
+        SORT_OPTIONS.forEach(opt => {
+            const row = document.createElement('div');
+            row.className = 'sheet-sort-row' + (state.filterSort === opt.value ? ' active' : '');
+            row.innerHTML = `<span>${opt.label}</span><span class="sheet-radio"></span>`;
+            row.addEventListener('click', () => {
+                state.filterSort = opt.value;
+                closeFilterSheet();
+                saveState(); renderRecipes();
+            });
+            wrap.appendChild(row);
+        });
+        body.appendChild(wrap);
+    }
+
+    sheet.classList.add('open');
+}
+
+function closeFilterSheet() {
+    const sheet = document.getElementById('filterSheet');
+    if (sheet) sheet.classList.remove('open');
 }
 
 
@@ -454,6 +923,23 @@ function renderShopping() {
                 <span class="item-source">${[...ing.sources].join(', ')}</span>
             </li>`).join('')}
     `).join('');
+
+    updateShoppingProgress();
+    renderShoppingCookForward();
+}
+
+function updateShoppingProgress() {
+    const el = document.getElementById('shoppingProgress');
+    if (!el) return;
+    const total = document.querySelectorAll('#shoppingItems .shopping-item').length;
+    const got = document.querySelectorAll('#shoppingItems .shopping-item.checked').length;
+    if (total === 0) { el.textContent = ''; return; }
+    const remaining = total - got;
+    if (remaining === 0) {
+        el.innerHTML = '<span class="progress-complete">All done! Ready to cook.</span>';
+    } else {
+        el.textContent = `${got} of ${total} items got — ${remaining} remaining`;
+    }
 }
 
 function getShoppingListText() {
@@ -554,9 +1040,53 @@ function renderProfiles() {
                     ${p.dislikes.length > 0 ? ' · Dislikes: ' + p.dislikes.join(', ') : ''}
                 </div>
             </div>
-            <span class="profile-badge">${active ? 'Active' : 'Inactive'}</span>
+            <div class="profile-actions">
+                <button class="btn btn-ghost btn-sm profile-edit-btn" data-id="${p.id}" title="Edit">✏️</button>
+                <button class="btn btn-ghost btn-sm profile-delete-btn" data-id="${p.id}" title="Delete" style="color:var(--c-danger);">🗑</button>
+                <span class="profile-badge">${active ? 'Active' : 'Inactive'}</span>
+            </div>
         </div>`;
     }).join('');
+}
+
+function editProfile(id) {
+    const profile = state.profiles.find(p => p.id === id);
+    if (!profile) return;
+    state.editingProfileId = id;
+
+    // Populate form
+    document.getElementById('profileNameInput').value = profile.name;
+    document.getElementById('profileDislikesInput').value = profile.dislikes.join(', ');
+
+    // Set allergen checkboxes
+    renderAllergenGrid();
+    profile.allergens.forEach(a => {
+        const cb = document.querySelector(`#profileAllergenGrid input[value="${a}"]`);
+        if (cb) cb.checked = true;
+    });
+
+    // Open the details element and update button text
+    const details = document.querySelector('#settings-view details');
+    if (details) {
+        details.open = true;
+        details.querySelector('summary').textContent = `Editing: ${profile.name}`;
+    }
+    const submitBtn = document.querySelector('#addProfileForm button[type="submit"]');
+    if (submitBtn) submitBtn.textContent = 'Update Profile';
+}
+
+function cancelProfileEdit() {
+    state.editingProfileId = null;
+    document.getElementById('profileNameInput').value = '';
+    document.getElementById('profileDislikesInput').value = '';
+    renderAllergenGrid();
+    const details = document.querySelector('#settings-view details');
+    if (details) {
+        details.querySelector('summary').textContent = '+ Add New Profile';
+        details.open = false;
+    }
+    const submitBtn = document.querySelector('#addProfileForm button[type="submit"]');
+    if (submitBtn) submitBtn.textContent = 'Save Profile';
 }
 
 function renderAllergenGrid() {
@@ -567,14 +1097,6 @@ function renderAllergenGrid() {
     ).join('');
 }
 
-function renderAllergenFilterGrid() {
-    const grid = document.getElementById('allergenFilterGrid');
-    if (!grid) return;
-    const selected = new Set(state.globalAllergenFilters || []);
-    grid.innerHTML = Object.entries(ALLERGENS).map(([name, data]) =>
-        `<label class="allergen-checkbox"><input type="checkbox" value="${name}" ${selected.has(name) ? 'checked' : ''}> ${data.icon} ${name}</label>`
-    ).join('');
-}
 
 function renderFridge() {
     const list = document.getElementById('fridgeList');
@@ -588,6 +1110,278 @@ function renderFridge() {
     list.innerHTML = state.fridgeItems.map(item =>
         `<span class="fridge-item">${item} <span class="remove-fridge" data-item="${item}">×</span></span>`
     ).join('');
+}
+
+
+// =========================================
+// ONBOARDING WIZARD
+// =========================================
+let onboardingStep = 1;
+
+function showOnboarding() {
+    onboardingStep = 1;
+    renderOnboardingStep(1);
+    renderOnboardingAllergenGrid();
+    renderOnboardingPantry();
+    renderOnboardingFridge();
+    document.getElementById('onboardingModal').classList.add('open');
+}
+
+function renderOnboardingStep(step) {
+    onboardingStep = step;
+    document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById('wizard-step-' + step);
+    if (el) el.classList.add('active');
+    // Update progress dots
+    document.querySelectorAll('.wizard-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i < step);
+        dot.classList.toggle('current', i === step - 1);
+    });
+    if (step === 2) renderOnboardingProfiles();
+    if (step === 5) renderOnboardingSummary();
+}
+
+function renderOnboardingAllergenGrid() {
+    const grid = document.getElementById('onboardingAllergenGrid');
+    if (!grid) return;
+    grid.innerHTML = Object.entries(ALLERGENS).map(([name, data]) =>
+        `<label class="allergen-checkbox"><input type="checkbox" value="${name}"> ${data.icon} ${name}</label>`
+    ).join('');
+}
+
+function renderOnboardingProfiles() {
+    const list = document.getElementById('onboardingProfileList');
+    if (!list) return;
+    if (state.profiles.length === 0) {
+        list.innerHTML = '<p style="font-size:.8rem;color:var(--c-gray-400);margin-bottom:8px;">No profiles added yet. Add at least one person.</p>';
+        return;
+    }
+    list.innerHTML = state.profiles.map(p => {
+        const allergenIcons = p.allergens.map(a => ALLERGENS[a] ? ALLERGENS[a].icon : '').join(' ');
+        return `<div class="profile-card-item active" style="margin-bottom:6px;">
+            <div>
+                <div class="profile-name">${p.name}</div>
+                <div class="profile-detail">
+                    ${p.allergens.length ? allergenIcons + ' ' + p.allergens.join(', ') : 'No allergens'}
+                    ${p.dislikes.length ? ' · Dislikes: ' + p.dislikes.join(', ') : ''}
+                </div>
+            </div>
+            <button class="btn btn-ghost btn-sm wizard-remove-profile" data-id="${p.id}">×</button>
+        </div>`;
+    }).join('');
+}
+
+function addOnboardingProfile() {
+    const nameInput = document.getElementById('onboardingProfileName');
+    const dislikesInput = document.getElementById('onboardingProfileDislikes');
+    const name = nameInput.value.trim();
+    if (!name) { nameInput.focus(); return; }
+
+    const allergens = Array.from(document.querySelectorAll('#onboardingAllergenGrid input:checked')).map(c => c.value);
+    const dislikes = dislikesInput.value.split(',').map(d => d.trim().toLowerCase()).filter(Boolean);
+
+    const profile = { id: 'profile_' + Date.now(), name, allergens, dislikes };
+    state.profiles.push(profile);
+    state.activeProfileIds.push(profile.id);
+    saveState();
+
+    // Reset form
+    nameInput.value = '';
+    dislikesInput.value = '';
+    document.querySelectorAll('#onboardingAllergenGrid input:checked').forEach(c => c.checked = false);
+
+    renderOnboardingProfiles();
+}
+
+function renderOnboardingPantry() {
+    const container = document.getElementById('onboardingPantryItems');
+    if (!container) return;
+    container.innerHTML = state.pantryItems.map(item =>
+        `<span class="pantry-item">${item} <span class="remove-pantry wizard-pantry-remove" data-item="${item}">×</span></span>`
+    ).join('');
+}
+
+function renderOnboardingFridge() {
+    const container = document.getElementById('onboardingFridgeItems');
+    if (!container) return;
+    if (state.fridgeItems.length === 0) {
+        container.innerHTML = '<p style="font-size:.8rem;color:var(--c-gray-400);">No fridge items yet.</p>';
+        return;
+    }
+    container.innerHTML = state.fridgeItems.map(item =>
+        `<span class="fridge-item">${item} <span class="remove-fridge wizard-fridge-remove" data-item="${item}">×</span></span>`
+    ).join('');
+}
+
+function renderOnboardingSummary() {
+    const el = document.getElementById('onboardingSummary');
+    if (!el) return;
+    const profileCount = state.profiles.length;
+    const pantryCount = state.pantryItems.length;
+    const fridgeCount = state.fridgeItems.length;
+    el.innerHTML = `
+        <div style="display:grid;gap:12px;text-align:left;">
+            <div class="card" style="padding:12px;">
+                <strong>👨‍👩‍👧‍👦 ${profileCount} profile${profileCount !== 1 ? 's' : ''}</strong>
+                <div style="font-size:.8rem;color:var(--c-gray-500);margin-top:2px;">
+                    ${state.profiles.map(p => p.name).join(', ') || 'None'}
+                </div>
+            </div>
+            <div class="card" style="padding:12px;">
+                <strong>🏠 ${pantryCount} cupboard staple${pantryCount !== 1 ? 's' : ''}</strong>
+                <div style="font-size:.8rem;color:var(--c-gray-500);margin-top:2px;">Won't appear on your shopping list</div>
+            </div>
+            ${fridgeCount > 0 ? `<div class="card" style="padding:12px;">
+                <strong>🧊 ${fridgeCount} fridge item${fridgeCount !== 1 ? 's' : ''}</strong>
+                <div style="font-size:.8rem;color:var(--c-gray-500);margin-top:2px;">${state.fridgeItems.join(', ')}</div>
+            </div>` : ''}
+        </div>`;
+}
+
+function completeOnboarding() {
+    state.onboardingComplete = true;
+    saveState();
+    document.getElementById('onboardingModal').classList.remove('open');
+    switchView('recipes');
+    renderProfiles();
+    renderPantry();
+    renderFridge();
+}
+
+
+// =========================================
+// USE IT UP — RECIPE RAIL
+// =========================================
+function renderUseItUp() {
+    const section = document.getElementById('useItUpSection');
+    const rail = document.getElementById('useItUpRail');
+    if (!section || !rail) return;
+
+    if (state.fridgeItems.length === 0) {
+        section.style.display = 'none';
+        return;
+    }
+
+    const fridgeLower = state.fridgeItems.map(i => i.toLowerCase());
+
+    // Gather blocked allergens from active profiles for safety filtering
+    const blocked = new Set();
+    const dislikes = new Set();
+    if (!state.showAllRecipes) {
+        state.activeProfileIds.forEach(pid => {
+            const p = state.profiles.find(pr => pr.id === pid);
+            if (p) {
+                p.allergens.forEach(a => blocked.add(a));
+                p.dislikes.forEach(d => dislikes.add(d.toLowerCase()));
+            }
+        });
+    }
+
+    const scored = recipes.map(r => {
+        // Safety filter
+        if (blocked.size > 0 && detectAllergens(r).some(a => blocked.has(a))) return null;
+        if (dislikes.size > 0) {
+            const text = r.ingredients.map(i => `${i.name} ${i.prep || ''}`).join(' ').toLowerCase();
+            if (Array.from(dislikes).some(d => text.includes(d))) return null;
+        }
+        const text = r.ingredients.map(i => `${i.name} ${i.prep || ''}`).join(' ').toLowerCase();
+        const matches = fridgeLower.filter(item => text.includes(item));
+        return { recipe: r, matches, score: matches.length };
+    }).filter(s => s && s.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 6);
+
+    if (scored.length === 0) {
+        section.style.display = 'none';
+        return;
+    }
+
+    section.style.display = 'block';
+    rail.innerHTML = scored.map(s => `
+        <div class="use-it-up-card" data-id="${s.recipe.id}">
+            <img src="${s.recipe.image || FALLBACK_IMAGE}" alt="${s.recipe.name}" ${IMAGE_FALLBACK_ATTR}>
+            <div class="use-it-up-info">
+                <div class="use-it-up-name">${s.recipe.name}</div>
+                <div class="use-it-up-match">Uses your: ${s.matches.join(', ')}</div>
+                <div class="use-it-up-meta">🕒 ${s.recipe.cookTime}m</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+
+// =========================================
+// COOK FORWARD TIPS
+// =========================================
+function detectCookForwardTips() {
+    const days = getWeekDates(state.weekOffset);
+    const ingredientsByDay = new Map();
+
+    days.forEach(date => {
+        const key = fmtDate(date);
+        const slots = state.mealPlan[key];
+        if (!slots) return;
+        slots.forEach(slot => {
+            if (slot.status !== 'filled' || !slot.recipeId) return;
+            const r = getRecipe(slot.recipeId);
+            if (!r) return;
+            r.ingredients.forEach(ing => {
+                const ingredientKey = ing.name.toLowerCase();
+                if (!['carbs', 'protein'].includes(ing.category)) return;
+                if (!ingredientsByDay.has(ingredientKey)) ingredientsByDay.set(ingredientKey, []);
+                ingredientsByDay.get(ingredientKey).push({
+                    day: key, dayName: dayName(date), recipeName: r.name,
+                });
+            });
+        });
+    });
+
+    const tips = [];
+    for (const [ingredient, usages] of ingredientsByDay) {
+        if (usages.length >= 2) {
+            usages.sort((a, b) => a.day.localeCompare(b.day));
+            const first = usages[0];
+            const others = usages.slice(1);
+            tips.push({
+                ingredient,
+                tip: `Cook extra ${ingredient} on ${first.dayName} (${first.recipeName}) — you'll need it again for ${others.map(u => u.dayName + "'s " + u.recipeName).join(' and ')}.`,
+                shoppingTip: `${ingredient.charAt(0).toUpperCase() + ingredient.slice(1)} appears in ${usages.length} meals — consider buying a larger pack.`,
+            });
+        }
+    }
+    return tips;
+}
+
+function renderCookForwardTips(container) {
+    const existing = container.querySelector('.cook-forward-tips');
+    if (existing) existing.remove();
+
+    const tips = detectCookForwardTips();
+    if (tips.length === 0) return;
+
+    const div = document.createElement('div');
+    div.className = 'cook-forward-tips';
+    div.innerHTML = `
+        <h3>🔗 Cook Forward Tips</h3>
+        ${tips.map(t => `<div class="cook-forward-tip"><span class="tip-text">${t.tip}</span></div>`).join('')}
+    `;
+    container.appendChild(div);
+}
+
+function renderShoppingCookForward() {
+    const existing = document.querySelector('.shopping-cook-forward');
+    if (existing) existing.remove();
+
+    const tips = detectCookForwardTips();
+    if (tips.length === 0) return;
+
+    const el = document.createElement('div');
+    el.className = 'shopping-cook-forward';
+    el.innerHTML = `
+        <h3>💡 Batch Cooking Tips</h3>
+        <ul>${tips.map(t => `<li>${t.shoppingTip}</li>`).join('')}</ul>
+    `;
+    document.querySelector('#shopping-view .card')?.appendChild(el);
 }
 
 
@@ -721,7 +1515,6 @@ function openDetail(recipeId) {
     favBtn.style.color = fav ? 'var(--c-favourite)' : '';
 
     const allergens = detectAllergens(r);
-    const hideIngredients = state.hideIngredientList;
     document.getElementById('detailBody').innerHTML = `
         <img src="${r.image || FALLBACK_IMAGE}" alt="${r.name}" style="width:100%;height:240px;object-fit:cover;border-radius:var(--radius-md);margin-bottom:16px;" ${IMAGE_FALLBACK_ATTR}>
         <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
@@ -731,11 +1524,10 @@ function openDetail(recipeId) {
             <span style="font-size:.85rem;">📊 ${r.difficulty}</span>
         </div>
         ${allergens.length > 0 ? `<div style="margin-bottom:12px;display:flex;flex-wrap:wrap;gap:4px;">${allergens.map(a => `<span class="pill danger">${ALLERGENS[a]?.icon||''} ${a}</span>`).join('')}</div>` : ''}
-        ${hideIngredients ? `<div style="margin-bottom:16px;font-size:.85rem;color:var(--c-gray-500);">Ingredient list hidden by filters.</div>` : `
         <h3 style="font-size:.9rem;font-weight:700;margin-bottom:8px;">Ingredients (${r.servings} servings)</h3>
         <ul style="list-style:none;margin-bottom:16px;">
             ${r.ingredients.map(i => `<li style="padding:4px 0;font-size:.85rem;border-bottom:1px solid var(--c-gray-100);">${fmtAmount(i.amount)} ${i.unit} <strong>${i.name}</strong>${i.prep ? ' — '+i.prep : ''}</li>`).join('')}
-        </ul>`}
+        </ul>
         <h3 style="font-size:.9rem;font-weight:700;margin-bottom:8px;">Method</h3>
         <ol style="padding-left:20px;">
             ${r.steps.map(s => `<li style="padding:6px 0;font-size:.85rem;">${s.text}${s.time ? ` <span style="color:var(--c-success);font-weight:600;">[~${s.time} min]</span>` : ''}</li>`).join('')}
@@ -901,10 +1693,7 @@ function setupEvents() {
         renderFridge();
         document.getElementById('fridgeModal').classList.add('open');
     });
-    document.getElementById('allergenBtn').addEventListener('click', () => {
-        renderAllergenFilterGrid();
-        document.getElementById('allergenModal').classList.add('open');
-    });
+    // Allergen filter modal removed — handled by profiles
 
     // --- Week navigation ---
     document.getElementById('prevWeek').addEventListener('click', () => { state.weekOffset--; renderPlanner(); });
@@ -1022,7 +1811,17 @@ function setupEvents() {
     });
 
     // --- Recipe grid interactions ---
+    document.getElementById('fabAddRecipe')?.addEventListener('click', () => {
+        document.getElementById('addRecipeModal').classList.add('open');
+    });
+
     document.getElementById('recipeGrid').addEventListener('click', e => {
+        // "Add your own recipe" card
+        if (e.target.closest('.add-recipe-card')) {
+            document.getElementById('addRecipeModal').classList.add('open');
+            return;
+        }
+
         const action = e.target.dataset.action;
         const id = e.target.dataset.id;
 
@@ -1081,27 +1880,23 @@ function setupEvents() {
     document.getElementById('recipeGrid').addEventListener('touchend', cancelLongPress);
     document.getElementById('recipeGrid').addEventListener('touchcancel', cancelLongPress);
 
-    // --- Filter pills (recipes view) ---
-    document.getElementById('filterPills').addEventListener('click', e => {
-        const pill = e.target.closest('.pill');
-        if (!pill) return;
-        const isAll = pill.dataset.filter === 'all';
-        if (isAll) {
-            document.querySelectorAll('#filterPills .pill').forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
-        } else {
-            pill.classList.toggle('active');
-            document.querySelector('#filterPills .pill[data-filter="all"]')?.classList.remove('active');
-            const anyActive = document.querySelectorAll('#filterPills .pill.active').length > 0;
-            if (!anyActive) document.querySelector('#filterPills .pill[data-filter="all"]')?.classList.add('active');
-        }
+    // --- Recipe search ---
+    document.getElementById('recipeSearchInput')?.addEventListener('input', e => {
+        state.recipeSearch = e.target.value.trim();
         renderRecipes();
     });
+    document.getElementById('recipeSearchClear')?.addEventListener('click', () => {
+        state.recipeSearch = '';
+        const input = document.getElementById('recipeSearchInput');
+        if (input) input.value = '';
+        saveState(); renderRecipes();
+    });
 
-    // --- Sort select ---
-    document.getElementById('sortSelect').addEventListener('change', renderRecipes);
+    // --- Filter clear all ---
+    document.getElementById('filterClearAll')?.addEventListener('click', clearAllFilters);
 
-    // --- Safety filter (dropdown removed in v3 filters) ---
+    // --- Filter bottom sheet backdrop ---
+    document.querySelector('#filterSheet .bottom-sheet-backdrop')?.addEventListener('click', closeFilterSheet);
 
     // --- Recipe Picker Modal ---
     document.getElementById('pickerClose').addEventListener('click', closePicker);
@@ -1194,7 +1989,7 @@ function setupEvents() {
             difficulty,
             tags,
             cuisine,
-            source: { name: sourceName || 'User recipe', url: '#' },
+            source: { name: sourceName || 'User recipe', url: document.getElementById('recipeUrlInput')?.value.trim() || '#' },
             favourite: false,
             timesCooked: 0,
             ingredients,
@@ -1206,6 +2001,8 @@ function setupEvents() {
         saveState();
         renderRecipes();
         document.getElementById('addRecipeForm').reset();
+        document.getElementById('recipeUrlInput').value = '';
+        document.getElementById('urlFetchStatus').textContent = '';
         document.getElementById('addRecipeModal').classList.remove('open');
     });
 
@@ -1297,6 +2094,7 @@ function setupEvents() {
             e.target.classList.toggle('checked');
             e.target.innerHTML = e.target.classList.contains('checked') ? '✓' : '';
             e.target.closest('.shopping-item')?.classList.toggle('checked');
+            updateShoppingProgress();
         }
     });
 
@@ -1395,21 +2193,36 @@ function setupEvents() {
         renderRecipes();
     });
 
-    // --- Allergen filter modal ---
-    document.getElementById('allergenClose').addEventListener('click', () => document.getElementById('allergenModal').classList.remove('open'));
-    document.getElementById('allergenModal').addEventListener('click', e => { if (e.target === document.getElementById('allergenModal')) document.getElementById('allergenModal').classList.remove('open'); });
-    document.getElementById('allergenClearBtn').addEventListener('click', () => {
-        state.globalAllergenFilters = [];
-        saveState();
-        renderAllergenFilterGrid();
-        renderRecipes();
+    // Fridge quick-add chips
+    document.getElementById('fridgeQuickChips')?.addEventListener('click', e => {
+        const chip = e.target.closest('.pill');
+        if (!chip) return;
+        const item = chip.dataset.item;
+        if (item && !state.fridgeItems.includes(item)) {
+            state.fridgeItems.push(item);
+            saveState();
+            renderFridge();
+            renderRecipes();
+        }
     });
-    document.getElementById('allergenApplyBtn').addEventListener('click', () => {
-        const selected = Array.from(document.querySelectorAll('#allergenFilterGrid input:checked')).map(cb => cb.value);
-        state.globalAllergenFilters = selected;
-        saveState();
-        renderRecipes();
-        document.getElementById('allergenModal').classList.remove('open');
+
+    // Use It Up rail — click to open detail
+    document.getElementById('useItUpRail')?.addEventListener('click', e => {
+        const card = e.target.closest('.use-it-up-card');
+        if (card) openDetail(card.dataset.id);
+    });
+
+    // --- Show all / re-apply filters toggle (delegated on activeFiltersInfo) ---
+    document.getElementById('activeFiltersInfo')?.addEventListener('click', e => {
+        if (e.target.id === 'showAllRecipesBtn') {
+            state.showAllRecipes = true;
+            saveState();
+            renderRecipes();
+        } else if (e.target.id === 'reapplyFiltersBtn') {
+            state.showAllRecipes = false;
+            saveState();
+            renderRecipes();
+        }
     });
 
     // --- Header portions / cooking-for ---
@@ -1478,21 +2291,49 @@ function setupEvents() {
         const dislikesStr = document.getElementById('profileDislikesInput').value;
         const dislikes = dislikesStr ? dislikesStr.split(',').map(d => d.trim()).filter(Boolean) : [];
 
-        const profile = { id: 'profile_' + Date.now(), name, allergens, dislikes };
-        state.profiles.push(profile);
-        state.activeProfileIds.push(profile.id);
+        if (state.editingProfileId) {
+            // Update existing profile
+            const existing = state.profiles.find(p => p.id === state.editingProfileId);
+            if (existing) {
+                existing.name = name;
+                existing.allergens = allergens;
+                existing.dislikes = dislikes;
+            }
+        } else {
+            // Create new profile
+            const profile = { id: 'profile_' + Date.now(), name, allergens, dislikes };
+            state.profiles.push(profile);
+            state.activeProfileIds.push(profile.id);
+        }
         saveState();
-
-        // Reset form
-        document.getElementById('profileNameInput').value = '';
-        document.getElementById('profileDislikesInput').value = '';
-        renderAllergenGrid();
+        cancelProfileEdit(); // Reset form + editing state
         renderProfiles();
-        renderRecipes(); // Re-filter
+        renderRecipes();
     });
 
-    // Toggle profile active/inactive
+    // Profile list: edit, delete, toggle active/inactive
     document.getElementById('profileList')?.addEventListener('click', e => {
+        // Edit button
+        if (e.target.closest('.profile-edit-btn')) {
+            e.stopPropagation();
+            editProfile(e.target.closest('.profile-edit-btn').dataset.id);
+            return;
+        }
+        // Delete button
+        if (e.target.closest('.profile-delete-btn')) {
+            e.stopPropagation();
+            const id = e.target.closest('.profile-delete-btn').dataset.id;
+            const profile = state.profiles.find(p => p.id === id);
+            if (profile && confirm(`Remove ${profile.name}?`)) {
+                state.profiles = state.profiles.filter(p => p.id !== id);
+                state.activeProfileIds = state.activeProfileIds.filter(a => a !== id);
+                saveState();
+                renderProfiles();
+                renderRecipes();
+            }
+            return;
+        }
+        // Toggle active/inactive
         const card = e.target.closest('.profile-card-item');
         if (!card) return;
         const id = card.dataset.id;
@@ -1501,7 +2342,100 @@ function setupEvents() {
         else state.activeProfileIds.push(id);
         saveState();
         renderProfiles();
-        renderRecipes(); // Re-filter
+        renderRecipes();
+    });
+
+    // --- Onboarding wizard ---
+    const onboardingModal = document.getElementById('onboardingModal');
+    if (onboardingModal) {
+        onboardingModal.addEventListener('click', e => {
+            const action = e.target.dataset.wizardAction;
+            if (action === 'next') renderOnboardingStep(onboardingStep + 1);
+            if (action === 'back') renderOnboardingStep(onboardingStep - 1);
+            if (action === 'skip') renderOnboardingStep(onboardingStep + 1);
+            if (action === 'start') renderOnboardingStep(2);
+            if (action === 'complete') completeOnboarding();
+            if (action === 'add-profile') addOnboardingProfile();
+
+            // Remove profile from wizard
+            if (e.target.classList.contains('wizard-remove-profile')) {
+                const id = e.target.dataset.id;
+                state.profiles = state.profiles.filter(p => p.id !== id);
+                state.activeProfileIds = state.activeProfileIds.filter(a => a !== id);
+                saveState();
+                renderOnboardingProfiles();
+            }
+            // Remove pantry item from wizard
+            if (e.target.classList.contains('wizard-pantry-remove')) {
+                removePantryItem(e.target.dataset.item);
+                renderOnboardingPantry();
+            }
+            // Remove fridge item from wizard
+            if (e.target.classList.contains('wizard-fridge-remove')) {
+                const item = e.target.dataset.item;
+                state.fridgeItems = state.fridgeItems.filter(i => i !== item);
+                saveState();
+                renderOnboardingFridge();
+            }
+        });
+
+        // Onboarding pantry add
+        const wizPantryBtn = document.getElementById('onboardingPantryAdd');
+        const wizPantryInput = document.getElementById('onboardingPantryInput');
+        if (wizPantryBtn && wizPantryInput) {
+            wizPantryBtn.addEventListener('click', () => {
+                if (wizPantryInput.value.trim()) {
+                    addPantryItem(wizPantryInput.value);
+                    wizPantryInput.value = '';
+                    renderOnboardingPantry();
+                }
+            });
+            wizPantryInput.addEventListener('keydown', e => {
+                if (e.key === 'Enter') { e.preventDefault(); wizPantryBtn.click(); }
+            });
+        }
+
+        // Onboarding fridge add
+        const wizFridgeBtn = document.getElementById('onboardingFridgeAdd');
+        const wizFridgeInput = document.getElementById('onboardingFridgeInput');
+        if (wizFridgeBtn && wizFridgeInput) {
+            wizFridgeBtn.addEventListener('click', () => {
+                const items = wizFridgeInput.value.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+                items.forEach(item => {
+                    if (!state.fridgeItems.includes(item)) state.fridgeItems.push(item);
+                });
+                saveState();
+                wizFridgeInput.value = '';
+                renderOnboardingFridge();
+            });
+            wizFridgeInput.addEventListener('keydown', e => {
+                if (e.key === 'Enter') { e.preventDefault(); wizFridgeBtn.click(); }
+            });
+        }
+
+        // Onboarding profile name Enter key
+        document.getElementById('onboardingProfileName')?.addEventListener('keydown', e => {
+            if (e.key === 'Enter') { e.preventDefault(); addOnboardingProfile(); }
+        });
+    }
+
+    // --- URL recipe import ---
+    document.getElementById('fetchRecipeBtn')?.addEventListener('click', () => {
+        const url = document.getElementById('recipeUrlInput').value.trim();
+        if (!url) return;
+        try { new URL(url); } catch { document.getElementById('urlFetchStatus').textContent = 'Please enter a valid URL.'; return; }
+        fetchRecipeFromUrl(url);
+    });
+    document.getElementById('recipeUrlInput')?.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); document.getElementById('fetchRecipeBtn').click(); }
+    });
+
+    // --- Reset all data ---
+    document.getElementById('resetAllDataBtn')?.addEventListener('click', () => {
+        if (confirm('This will remove all your profiles, meal plans, and settings. Are you sure?')) {
+            localStorage.removeItem('mealPlannerV3');
+            location.reload();
+        }
     });
 }
 
@@ -1520,11 +2454,14 @@ document.addEventListener('DOMContentLoaded', () => {
         cookingForSelect.value = ['1','2','4'].includes(v) ? v : 'custom';
     }
     renderAllergenGrid();
-    renderAllergenFilterGrid();
+    // Sync search input with persisted state
+    const searchInput = document.getElementById('recipeSearchInput');
+    if (searchInput && state.recipeSearch) searchInput.value = state.recipeSearch;
     switchView(state.currentView || 'recipes');
     renderPantry();
     renderProfiles();
     renderFridge();
     setupEvents();
     updateTimerDisplay();
+    if (!state.onboardingComplete) showOnboarding();
 });

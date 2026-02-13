@@ -1,7 +1,7 @@
-ome# Meal Planner v3 — Copilot Instructions
+# Meal Planner v3 — Copilot Instructions
 
 PROJECT: Meal Planner v3 — HTML/CSS/JS prototype
-LOCATION: C:\Users\clair\ClaudeProjects\App_Playground\recipe_planner\MealPlannerApp\frontend\v3\
+LOCATION: MealPlannerApp/frontend/v3/
 
 FILES:
 - index.html — App shell, tab navigation, all modals (picker, detail, cook mode, tesco)
@@ -40,17 +40,21 @@ WHAT'S WORKING:
 - Shopping list auto-generated from planned meals, grouped by category
 - Pantry/cupboard staples management (excluded from shopping list)
 - Family profiles with allergen selection that filters unsafe recipes
-- Supermarket search (opens Tesco/Sainsbury's/ASDA/Ocado/Ocado tabs with ingredient searches)
+- Drag & drop meal moving/swapping between planner slots
+- Add recipe modal (manual entry with name, image, time, servings, cuisine, tags, ingredients, steps)
+- Fridge matching ("What's in my fridge" — filter recipes by available ingredients)
+- Supermarket search (opens Tesco/Sainsbury's/ASDA/Ocado tabs with ingredient searches)
+- Per-meal ingredient exclusions and swap notes
 - Copy shopping list to clipboard
 - localStorage persistence
+- Responsive design with mobile breakpoints
 
-WHAT'S NOT YET BUILT:
-- Recipe editor/add new recipe form (was in v2, needs adding back)
-- URL recipe fetcher
-- Drag and drop recipes onto planner
-- "Cooking for who" per-day group selection on planner
+WHAT'S NOT YET BUILT / NEEDS POLISH:
+- Advanced recipe editor (v2 has richer one in v2/features/recipe-editor/ with URL import, image upload, advanced fields)
+- Per-day "Cooking for" group selection on planner (header select exists but doesn't override per-day)
 - Portion scaling in detail modal (only picker has portions currently)
-- Mobile-optimised planner (basic responsive exists but needs swipe navigation)
+- Booking-style filter UX (bottom-sheet approach, Deliveroo-style)
+- "Relax filters" prompt when no results match
 
 WHEN MAKING CHANGES:
 - Follow existing patterns: render functions rebuild from state, saveState() after mutations

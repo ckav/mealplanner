@@ -8,41 +8,80 @@ A meal planning app that replaces HelloFresh-style meal kit services with the co
 
 **The core experience**: The "dopamine of choosing" — browsing and selecting meals should feel as satisfying as scrolling through a takeaway app, not like homework.
 
-## Tech Stack
+## Tech Stack & Roadmap
 
-- **Frontend**: Flutter (Dart)
-- **Backend**: Firebase (Firestore, Auth, Storage)
-- **Target platforms**: iOS (Apple Developer account pending) + Android
-- **Development environment**: Windows, VS Code
+- **Current**: HTML5, CSS3, Vanilla JavaScript (v3 prototype)
+- **Data persistence**: localStorage (client-side only)
+- **Current phase**: User testing with the v3 prototype
+- **Next phase**: Work out hosting (likely PWA or static hosting)
+- **Future goal**: App stores (Google Play, potentially iOS) — approach TBD (Flutter, PWA wrapper, etc.)
 
 ## Project Structure
 
 ```
-C:\Users\clair\ClaudeProjects\App_Playground\recipe_planner\
+mealplanner/
 ├── MealPlannerApp/
 │   ├── frontend/
-│   │   └── v2/                    # Current HTML/JS prototype (reference only)
-│   │       ├── index.html
-│   │       ├── styles.css
-│   │       ├── app.js
-│   │       └── recipes.js         # Sample recipe data
-│   └── docs/
-│       ├── FEATURE_INVENTORY.md   # All features by category with MVP phases
-│       ├── PROJECT_OBJECTIVES.md  # User personas, pain points, success metrics
-│       ├── MEAL_PLANNER_WEEKLY_VIEW_SPEC.md  # Weekly planner grid spec
-│       ├── getting_started.md
-│       └── requirements.md
-├── olderMealPlanner/              # Earlier prototype (has timer, pantry, Tesco integration)
-├── FEATURE_COMPARISON_ANALYSIS.md # Comparison of v2 vs older prototype
-├── FUTURE_IDEAS_PARKING_LOT.md    # Low-priority ideas (chef licensing, etc.)
-└── CLAUDE.md                      # ← This file
+│   │   ├── v3/                        # ← CURRENT prototype (this is the app)
+│   │   │   ├── index.html             # Main app shell (4 views, 6 modals)
+│   │   │   ├── app.js                 # Application logic (1,530 lines)
+│   │   │   ├── recipes.js             # 13 sample recipes with full data
+│   │   │   ├── styles.css             # Design system & responsive styles
+│   │   │   └── recipe-filter-preview.html  # Filter UX preview
+│   │   ├── v2/                        # Earlier prototype (reference only)
+│   │   │   ├── index.html, app.js, recipes.js, styles.css
+│   │   │   └── features/recipe-editor/  # Recipe editor feature (v2 only)
+│   │   ├── index.html                 # v1 entry point
+│   │   ├── css/                       # v1 styles
+│   │   └── js/                        # v1 scripts
+│   ├── docs/
+│   │   ├── FEATURE_INVENTORY.md       # All features by category with MVP phases
+│   │   ├── PROJECT_OBJECTIVES.md      # User personas, pain points, success metrics
+│   │   ├── MEAL_PLANNER_WEEKLY_VIEW_SPEC.md  # Weekly planner grid spec
+│   │   ├── FEATURE_PRIORITY_MATRIX.md # Priority classification
+│   │   ├── RECIPE_FILTER_SEARCH_SPEC.md  # Search/filter spec
+│   │   ├── ALLERGY_UX_WIREFRAME.md    # Allergy UI spec
+│   │   ├── RECIPE_ADD_EDIT_UX.md      # Recipe editing spec
+│   │   ├── requirements.md
+│   │   ├── getting_started.md
+│   │   └── features/                  # Detailed feature docs
+│   ├── database/airtable/             # Schema definitions (for future backend)
+│   ├── backend/n8n_workflows/         # Recipe scraper workflow skeleton
+│   └── design/wireframes/             # UI wireframes
+├── archive/                           # Superseded prototypes & docs (reference only)
+├── FEATURE_COMPARISON_ANALYSIS.md     # Comparison across all prototype versions
+├── CLAUDE.md                          # ← This file
+└── .github/copilot-instructions.md
 ```
 
-## Current State
+## Current State (v3 Prototype — Feb 2026)
 
-**What exists**: An HTML/CSS/JS prototype (v2) with recipe browsing, shopping list generation, cooking guidance, and sample recipe data in `recipes.js`. This is a **reference prototype only** — the real app will be built in Flutter.
+**Location**: `MealPlannerApp/frontend/v3/`
 
-**What's NOT built yet**: The Flutter app itself. We are starting from scratch in Flutter, using the HTML prototype and documentation as the spec.
+The v3 prototype is a fully functional single-page app with four main views and six modals. Open `index.html` in a browser to run it.
+
+### What's working
+
+- **Weekly Planner**: 7-day grid (Main Meal + 2 Extra Meals), week navigation, "X of Y meals planned" counter, skip/undo, drag & drop move/swap
+- **Recipe Browsing**: Recipe cards with images, 12 filter types (cuisine, time, dietary, allergens, dislikes, fridge items, favourites), 5 sort options, "no results" message
+- **Recipe Detail**: Full recipe view with ingredients, method, allergen badges, source attribution
+- **Recipe Picker**: Modal for adding meals to plan slots, with search, filters, portion selector, per-meal ingredient exclusions, swap notes
+- **Cook Mode**: Full-screen step-by-step cooking with ingredient checklist, countdown timer with alerts, step navigation, "mark as cooked" tracking
+- **Shopping List**: Auto-generated from meal plan, ingredient aggregation across recipes, grouped by category, pantry-aware (staples excluded), copy to clipboard, supermarket search links (Tesco, Sainsbury's, ASDA, Ocado)
+- **Pantry Staples**: Editable list of always-have items, excluded from shopping list, "required" highlighting when a planned recipe needs them
+- **Family Profiles**: Create profiles with allergens (UK 14) + dislikes, toggle active/inactive, quiet safety filtering (unsafe recipes just don't appear)
+- **Allergen Detection**: Auto-detects allergens from ingredient names using keyword matching
+- **Fridge Matching**: "What's in my fridge" — add items, filter to recipes using those ingredients
+- **Add Recipe**: Manual entry modal (name, image, time, servings, difficulty, cuisine, tags, ingredients, steps, source)
+- **Persistence**: All state saved to localStorage
+- **Responsive Design**: Mobile breakpoints for all views
+
+### Still to polish
+
+- Per-day "Cooking for" + portion overrides (partially wired — select exists but doesn't affect individual days)
+- v2 recipe editor parity (URL import, advanced fields — v2 has a richer editor in `v2/features/recipe-editor/`)
+- Booking-style filter UX refinement (bottom-sheet approach)
+- "Relax filters" prompt when filters are too restrictive
 
 ## Design Principles
 
@@ -53,46 +92,9 @@ C:\Users\clair\ClaudeProjects\App_Playground\recipe_planner\
 5. **Flexible, not prescriptive** — Support 3 dinners or 14 meals; allow skipping, changing, adapting
 6. **Prevent the hungry supermarket trip** — Plan ahead so you buy smart, not impulsive
 
-## MVP Scope (Phase 1 — Build This First)
-
-### 1. Recipe Browsing
-- Recipe cards with image, title, cook time, difficulty, tags
-- Search and filter (cuisine, cooking time, ingredients, dietary)
-- Favourites
-- Horizontally scrollable filter chips, bottom-sheet dropdowns for multi-select
-- "Relax filters" prompt when too restrictive (no results)
-
-### 2. Recipe Detail & Cook Mode
-- Full recipe view with ingredients list and method
-- Portion scaling (1-6+ servings) — ingredients recalculate
-- Step-by-step cook mode with timers
-- "Mark as cooked" tracking
-
-### 3. Weekly Planner (see `docs/MEAL_PLANNER_WEEKLY_VIEW_SPEC.md` for full spec)
-- 7-day grid with Main Meal + 2 Extra Meal columns
-- "X of Y meals selected" counter
-- Empty states: "Click to add" (main) / "Not needed" (extras)
-- Skip functionality with undo
-- Recipe picker modal when clicking a slot
-- Week navigation (prev/next)
-
-### 4. Shopping List
-- Auto-generated from meal plan
-- Combines duplicate ingredients across recipes
-- Groups by supermarket aisle/category
-- Three-tier pantry system: Always Have (excluded), Check First (verify before shopping), Buy as Needed (normal)
-- Supermarket links (Tesco, Sainsbury's, ASDA, Ocado)
-
-### 5. Basic Settings
-- Portion defaults
-- Dietary preferences
-- Planning horizon preference
-
 ## Post-MVP Features (Don't Build Yet)
 
 - Full allergy management with "may contain" tolerance levels and baked-form distinctions
-- Family profiles with per-person dietary restrictions
-- "Cooking for who" per-day override on planner
 - Pantry management with expiry date tracking
 - Nutritional insights dashboard (observations not prescriptions)
 - Ingredient overlap detection
@@ -101,7 +103,6 @@ C:\Users\clair\ClaudeProjects\App_Playground\recipe_planner\
 - Seasonal produce optimisation
 - Dynamic supermarket price integration
 - Chef recipe licensing marketplace
-- Drag and drop on planner
 
 ## Allergy System Design (for when we build it)
 
@@ -114,7 +115,7 @@ Key feature: per-allergen "may contain" tolerance with three levels:
 
 Also supports **baked form tolerance** — e.g., can't have raw egg but baked egg in cakes is fine.
 
-## Data Model (Firestore)
+## Data Model (for future backend)
 
 ```
 users/
@@ -145,10 +146,10 @@ shoppingLists/
 
 ## UX References
 
-The project folder contains screenshots from competitor apps used as UX inspiration:
-- **HelloFresh**: Recipe card layouts, recipe browsing with large images, "Customise" option, basket/counter pattern
-- **Deliveroo**: Horizontally scrollable category icons, filter chips (Offers, Under 30 min, Pickup), bottom-sheet sort/filter modals, dietary filter checkboxes
-- **Gousto**: Recipe cards with cook time + calories, +/- portion counter on cards, "View basket" with item count, "Still deciding? Keep browsing" prompt
+Inspiration from competitor apps:
+- **HelloFresh**: Recipe card layouts, large images, "Customise" option, basket/counter pattern
+- **Deliveroo**: Horizontally scrollable category icons, filter chips, bottom-sheet sort/filter modals, dietary filter checkboxes
+- **Gousto**: Recipe cards with cook time + calories, +/- portion counter, "View basket" with item count
 
 Key patterns to replicate:
 - Chunky tappable interfaces with generous touch targets
@@ -160,10 +161,10 @@ Key patterns to replicate:
 ## Coding Conventions
 
 - Use British English in all user-facing text (colour, favourite, organised, etc.)
-- Follow Flutter/Dart style conventions (camelCase for variables, PascalCase for classes)
-- Organise Flutter code: `/lib/models/`, `/lib/screens/`, `/lib/services/`, `/lib/widgets/`
-- Keep widgets small and composable
-- Use Provider or Riverpod for state management (decide and stick with one)
+- Current codebase is vanilla JS — keep functions focused, use event delegation
+- CSS uses custom properties (design tokens in `:root`), BEM-ish class naming
+- State is managed in a single `state` object with `saveState()`/`loadState()` for persistence
+- Recipe data lives in `recipes.js` as a plain array of objects
 - Write code comments for complex business logic (especially allergy filtering)
 
 ## Monetisation (Low Priority)
@@ -173,26 +174,19 @@ Free or very low entry fee (~99p). Primary revenue via affiliate rewards (e.g., 
 ## Key Commands
 
 ```bash
-# Create Flutter project (if not yet done)
-flutter create meal_planner
+# Open the current prototype
+open MealPlannerApp/frontend/v3/index.html
 
-# Run on connected device/emulator
-flutter run
-
-# Run tests
-flutter test
-
-# Build for iOS
-flutter build ios
-
-# Build for Android
-flutter build apk
+# Or serve locally (avoids CORS issues with some features)
+cd MealPlannerApp/frontend/v3 && python3 -m http.server 8000
+# Then visit http://localhost:8000
 ```
 
 ## Important Notes
 
-- The HTML prototype in `frontend/v2/` is reference only — don't modify it, build in Flutter
-- `recipes.js` contains sample recipe data that should be migrated to Firestore
-- The older prototype in `olderMealPlanner/` has features (timer, pantry check, Tesco integration) not yet in v2 — use as reference
+- The v3 prototype in `frontend/v3/` is the current app — this is what users will test
+- The v2 prototype in `frontend/v2/` has a richer recipe editor (URL import, advanced fields) not yet ported to v3
+- `recipes.js` contains 13 sample recipes — will need real recipe content for user testing
 - All documentation in `docs/` folder is the source of truth for feature specs
 - When in doubt about a feature, check `FEATURE_INVENTORY.md` and `PROJECT_OBJECTIVES.md`
+- The `archive/` folder contains superseded prototypes and docs — reference only, don't modify

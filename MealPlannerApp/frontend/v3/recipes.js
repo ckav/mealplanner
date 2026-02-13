@@ -350,5 +350,533 @@ const recipes = [
             { text: 'Flash-fry beef slices over high heat.', time: 2 },
             { text: 'Add sauce to beef, coat well. Serve over rice with vegetables and spring onions.', time: 2 },
         ]
+    },
+
+    // 14. Butter Chicken
+    {
+        id: 'butter-chicken', name: 'Butter Chicken',
+        image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&h=400&fit=crop',
+        cookTime: 35, calories: 520, servings: 4, difficulty: 'Easy',
+        tags: ['Indian', 'Curry', 'Comfort'], cuisine: 'indian',
+        source: { name: 'BBC Good Food', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Chicken thighs', amount: 500, unit: 'g', category: 'protein', prep: 'diced' },
+            { name: 'Butter', amount: 30, unit: 'g', category: 'dairy' },
+            { name: 'Onion', amount: 1, unit: 'large', category: 'vegetables', prep: 'finely diced' },
+            { name: 'Garlic cloves', amount: 3, unit: '', category: 'vegetables', prep: 'crushed' },
+            { name: 'Ginger', amount: 1, unit: 'thumb', category: 'vegetables', prep: 'grated' },
+            { name: 'Garam masala', amount: 2, unit: 'tsp', category: 'pantry' },
+            { name: 'Turmeric', amount: 1, unit: 'tsp', category: 'pantry' },
+            { name: 'Tomato puree', amount: 2, unit: 'tbsp', category: 'sauce' },
+            { name: 'Chopped tomatoes', amount: 400, unit: 'g tin', category: 'sauce' },
+            { name: 'Double cream', amount: 150, unit: 'ml', category: 'dairy' },
+            { name: 'Basmati rice', amount: 300, unit: 'g', category: 'carbs' },
+            { name: 'Fresh coriander', amount: 1, unit: 'small bunch', category: 'herbs', prep: 'chopped' },
+        ],
+        steps: [
+            { text: 'Cook basmati rice according to packet instructions.', time: 12 },
+            { text: 'Melt butter in a large pan over medium heat. Fry the onion until soft and golden.', time: 6 },
+            { text: 'Add garlic, ginger, garam masala and turmeric. Stir for 1 minute until fragrant.', time: 1 },
+            { text: 'Add the diced chicken and cook until sealed on all sides.', time: 5 },
+            { text: 'Stir in the tomato puree and chopped tomatoes. Simmer for 15 minutes until the chicken is cooked through and the sauce has thickened.', time: 15 },
+            { text: 'Stir in the double cream and warm through for 2 minutes. Season to taste.', time: 2 },
+            { text: 'Serve over basmati rice, scattered with fresh coriander.' },
+        ]
+    },
+
+    // 15. Chickpea Dhal
+    {
+        id: 'chickpea-dhal', name: 'Chickpea Dhal',
+        image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&h=400&fit=crop',
+        cookTime: 25, calories: 340, servings: 4, difficulty: 'Easy',
+        tags: ['Indian', 'Vegetarian', 'Vegan', 'Healthy'], cuisine: 'indian',
+        source: { name: 'BBC Good Food', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Red lentils', amount: 250, unit: 'g', category: 'protein', prep: 'rinsed' },
+            { name: 'Onion', amount: 1, unit: '', category: 'vegetables', prep: 'finely diced' },
+            { name: 'Garlic cloves', amount: 3, unit: '', category: 'vegetables', prep: 'crushed' },
+            { name: 'Ginger', amount: 1, unit: 'thumb', category: 'vegetables', prep: 'grated' },
+            { name: 'Turmeric', amount: 1, unit: 'tsp', category: 'pantry' },
+            { name: 'Ground cumin', amount: 1, unit: 'tsp', category: 'pantry' },
+            { name: 'Chopped tomatoes', amount: 400, unit: 'g tin', category: 'sauce' },
+            { name: 'Vegetable stock', amount: 300, unit: 'ml', category: 'liquid' },
+            { name: 'Spinach', amount: 100, unit: 'g', category: 'vegetables' },
+            { name: 'Basmati rice', amount: 300, unit: 'g', category: 'carbs' },
+            { name: 'Fresh coriander', amount: 1, unit: 'small bunch', category: 'herbs', prep: 'chopped' },
+            { name: 'Olive oil', amount: 1, unit: 'tbsp', category: 'pantry' },
+        ],
+        steps: [
+            { text: 'Cook basmati rice according to packet instructions.', time: 12 },
+            { text: 'Heat olive oil in a large pan. Fry the onion until soft and translucent.', time: 5 },
+            { text: 'Add garlic, ginger, turmeric and ground cumin. Stir for 1 minute.', time: 1 },
+            { text: 'Add the red lentils, chopped tomatoes and vegetable stock. Stir well and bring to the boil.', time: 2 },
+            { text: 'Reduce heat and simmer until the lentils are soft and the dhal has thickened, stirring occasionally.', time: 15 },
+            { text: 'Stir in the spinach and cook until wilted. Season to taste.', time: 2 },
+            { text: 'Serve over rice, topped with fresh coriander.' },
+        ]
+    },
+
+    // 16. Lamb Keema
+    {
+        id: 'lamb-keema', name: 'Lamb Keema',
+        image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&h=400&fit=crop',
+        cookTime: 30, calories: 480, servings: 4, difficulty: 'Medium',
+        tags: ['Indian', 'Curry', 'Spicy'], cuisine: 'indian',
+        source: { name: 'BBC Good Food', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Lamb mince', amount: 500, unit: 'g', category: 'protein' },
+            { name: 'Onion', amount: 1, unit: 'large', category: 'vegetables', prep: 'finely diced' },
+            { name: 'Garlic cloves', amount: 3, unit: '', category: 'vegetables', prep: 'crushed' },
+            { name: 'Ginger', amount: 1, unit: 'thumb', category: 'vegetables', prep: 'grated' },
+            { name: 'Garam masala', amount: 2, unit: 'tsp', category: 'pantry' },
+            { name: 'Ground cumin', amount: 1, unit: 'tsp', category: 'pantry' },
+            { name: 'Turmeric', amount: 1, unit: 'tsp', category: 'pantry' },
+            { name: 'Frozen peas', amount: 150, unit: 'g', category: 'vegetables' },
+            { name: 'Chopped tomatoes', amount: 400, unit: 'g tin', category: 'sauce' },
+            { name: 'Fresh coriander', amount: 1, unit: 'small bunch', category: 'herbs', prep: 'chopped' },
+            { name: 'Naan bread', amount: 4, unit: '', category: 'carbs' },
+            { name: 'Vegetable oil', amount: 1, unit: 'tbsp', category: 'pantry' },
+        ],
+        steps: [
+            { text: 'Heat oil in a large pan over medium-high heat. Fry the onion until softened and lightly golden.', time: 5 },
+            { text: 'Add garlic, ginger, garam masala, cumin and turmeric. Stir for 1 minute until fragrant.', time: 1 },
+            { text: 'Add the lamb mince and cook until browned, breaking it up with a wooden spoon.', time: 6 },
+            { text: 'Pour in the chopped tomatoes and 100ml water. Stir well and bring to a simmer.', time: 2 },
+            { text: 'Cook on a gentle simmer until the sauce is rich and thick.', time: 12 },
+            { text: 'Stir in the frozen peas and cook for a further 3 minutes until heated through.', time: 3 },
+            { text: 'Warm the naan and serve the keema topped with fresh coriander.' },
+        ]
+    },
+
+    // 17. Greek Salad Bowl
+    {
+        id: 'greek-salad-bowl', name: 'Greek Salad Bowl',
+        image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&h=400&fit=crop',
+        cookTime: 15, calories: 380, servings: 2, difficulty: 'Easy',
+        tags: ['Mediterranean', 'Vegetarian', 'Healthy', 'Quick'], cuisine: 'mediterranean',
+        source: { name: 'Personal Collection', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Cucumber', amount: 1, unit: '', category: 'vegetables', prep: 'chopped into chunks' },
+            { name: 'Tomatoes', amount: 4, unit: 'medium', category: 'vegetables', prep: 'cut into wedges' },
+            { name: 'Red onion', amount: 0.5, unit: '', category: 'vegetables', prep: 'thinly sliced' },
+            { name: 'Kalamata olives', amount: 80, unit: 'g', category: 'vegetables' },
+            { name: 'Feta cheese', amount: 100, unit: 'g', category: 'dairy', prep: 'crumbled' },
+            { name: 'Olive oil', amount: 3, unit: 'tbsp', category: 'pantry' },
+            { name: 'Lemon', amount: 1, unit: '', category: 'vegetables', prep: 'juiced' },
+            { name: 'Dried oregano', amount: 1, unit: 'tsp', category: 'herbs' },
+            { name: 'Pitta bread', amount: 2, unit: '', category: 'carbs' },
+        ],
+        steps: [
+            { text: 'Chop the cucumber into bite-sized chunks. Cut the tomatoes into wedges. Thinly slice the red onion.', time: 5 },
+            { text: 'Arrange the cucumber, tomatoes, red onion and olives in a large bowl or across two serving bowls.', time: 2 },
+            { text: 'Crumble the feta cheese over the top.', time: 1 },
+            { text: 'Whisk together the olive oil, lemon juice and dried oregano. Drizzle over the salad.', time: 2 },
+            { text: 'Warm the pitta bread in a dry pan or under the grill. Serve alongside the salad.', time: 3 },
+        ]
+    },
+
+    // 18. Lemon Herb Chicken
+    {
+        id: 'lemon-herb-chicken', name: 'Lemon Herb Chicken',
+        image: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=600&h=400&fit=crop',
+        cookTime: 30, calories: 420, servings: 4, difficulty: 'Easy',
+        tags: ['Mediterranean', 'Healthy', 'Family'], cuisine: 'mediterranean',
+        source: { name: 'BBC Good Food', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Chicken breasts', amount: 4, unit: '', category: 'protein' },
+            { name: 'Lemon', amount: 1, unit: '', category: 'vegetables', prep: 'zested and juiced' },
+            { name: 'Garlic cloves', amount: 3, unit: '', category: 'vegetables', prep: 'crushed' },
+            { name: 'Fresh rosemary', amount: 2, unit: 'sprigs', category: 'herbs', prep: 'leaves picked' },
+            { name: 'Fresh thyme', amount: 4, unit: 'sprigs', category: 'herbs' },
+            { name: 'Olive oil', amount: 2, unit: 'tbsp', category: 'pantry' },
+            { name: 'New potatoes', amount: 500, unit: 'g', category: 'carbs', prep: 'halved' },
+            { name: 'Green beans', amount: 200, unit: 'g', category: 'vegetables', prep: 'trimmed' },
+        ],
+        steps: [
+            { text: 'Preheat oven to 200°C (180°C fan). Halve the new potatoes and place in a roasting tin with a drizzle of olive oil. Season and roast for 10 minutes.', time: 10 },
+            { text: 'Mix the lemon zest, lemon juice, crushed garlic, rosemary, thyme and olive oil. Season well.', time: 2 },
+            { text: 'Score the chicken breasts and coat in the lemon herb mixture.', time: 2 },
+            { text: 'Nestle the chicken amongst the potatoes in the roasting tin. Roast for 20 minutes until the chicken is golden and cooked through.', time: 20 },
+            { text: 'Boil the green beans for 3-4 minutes until tender-crisp. Drain well.', time: 4 },
+            { text: 'Serve the chicken and potatoes with the green beans and any pan juices spooned over.' },
+        ]
+    },
+
+    // 19. Chicken Fajitas
+    {
+        id: 'chicken-fajitas', name: 'Chicken Fajitas',
+        image: 'https://images.unsplash.com/photo-1611250188496-e966043a0629?w=600&h=400&fit=crop',
+        cookTime: 25, calories: 450, servings: 4, difficulty: 'Easy',
+        tags: ['Mexican', 'Family', 'Quick'], cuisine: 'mexican',
+        source: { name: 'BBC Good Food', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Chicken breast', amount: 500, unit: 'g', category: 'protein', prep: 'sliced into strips' },
+            { name: 'Red pepper', amount: 1, unit: '', category: 'vegetables', prep: 'sliced' },
+            { name: 'Green pepper', amount: 1, unit: '', category: 'vegetables', prep: 'sliced' },
+            { name: 'Red onion', amount: 1, unit: '', category: 'vegetables', prep: 'sliced' },
+            { name: 'Fajita seasoning', amount: 1, unit: 'sachet', category: 'pantry' },
+            { name: 'Olive oil', amount: 1, unit: 'tbsp', category: 'pantry' },
+            { name: 'Flour tortillas', amount: 8, unit: '', category: 'carbs' },
+            { name: 'Soured cream', amount: 100, unit: 'ml', category: 'dairy' },
+            { name: 'Lime', amount: 1, unit: '', category: 'vegetables', prep: 'cut into wedges' },
+        ],
+        steps: [
+            { text: 'Slice the chicken into strips and coat with the fajita seasoning.', time: 3 },
+            { text: 'Heat olive oil in a large frying pan over high heat. Fry the chicken strips until golden and cooked through.', time: 6 },
+            { text: 'Remove the chicken and set aside. Add the sliced peppers and onion to the same pan. Cook until softened and slightly charred.', time: 5 },
+            { text: 'Return the chicken to the pan and toss everything together.', time: 1 },
+            { text: 'Warm the tortillas in a dry pan or microwave.', time: 2 },
+            { text: 'Serve the chicken and peppers with warm tortillas, soured cream and lime wedges.' },
+        ]
+    },
+
+    // 20. Black Bean Tacos
+    {
+        id: 'black-bean-tacos', name: 'Black Bean Tacos',
+        image: 'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=600&h=400&fit=crop',
+        cookTime: 20, calories: 320, servings: 4, difficulty: 'Easy',
+        tags: ['Mexican', 'Vegetarian', 'Vegan', 'Healthy'], cuisine: 'mexican',
+        source: { name: 'Personal Collection', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Black beans', amount: 400, unit: 'g tin', category: 'protein', prep: 'drained and rinsed' },
+            { name: 'Sweetcorn', amount: 150, unit: 'g', category: 'vegetables' },
+            { name: 'Red onion', amount: 1, unit: 'small', category: 'vegetables', prep: 'finely diced' },
+            { name: 'Lime', amount: 2, unit: '', category: 'vegetables', prep: 'juiced' },
+            { name: 'Fresh coriander', amount: 1, unit: 'small bunch', category: 'herbs', prep: 'chopped' },
+            { name: 'Avocado', amount: 1, unit: 'ripe', category: 'vegetables', prep: 'sliced' },
+            { name: 'Chipotle paste', amount: 1, unit: 'tbsp', category: 'sauce' },
+            { name: 'Small corn tortillas', amount: 8, unit: '', category: 'carbs' },
+            { name: 'Little gem lettuce', amount: 1, unit: '', category: 'vegetables', prep: 'shredded' },
+            { name: 'Olive oil', amount: 1, unit: 'tbsp', category: 'pantry' },
+        ],
+        steps: [
+            { text: 'Heat olive oil in a pan over medium heat. Add the drained black beans, sweetcorn and chipotle paste. Cook, stirring, until warmed through.', time: 5 },
+            { text: 'Finely dice the red onion. Mix with lime juice and a pinch of salt to make a quick pickle. Set aside.', time: 3 },
+            { text: 'Mash half the avocado with a squeeze of lime and season. Slice the other half.', time: 2 },
+            { text: 'Warm the corn tortillas in a dry frying pan until pliable.', time: 3 },
+            { text: 'Fill each tortilla with the bean mixture, shredded lettuce, pickled onion, avocado and fresh coriander.' },
+            { text: 'Serve with extra lime wedges on the side.' },
+        ]
+    },
+
+    // 21. Shepherd's Pie
+    {
+        id: 'shepherds-pie', name: "Shepherd's Pie",
+        image: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=600&h=400&fit=crop',
+        cookTime: 45, calories: 550, servings: 4, difficulty: 'Medium',
+        tags: ['British', 'Comfort', 'Family'], cuisine: 'british',
+        source: { name: 'BBC Good Food', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Lamb mince', amount: 500, unit: 'g', category: 'protein' },
+            { name: 'Onion', amount: 1, unit: '', category: 'vegetables', prep: 'diced' },
+            { name: 'Carrot', amount: 2, unit: '', category: 'vegetables', prep: 'diced' },
+            { name: 'Celery stick', amount: 1, unit: '', category: 'vegetables', prep: 'diced' },
+            { name: 'Garlic cloves', amount: 2, unit: '', category: 'vegetables', prep: 'crushed' },
+            { name: 'Worcestershire sauce', amount: 2, unit: 'tbsp', category: 'sauce' },
+            { name: 'Tomato puree', amount: 1, unit: 'tbsp', category: 'sauce' },
+            { name: 'Lamb stock', amount: 250, unit: 'ml', category: 'liquid' },
+            { name: 'Potatoes', amount: 800, unit: 'g', category: 'carbs', prep: 'peeled and chopped' },
+            { name: 'Butter', amount: 40, unit: 'g', category: 'dairy' },
+            { name: 'Milk', amount: 50, unit: 'ml', category: 'dairy' },
+            { name: 'Vegetable oil', amount: 1, unit: 'tbsp', category: 'pantry' },
+        ],
+        steps: [
+            { text: 'Preheat oven to 200°C (180°C fan). Peel and chop the potatoes. Boil in salted water until tender.', time: 18 },
+            { text: 'Meanwhile, heat oil in a large pan. Fry the onion, carrot and celery until softened.', time: 6 },
+            { text: 'Add garlic and cook for 1 minute. Turn up the heat, add the lamb mince and brown well, breaking it up.', time: 5 },
+            { text: 'Stir in the Worcestershire sauce, tomato puree and lamb stock. Simmer until reduced and thick.', time: 12 },
+            { text: 'Drain the potatoes and mash with butter and milk until smooth. Season well.', time: 3 },
+            { text: 'Spoon the lamb mixture into a baking dish. Top with the mash, roughing up the surface with a fork.', time: 3 },
+            { text: 'Bake until the top is golden and the filling is bubbling.', time: 20 },
+        ]
+    },
+
+    // 22. Sausage & Veg Traybake
+    {
+        id: 'sausage-veg-traybake', name: 'Sausage & Veg Traybake',
+        image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&h=400&fit=crop',
+        cookTime: 35, calories: 480, servings: 4, difficulty: 'Easy',
+        tags: ['British', 'Family', 'Easy'], cuisine: 'british',
+        source: { name: 'BBC Good Food', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Pork sausages', amount: 8, unit: '', category: 'protein' },
+            { name: 'Red pepper', amount: 1, unit: '', category: 'vegetables', prep: 'chunked' },
+            { name: 'Courgette', amount: 1, unit: '', category: 'vegetables', prep: 'chunked' },
+            { name: 'Red onion', amount: 1, unit: '', category: 'vegetables', prep: 'cut into wedges' },
+            { name: 'Cherry tomatoes', amount: 200, unit: 'g', category: 'vegetables' },
+            { name: 'Olive oil', amount: 2, unit: 'tbsp', category: 'pantry' },
+            { name: 'Dried mixed herbs', amount: 1, unit: 'tsp', category: 'herbs' },
+            { name: 'New potatoes', amount: 400, unit: 'g', category: 'carbs', prep: 'halved' },
+        ],
+        steps: [
+            { text: 'Preheat oven to 200°C (180°C fan). Halve the new potatoes and place on a large baking tray.', time: 2 },
+            { text: 'Add the sausages, red pepper, courgette, red onion and cherry tomatoes to the tray.', time: 3 },
+            { text: 'Drizzle with olive oil, sprinkle over the dried mixed herbs and season generously. Toss to coat.', time: 2 },
+            { text: 'Spread everything out in a single layer so it roasts rather than steams.', time: 1 },
+            { text: 'Roast for 30-35 minutes, turning the sausages halfway through, until everything is golden and cooked through.', time: 32 },
+            { text: 'Serve straight from the tray with a drizzle of any pan juices.' },
+        ]
+    },
+
+    // 23. Kung Pao Chicken
+    {
+        id: 'kung-pao-chicken', name: 'Kung Pao Chicken',
+        image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?w=600&h=400&fit=crop',
+        cookTime: 20, calories: 410, servings: 2, difficulty: 'Easy',
+        tags: ['Asian', 'Quick', 'Spicy'], cuisine: 'asian',
+        source: { name: 'BBC Good Food', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Chicken thighs', amount: 300, unit: 'g', category: 'protein', prep: 'diced' },
+            { name: 'Roasted peanuts', amount: 50, unit: 'g', category: 'pantry' },
+            { name: 'Dried chilli flakes', amount: 1, unit: 'tsp', category: 'pantry' },
+            { name: 'Spring onions', amount: 3, unit: '', category: 'vegetables', prep: 'sliced' },
+            { name: 'Garlic cloves', amount: 2, unit: '', category: 'vegetables', prep: 'sliced' },
+            { name: 'Soy sauce', amount: 2, unit: 'tbsp', category: 'sauce' },
+            { name: 'Rice vinegar', amount: 1, unit: 'tbsp', category: 'sauce' },
+            { name: 'Honey', amount: 1, unit: 'tbsp', category: 'pantry' },
+            { name: 'Cornflour', amount: 1, unit: 'tsp', category: 'pantry' },
+            { name: 'Sesame oil', amount: 1, unit: 'tsp', category: 'pantry' },
+            { name: 'Rice', amount: 200, unit: 'g', category: 'carbs' },
+            { name: 'Vegetable oil', amount: 1, unit: 'tbsp', category: 'pantry' },
+        ],
+        steps: [
+            { text: 'Cook rice according to packet instructions.', time: 12 },
+            { text: 'Mix the soy sauce, rice vinegar, honey, cornflour and 2 tbsp water in a small bowl to make the sauce.', time: 2 },
+            { text: 'Heat vegetable oil in a wok over high heat. Fry the diced chicken until golden and cooked through.', time: 5 },
+            { text: 'Add the garlic and dried chilli flakes. Stir-fry for 30 seconds.', time: 1 },
+            { text: 'Pour in the sauce and toss until it thickens and coats the chicken.', time: 2 },
+            { text: 'Toss in the peanuts and spring onions. Drizzle with sesame oil.', time: 1 },
+            { text: 'Serve immediately over steamed rice.' },
+        ]
+    },
+
+    // 24. Prawn Pad Thai
+    {
+        id: 'prawn-pad-thai', name: 'Prawn Pad Thai',
+        image: 'https://images.unsplash.com/photo-1559314809-0d155014e29e?w=600&h=400&fit=crop',
+        cookTime: 25, calories: 450, servings: 2, difficulty: 'Medium',
+        tags: ['Asian', 'Thai', 'Noodles'], cuisine: 'asian',
+        source: { name: 'BBC Good Food', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Raw king prawns', amount: 200, unit: 'g', category: 'protein' },
+            { name: 'Rice noodles', amount: 150, unit: 'g', category: 'carbs' },
+            { name: 'Egg', amount: 2, unit: '', category: 'protein' },
+            { name: 'Beansprouts', amount: 100, unit: 'g', category: 'vegetables' },
+            { name: 'Spring onions', amount: 3, unit: '', category: 'vegetables', prep: 'sliced' },
+            { name: 'Garlic cloves', amount: 2, unit: '', category: 'vegetables', prep: 'crushed' },
+            { name: 'Tamarind paste', amount: 2, unit: 'tbsp', category: 'sauce' },
+            { name: 'Fish sauce', amount: 1, unit: 'tbsp', category: 'sauce' },
+            { name: 'Lime', amount: 1, unit: '', category: 'vegetables' },
+            { name: 'Roasted peanuts', amount: 30, unit: 'g', category: 'pantry', prep: 'roughly crushed' },
+            { name: 'Fresh coriander', amount: 1, unit: 'small bunch', category: 'herbs', prep: 'chopped' },
+            { name: 'Vegetable oil', amount: 1, unit: 'tbsp', category: 'pantry' },
+        ],
+        steps: [
+            { text: 'Soak the rice noodles in boiling water according to packet instructions. Drain and set aside.', time: 8 },
+            { text: 'Mix the tamarind paste, fish sauce and juice of half the lime in a small bowl.', time: 2 },
+            { text: 'Heat oil in a wok over high heat. Fry the garlic for 30 seconds, then add the prawns and cook until pink.', time: 3 },
+            { text: 'Push the prawns to one side. Crack in the eggs and scramble loosely.', time: 2 },
+            { text: 'Add the drained noodles, beansprouts and the tamarind sauce. Toss everything together over the heat for 2 minutes.', time: 2 },
+            { text: 'Serve topped with crushed peanuts, spring onions, fresh coriander and lime wedges.' },
+        ]
+    },
+
+    // 25. Falafel Bowl
+    {
+        id: 'falafel-bowl', name: 'Falafel Bowl',
+        image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&h=400&fit=crop',
+        cookTime: 30, calories: 420, servings: 2, difficulty: 'Easy',
+        tags: ['Middle Eastern', 'Vegetarian', 'Vegan', 'Healthy'], cuisine: 'middle-eastern',
+        source: { name: 'Personal Collection', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Chickpeas', amount: 400, unit: 'g tin', category: 'protein', prep: 'drained and rinsed' },
+            { name: 'Garlic cloves', amount: 2, unit: '', category: 'vegetables', prep: 'crushed' },
+            { name: 'Ground cumin', amount: 1, unit: 'tsp', category: 'pantry' },
+            { name: 'Ground coriander', amount: 1, unit: 'tsp', category: 'pantry' },
+            { name: 'Fresh parsley', amount: 1, unit: 'small bunch', category: 'herbs', prep: 'chopped' },
+            { name: 'Rice', amount: 200, unit: 'g', category: 'carbs' },
+            { name: 'Cucumber', amount: 0.5, unit: '', category: 'vegetables', prep: 'diced' },
+            { name: 'Tomatoes', amount: 2, unit: '', category: 'vegetables', prep: 'diced' },
+            { name: 'Red onion', amount: 0.5, unit: '', category: 'vegetables', prep: 'thinly sliced' },
+            { name: 'Tahini', amount: 2, unit: 'tbsp', category: 'sauce' },
+            { name: 'Olive oil', amount: 3, unit: 'tbsp', category: 'pantry' },
+            { name: 'Lemon', amount: 1, unit: '', category: 'vegetables', prep: 'juiced' },
+        ],
+        steps: [
+            { text: 'Cook rice according to packet instructions.', time: 12 },
+            { text: 'Drain and rinse the chickpeas. Pat dry with kitchen paper. Tip into a bowl and mash roughly with a fork, leaving some texture.', time: 3 },
+            { text: 'Mix in the crushed garlic, ground cumin, ground coriander and chopped parsley. Season well. Shape into 8 small patties.', time: 4 },
+            { text: 'Heat olive oil in a frying pan over medium heat. Fry the falafel for 3-4 minutes each side until golden and crisp.', time: 8 },
+            { text: 'Mix the tahini with lemon juice and 1-2 tbsp water to make a drizzling sauce.', time: 2 },
+            { text: 'Assemble bowls with rice, falafel, diced cucumber, tomatoes and red onion. Drizzle with tahini sauce.' },
+        ]
+    },
+
+    // 26. Bibimbap
+    {
+        id: 'bibimbap', name: 'Bibimbap',
+        image: 'https://images.unsplash.com/photo-1553163147-622ab57be1c7?w=600&h=400&fit=crop',
+        cookTime: 30, calories: 520, servings: 2, difficulty: 'Medium',
+        tags: ['Korean', 'Asian', 'Rice'], cuisine: 'korean',
+        source: { name: 'BBC Good Food', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Short-grain rice', amount: 200, unit: 'g', category: 'carbs' },
+            { name: 'Beef mince', amount: 200, unit: 'g', category: 'protein' },
+            { name: 'Courgette', amount: 1, unit: 'small', category: 'vegetables', prep: 'julienned' },
+            { name: 'Carrot', amount: 1, unit: '', category: 'vegetables', prep: 'julienned' },
+            { name: 'Spinach', amount: 100, unit: 'g', category: 'vegetables' },
+            { name: 'Beansprouts', amount: 80, unit: 'g', category: 'vegetables' },
+            { name: 'Eggs', amount: 2, unit: '', category: 'protein' },
+            { name: 'Sesame oil', amount: 2, unit: 'tsp', category: 'pantry' },
+            { name: 'Soy sauce', amount: 2, unit: 'tbsp', category: 'sauce' },
+            { name: 'Gochujang paste', amount: 1, unit: 'tbsp', category: 'sauce' },
+            { name: 'Sesame seeds', amount: 1, unit: 'tbsp', category: 'pantry' },
+            { name: 'Vegetable oil', amount: 1, unit: 'tbsp', category: 'pantry' },
+        ],
+        steps: [
+            { text: 'Cook the short-grain rice according to packet instructions.', time: 15 },
+            { text: 'Season the beef mince with 1 tbsp soy sauce and 1 tsp sesame oil. Fry in a hot pan until browned. Set aside.', time: 5 },
+            { text: 'In the same pan, stir-fry the courgette and carrot separately until just tender, about 2 minutes each. Season lightly.', time: 5 },
+            { text: 'Blanch the spinach in boiling water for 30 seconds, drain and squeeze dry. Toss with a drizzle of sesame oil.', time: 2 },
+            { text: 'Fry the eggs sunny-side up in a little oil.', time: 3 },
+            { text: 'Divide rice between two bowls. Arrange the beef, vegetables and beansprouts on top. Place a fried egg in the centre.', time: 2 },
+            { text: 'Serve with gochujang paste and a sprinkle of sesame seeds. Mix everything together before eating.' },
+        ]
+    },
+
+    // 27. Thai Basil Pork
+    {
+        id: 'thai-basil-pork', name: 'Thai Basil Pork',
+        image: 'https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?w=600&h=400&fit=crop',
+        cookTime: 15, calories: 380, servings: 2, difficulty: 'Easy',
+        tags: ['Thai', 'Quick', 'Asian', 'Spicy'], cuisine: 'thai',
+        source: { name: 'BBC Good Food', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Pork mince', amount: 300, unit: 'g', category: 'protein' },
+            { name: 'Garlic cloves', amount: 3, unit: '', category: 'vegetables', prep: 'finely chopped' },
+            { name: 'Red chilli', amount: 1, unit: '', category: 'vegetables', prep: 'finely sliced' },
+            { name: 'Green beans', amount: 100, unit: 'g', category: 'vegetables', prep: 'halved' },
+            { name: 'Soy sauce', amount: 2, unit: 'tbsp', category: 'sauce' },
+            { name: 'Fish sauce', amount: 1, unit: 'tbsp', category: 'sauce' },
+            { name: 'Oyster sauce', amount: 1, unit: 'tbsp', category: 'sauce' },
+            { name: 'Sugar', amount: 1, unit: 'tsp', category: 'pantry' },
+            { name: 'Thai basil', amount: 1, unit: 'large handful', category: 'herbs' },
+            { name: 'Jasmine rice', amount: 200, unit: 'g', category: 'carbs' },
+            { name: 'Eggs', amount: 2, unit: '', category: 'protein' },
+            { name: 'Vegetable oil', amount: 2, unit: 'tbsp', category: 'pantry' },
+        ],
+        steps: [
+            { text: 'Cook jasmine rice according to packet instructions.', time: 12 },
+            { text: 'Heat 1 tbsp oil in a wok over high heat. Fry the garlic and chilli for 30 seconds until fragrant.', time: 1 },
+            { text: 'Add the pork mince and stir-fry, breaking it up, until browned and cooked through.', time: 4 },
+            { text: 'Add the green beans, soy sauce, fish sauce, oyster sauce and sugar. Toss for 2 minutes.', time: 2 },
+            { text: 'Remove from heat and stir through the Thai basil until wilted.', time: 1 },
+            { text: 'In a separate pan, fry the eggs in the remaining oil until the edges are crispy.', time: 2 },
+            { text: 'Serve the pork over jasmine rice, topped with a fried egg.' },
+        ]
+    },
+
+    // 28. Katsu Curry
+    {
+        id: 'katsu-curry', name: 'Katsu Curry',
+        image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=600&h=400&fit=crop',
+        cookTime: 35, calories: 580, servings: 2, difficulty: 'Medium',
+        tags: ['Japanese', 'Asian', 'Curry', 'Comfort'], cuisine: 'japanese',
+        source: { name: 'BBC Good Food', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Chicken breast', amount: 2, unit: '', category: 'protein' },
+            { name: 'Panko breadcrumbs', amount: 80, unit: 'g', category: 'carbs' },
+            { name: 'Plain flour', amount: 30, unit: 'g', category: 'pantry' },
+            { name: 'Egg', amount: 1, unit: '', category: 'protein', prep: 'beaten' },
+            { name: 'Onion', amount: 1, unit: '', category: 'vegetables', prep: 'diced' },
+            { name: 'Garlic cloves', amount: 2, unit: '', category: 'vegetables', prep: 'crushed' },
+            { name: 'Ginger', amount: 1, unit: 'thumb', category: 'vegetables', prep: 'grated' },
+            { name: 'Curry powder', amount: 2, unit: 'tbsp', category: 'pantry' },
+            { name: 'Coconut milk', amount: 200, unit: 'ml', category: 'sauce' },
+            { name: 'Soy sauce', amount: 1, unit: 'tbsp', category: 'sauce' },
+            { name: 'Rice', amount: 200, unit: 'g', category: 'carbs' },
+            { name: 'Vegetable oil', amount: 0, unit: 'for frying', category: 'pantry' },
+        ],
+        steps: [
+            { text: 'Cook rice according to packet instructions.', time: 12 },
+            { text: 'For the sauce, heat a splash of oil in a pan. Fry the onion until soft. Add garlic, ginger and curry powder, stirring for 1 minute.', time: 6 },
+            { text: 'Pour in the coconut milk, soy sauce and 100ml water. Simmer for 10 minutes until thickened. Blend until smooth if desired.', time: 10 },
+            { text: 'Flatten the chicken breasts slightly with a rolling pin. Set up three shallow bowls: flour, beaten egg, and panko breadcrumbs.', time: 3 },
+            { text: 'Coat each chicken breast in flour, then egg, then panko, pressing to adhere.', time: 3 },
+            { text: 'Heat oil in a large frying pan over medium heat. Fry the chicken for 4-5 minutes each side until golden and cooked through.', time: 10 },
+            { text: 'Slice the chicken and serve over rice with the katsu sauce poured alongside.' },
+        ]
+    },
+
+    // 29. Egg Fried Rice
+    {
+        id: 'egg-fried-rice', name: 'Egg Fried Rice',
+        image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=600&h=400&fit=crop',
+        cookTime: 10, calories: 350, servings: 2, difficulty: 'Easy',
+        tags: ['Asian', 'Quick', 'Healthy', 'Vegetarian'], cuisine: 'asian',
+        source: { name: 'BBC Good Food', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Cooked rice', amount: 400, unit: 'g', category: 'carbs', prep: 'cold, day-old is best' },
+            { name: 'Eggs', amount: 3, unit: '', category: 'protein' },
+            { name: 'Spring onions', amount: 3, unit: '', category: 'vegetables', prep: 'sliced' },
+            { name: 'Frozen peas', amount: 80, unit: 'g', category: 'vegetables' },
+            { name: 'Soy sauce', amount: 2, unit: 'tbsp', category: 'sauce' },
+            { name: 'Sesame oil', amount: 1, unit: 'tsp', category: 'pantry' },
+            { name: 'Garlic cloves', amount: 2, unit: '', category: 'vegetables', prep: 'finely chopped' },
+            { name: 'Vegetable oil', amount: 1, unit: 'tbsp', category: 'pantry' },
+        ],
+        steps: [
+            { text: 'Heat vegetable oil in a wok or large frying pan over high heat until smoking.', time: 1 },
+            { text: 'Add the garlic and frozen peas. Stir-fry for 1 minute.', time: 1 },
+            { text: 'Push the peas to one side. Crack in the eggs and scramble them loosely.', time: 2 },
+            { text: 'Add the cold cooked rice. Toss everything together over high heat, breaking up any clumps.', time: 3 },
+            { text: 'Add the soy sauce and sesame oil. Toss until the rice is hot and evenly coated.', time: 2 },
+            { text: 'Scatter over the sliced spring onions and serve immediately.' },
+        ]
+    },
+
+    // 30. One-Pan Chicken & Veg
+    {
+        id: 'one-pan-chicken-veg', name: 'One-Pan Chicken & Veg',
+        image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=600&h=400&fit=crop',
+        cookTime: 25, calories: 380, servings: 4, difficulty: 'Easy',
+        tags: ['British', 'Healthy', 'Family', 'Quick'], cuisine: 'british',
+        source: { name: 'BBC Good Food', url: '#' },
+        favourite: false, timesCooked: 0,
+        ingredients: [
+            { name: 'Chicken thighs', amount: 500, unit: 'g', category: 'protein', prep: 'boneless, diced' },
+            { name: 'Broccoli', amount: 200, unit: 'g', category: 'vegetables', prep: 'cut into florets' },
+            { name: 'Red pepper', amount: 1, unit: '', category: 'vegetables', prep: 'chunked' },
+            { name: 'Courgette', amount: 1, unit: '', category: 'vegetables', prep: 'sliced into half-moons' },
+            { name: 'Cherry tomatoes', amount: 200, unit: 'g', category: 'vegetables', prep: 'halved' },
+            { name: 'Olive oil', amount: 2, unit: 'tbsp', category: 'pantry' },
+            { name: 'Garlic cloves', amount: 3, unit: '', category: 'vegetables', prep: 'sliced' },
+            { name: 'Lemon', amount: 1, unit: '', category: 'vegetables', prep: 'juiced' },
+            { name: 'Dried mixed herbs', amount: 1, unit: 'tsp', category: 'herbs' },
+        ],
+        steps: [
+            { text: 'Heat olive oil in a large, deep frying pan or skillet over medium-high heat.', time: 1 },
+            { text: 'Season the diced chicken thighs and fry until golden on all sides.', time: 6 },
+            { text: 'Add the garlic and dried mixed herbs. Stir for 30 seconds until fragrant.', time: 1 },
+            { text: 'Add the broccoli, red pepper and courgette. Toss together and cook for 5-6 minutes, stirring occasionally.', time: 6 },
+            { text: 'Add the cherry tomatoes and cook for a further 3-4 minutes until the tomatoes start to burst and the vegetables are tender.', time: 4 },
+            { text: 'Squeeze over the lemon juice and toss everything together. Season to taste and serve straight from the pan.' },
+        ]
     }
 ];

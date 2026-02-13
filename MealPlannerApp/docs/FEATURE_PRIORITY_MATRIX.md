@@ -267,9 +267,9 @@ Is it blocking MVP launch?
 ## 🔗 Cross-Reference
 
 - **For detailed specs**: See `FEATURE_INVENTORY.md`
-- **For implementation details**: See `features-from-old-version/README.md`
-- **For code examples**: See `features-from-old-version/01-10-*.md` (specific feature files)
+- **For implementation details**: See `archive/v2-feature-migration-docs/README.md` (archived — most features now in v3)
 - **For weekly planner spec**: See `MEAL_PLANNER_WEEKLY_VIEW_SPEC.md`
+- **For current prototype code**: See `MealPlannerApp/frontend/v3/`
 
 ---
 

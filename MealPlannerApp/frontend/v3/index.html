@@ -19,7 +19,7 @@
                 <button class="btn btn-secondary btn-sm" id="addRecipeBtn">＋ Add recipe</button>
                 <button class="btn btn-secondary btn-sm" id="groceryListBtn">🛒 Grocery list</button>
                 <button class="btn btn-secondary btn-sm" id="fridgeBtn">🧊 What’s in my fridge</button>
-                <button class="btn btn-secondary btn-sm" id="allergenBtn">⚠️ Allergen filter</button>
+                <!-- Allergen filter removed: profiles handle this automatically -->
             </div>
             <div class="header-controls">
                 <div class="header-control">
@@ -73,34 +73,26 @@
 
     <!-- =================== RECIPES VIEW =================== -->
     <section id="recipes-view" class="view">
-        <div class="filter-bar">
-            <div class="filter-pills" id="filterPills">
-                <button class="pill active" data-filter="all">All</button>
-                <button class="pill" data-filter="quick">⚡ Under 20m</button>
-                <button class="pill" data-filter="under5">🧮 ≤ 5 ingredients</button>
-                <button class="pill" data-filter="thai">🍛 Thai</button>
-                <button class="pill" data-filter="vegetarian">🥬 Vegetarian</button>
-                <button class="pill" data-filter="asian">🍜 Asian</button>
-                <button class="pill" data-filter="italian">🍝 Italian</button>
-                <button class="pill" data-filter="healthy">💚 Healthy</button>
-                <button class="pill" data-filter="fish">🐟 Fish</button>
-                <button class="pill" data-filter="favourites-only">❤️ Favourites only</button>
-                <button class="pill" data-filter="hide-dislikes">🙈 Hide dislikes</button>
-                <button class="pill" data-filter="hide-allergens">🛡️ Hide allergens</button>
-                <button class="pill" data-filter="hide-ingredients">🧾 Hide ingredient list</button>
+        <div class="use-it-up-section" id="useItUpSection" style="display:none;">
+            <div class="use-it-up-header">
+                <h3>🧊 Use It Up</h3>
+                <span class="use-it-up-hint">Recipes using ingredients you have</span>
             </div>
-            <div class="sort-section">
-                <label>Sort:</label>
-                <select class="form-input" id="sortSelect" style="width:auto;padding:5px 10px;">
-                    <option value="recent">Recently Added</option>
-                    <option value="favourites">Favourites</option>
-                    <option value="never-tried">Never Tried</option>
-                    <option value="quick">Quick & Easy</option>
-                    <option value="random">Surprise Me</option>
-                </select>
-            </div>
+            <div class="use-it-up-rail" id="useItUpRail"></div>
+        </div>
+        <div class="active-filters-info" id="activeFiltersInfo"></div>
+        <div class="recipe-search">
+            <span class="recipe-search-icon">🔍</span>
+            <input id="recipeSearchInput" class="recipe-search-input" placeholder="Search recipes...">
+            <button id="recipeSearchClear" class="recipe-search-clear" aria-label="Clear search">✕</button>
+        </div>
+        <div id="filterChipBar" class="filter-chipbar"></div>
+        <div class="filter-results">
+            <span id="filterResultCount" class="filter-result-count"></span>
+            <button id="filterClearAll" class="filter-clear-all" style="display:none;">Clear all</button>
         </div>
         <div class="recipe-grid" id="recipeGrid"></div>
+        <button class="fab-add-recipe" id="fabAddRecipe" title="Add a new recipe">+ Add Recipe</button>
     </section>
 
     <!-- =================== SHOPPING LIST VIEW =================== -->
@@ -114,8 +106,10 @@
                     <button class="btn btn-danger btn-sm" id="clearPlanBtn">Clear Plan</button>
                 </div>
             </div>
+            <div class="shopping-progress" id="shoppingProgress" style="padding:0 16px;"></div>
+            <p class="shopping-hint" style="padding:0 16px;">Tap items to mark as got</p>
             <div class="pantry-section" id="pantryReminder" style="margin:12px 16px;">
-                <h3>🏠 Cupboard Staples (excluded from list)</h3>
+                <h3>🏠 Check Your Cupboard Before Shopping</h3>
                 <div class="pantry-items" id="pantryItemsList"></div>
                 <div style="margin-top:8px;display:flex;gap:6px;">
                     <input type="text" class="form-input" id="newPantryInput" placeholder="Add staple..." style="flex:1;padding:5px 10px;font-size:.8rem;">
@@ -161,6 +155,10 @@
                     <button class="btn btn-primary btn-sm" id="settingsAddPantryBtn">Add</button>
                 </div>
             </div>
+        </div>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--c-gray-200);">
+            <button class="btn btn-ghost btn-sm" id="resetAllDataBtn" style="color:var(--c-danger);">🗑 Reset all data</button>
+            <span style="font-size:.7rem;color:var(--c-gray-400);margin-left:6px;">Clear everything and start fresh (triggers setup wizard)</span>
         </div>
     </section>
 </div>
@@ -294,6 +292,14 @@
         </div>
         <div class="modal-body">
             <form id="addRecipeForm">
+                <div class="url-import-section">
+                    <label class="form-label">Import from URL</label>
+                    <div style="display:flex;gap:6px;">
+                        <input class="form-input" id="recipeUrlInput" placeholder="Paste a recipe URL...">
+                        <button type="button" class="btn btn-secondary btn-sm" id="fetchRecipeBtn">Fetch</button>
+                    </div>
+                    <div id="urlFetchStatus" style="font-size:.75rem;margin-top:4px;min-height:1em;"></div>
+                </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                     <div>
                         <label class="form-label">Recipe name</label>
@@ -328,9 +334,15 @@
                         <select class="form-input" id="recipeCuisineInput">
                             <option value="other">Other</option>
                             <option value="asian">Asian</option>
-                            <option value="italian">Italian</option>
                             <option value="british">British</option>
+                            <option value="indian">Indian</option>
+                            <option value="italian">Italian</option>
+                            <option value="japanese">Japanese</option>
+                            <option value="korean">Korean</option>
+                            <option value="mediterranean">Mediterranean</option>
                             <option value="mexican">Mexican</option>
+                            <option value="middleeastern">Middle Eastern</option>
+                            <option value="thai">Thai</option>
                         </select>
                     </div>
                     <div>
@@ -367,10 +379,24 @@
             <button class="btn-icon" id="fridgeClose">✕</button>
         </div>
         <div class="modal-body">
-            <p style="font-size:.8rem;color:var(--c-gray-500);margin-bottom:10px;">Add items you want to use. Turn on filter to show recipes that include them.</p>
+            <p style="font-size:.8rem;color:var(--c-gray-500);margin-bottom:10px;">Add items you want to use up. Recipes using these ingredients will be highlighted.</p>
             <div style="display:flex;gap:6px;margin-bottom:10px;">
                 <input class="form-input" id="fridgeInput" placeholder="e.g. chicken, broccoli" style="flex:1;">
                 <button class="btn btn-secondary btn-sm" id="fridgeAddBtn">Add</button>
+            </div>
+            <div style="margin-bottom:10px;">
+                <p style="font-size:.75rem;color:var(--c-gray-400);margin-bottom:6px;">Common perishables:</p>
+                <div class="fridge-quick-chips" id="fridgeQuickChips">
+                    <button class="pill" data-item="chicken">🍗 Chicken</button>
+                    <button class="pill" data-item="mince">🥩 Mince</button>
+                    <button class="pill" data-item="salmon">🐟 Salmon</button>
+                    <button class="pill" data-item="mushrooms">🍄 Mushrooms</button>
+                    <button class="pill" data-item="peppers">🫑 Peppers</button>
+                    <button class="pill" data-item="broccoli">🥦 Broccoli</button>
+                    <button class="pill" data-item="cheese">🧀 Cheese</button>
+                    <button class="pill" data-item="cream">🥛 Cream</button>
+                    <button class="pill" data-item="eggs">🥚 Eggs</button>
+                </div>
             </div>
             <div id="fridgeList"></div>
             <label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.85rem;">
@@ -380,19 +406,120 @@
     </div>
 </div>
 
-<!-- =================== ALLERGEN FILTER MODAL =================== -->
-<div class="modal-overlay" id="allergenModal">
-    <div class="modal modal-sm">
-        <div class="modal-header">
-            <h2>⚠️ Allergen Filter</h2>
-            <button class="btn-icon" id="allergenClose">✕</button>
-        </div>
-        <div class="modal-body">
-            <p style="font-size:.8rem;color:var(--c-gray-500);margin-bottom:10px;">Hide recipes that contain selected allergens.</p>
-            <div class="allergen-grid" id="allergenFilterGrid"></div>
-            <div class="modal-footer" style="padding:0;margin-top:12px;">
-                <button class="btn btn-secondary" id="allergenClearBtn">Clear</button>
-                <button class="btn btn-primary" id="allergenApplyBtn">Apply</button>
+<!-- Allergen filter modal removed — profiles handle allergen filtering automatically -->
+
+<!-- =================== FILTER BOTTOM SHEET =================== -->
+<div id="filterSheet" class="bottom-sheet">
+    <div class="bottom-sheet-backdrop"></div>
+    <div class="bottom-sheet-panel">
+        <div class="bottom-sheet-handle"></div>
+        <div class="bottom-sheet-title" id="filterSheetTitle"></div>
+        <div class="bottom-sheet-body" id="filterSheetBody"></div>
+        <div class="bottom-sheet-footer" id="filterSheetFooter"></div>
+    </div>
+</div>
+
+<!-- =================== ONBOARDING WIZARD =================== -->
+<div class="modal-overlay" id="onboardingModal">
+    <div class="modal modal-md onboarding-wizard">
+        <div class="modal-body" style="padding:28px;">
+            <!-- Progress -->
+            <div class="wizard-progress">
+                <span class="wizard-dot current active"></span>
+                <span class="wizard-dot"></span>
+                <span class="wizard-dot"></span>
+                <span class="wizard-dot"></span>
+                <span class="wizard-dot"></span>
+            </div>
+
+            <!-- Step 1: Welcome -->
+            <div class="wizard-step active" id="wizard-step-1">
+                <div style="text-align:center;padding:20px 0;">
+                    <div style="font-size:3rem;margin-bottom:12px;">🍽️</div>
+                    <h2 style="font-size:1.5rem;margin-bottom:8px;">Welcome to Meal Planner</h2>
+                    <p style="color:var(--c-gray-500);margin-bottom:24px;max-width:360px;margin-left:auto;margin-right:auto;">
+                        Plan your meals, generate shopping lists, and cook with confidence. Let's set up your household in a few quick steps.
+                    </p>
+                    <button class="btn btn-primary" data-wizard-action="start" style="padding:12px 32px;font-size:1rem;">Get Started</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Profiles -->
+            <div class="wizard-step" id="wizard-step-2">
+                <h2 style="font-size:1.2rem;margin-bottom:4px;">👨‍👩‍👧‍👦 Who's in your household?</h2>
+                <p style="font-size:.8rem;color:var(--c-gray-500);margin-bottom:16px;">Add each person so we can filter out recipes with their allergens and dislikes.</p>
+
+                <div id="onboardingProfileList"></div>
+
+                <div class="card" style="padding:14px;margin-top:8px;">
+                    <div style="margin-bottom:8px;">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-input" id="onboardingProfileName" placeholder="e.g., Tom">
+                    </div>
+                    <div style="margin-bottom:8px;">
+                        <label class="form-label">Allergens to Avoid</label>
+                        <div class="allergen-grid" id="onboardingAllergenGrid"></div>
+                    </div>
+                    <div style="margin-bottom:8px;">
+                        <label class="form-label">Dislikes (comma separated)</label>
+                        <input type="text" class="form-input" id="onboardingProfileDislikes" placeholder="e.g., mushrooms, olives">
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm" data-wizard-action="add-profile" style="width:100%;">+ Add Person</button>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;margin-top:16px;">
+                    <button class="btn btn-ghost" data-wizard-action="back">← Back</button>
+                    <button class="btn btn-primary" data-wizard-action="next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Pantry Staples -->
+            <div class="wizard-step" id="wizard-step-3">
+                <h2 style="font-size:1.2rem;margin-bottom:4px;">🏠 Cupboard Staples</h2>
+                <p style="font-size:.8rem;color:var(--c-gray-500);margin-bottom:16px;">Things you always have at home. These won't appear on your shopping list.</p>
+
+                <div class="pantry-items" id="onboardingPantryItems" style="margin-bottom:12px;"></div>
+
+                <div style="display:flex;gap:6px;">
+                    <input type="text" class="form-input" id="onboardingPantryInput" placeholder="Add a staple..." style="flex:1;">
+                    <button class="btn btn-secondary btn-sm" id="onboardingPantryAdd">Add</button>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;margin-top:16px;">
+                    <button class="btn btn-ghost" data-wizard-action="back">← Back</button>
+                    <button class="btn btn-primary" data-wizard-action="next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Fridge -->
+            <div class="wizard-step" id="wizard-step-4">
+                <h2 style="font-size:1.2rem;margin-bottom:4px;">🧊 What's in your fridge?</h2>
+                <p style="font-size:.8rem;color:var(--c-gray-500);margin-bottom:16px;">Optional — add items you want to use up and we'll suggest recipes that include them.</p>
+
+                <div id="onboardingFridgeItems" style="margin-bottom:12px;"></div>
+
+                <div style="display:flex;gap:6px;">
+                    <input type="text" class="form-input" id="onboardingFridgeInput" placeholder="e.g., chicken, broccoli" style="flex:1;">
+                    <button class="btn btn-secondary btn-sm" id="onboardingFridgeAdd">Add</button>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;margin-top:16px;">
+                    <button class="btn btn-ghost" data-wizard-action="back">← Back</button>
+                    <div style="display:flex;gap:6px;">
+                        <button class="btn btn-secondary" data-wizard-action="skip">Skip</button>
+                        <button class="btn btn-primary" data-wizard-action="next">Next →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Done -->
+            <div class="wizard-step" id="wizard-step-5">
+                <div style="text-align:center;padding:12px 0;">
+                    <div style="font-size:3rem;margin-bottom:12px;">🎉</div>
+                    <h2 style="font-size:1.3rem;margin-bottom:12px;">You're all set!</h2>
+                    <div id="onboardingSummary" style="margin-bottom:20px;"></div>
+                    <button class="btn btn-primary" data-wizard-action="complete" style="padding:12px 32px;font-size:1rem;">Start Planning</button>
+                </div>
             </div>
         </div>
     </div>
