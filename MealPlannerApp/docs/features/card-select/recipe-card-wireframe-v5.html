@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Recipe Card Wireframe v5</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pri:#4338ca;--pri-l:#e0e7ff;--pri-50:#eef2ff;--heart:#e11d48;--heart-l:#ffe4e6;--ok:#16a34a;--ok-l:#dcfce7;--warn:#d97706;--new:#7c3aed;--w:#fff;--g50:#f8fafc;--g100:#f1f5f9;--g200:#e2e8f0;--g300:#cbd5e1;--g400:#94a3b8;--g500:#64748b;--g600:#475569;--g700:#334155;--g800:#1e293b;--g900:#0f172a;--f:'DM Sans',system-ui,sans-serif;--r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:20px;--r-full:9999px;--sh:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f);background:#f0f0f5;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px;color:var(--g800);-webkit-user-select:none;user-select:none}
+.pg-hdr{text-align:center;margin-bottom:20px;max-width:600px}
+.pg-hdr h1{font-size:20px;font-weight:700;margin-bottom:4px}
+.pg-hdr p{font-size:13px;color:var(--g500);line-height:1.5}
+.top-nav{display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap;justify-content:center}
+.top-nav button{font-family:var(--f);font-size:11px;font-weight:500;padding:6px 12px;border-radius:var(--r-full);border:1.5px solid var(--g200);background:var(--w);color:var(--g600);cursor:pointer;transition:all .2s}
+.top-nav button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.phone{width:375px;height:812px;background:var(--w);border-radius:40px;box-shadow:0 0 0 8px #1a1a2e,0 0 0 10px #2a2a3e,0 20px 60px rgba(0,0,0,.2);overflow:hidden;position:relative;display:flex;flex-direction:column}
+.sbar{display:flex;justify-content:space-between;padding:12px 28px 4px;font-size:14px;font-weight:600;flex-shrink:0}
+.ahdr{padding:8px 20px 10px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--g100);flex-shrink:0}
+.ahdr h2{font-size:18px;font-weight:700}
+.ahdr-ic{display:flex;gap:8px}
+.hic{width:34px;height:34px;border-radius:50%;background:var(--g50);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;border:none}
+.vtog{display:flex;padding:8px 20px;gap:4px;flex-shrink:0;background:var(--g50);border-bottom:1px solid var(--g100)}
+.vtog button{flex:1;font-family:var(--f);font-size:11px;font-weight:500;padding:7px 4px;border-radius:var(--r-sm);border:none;background:transparent;color:var(--g400);cursor:pointer;transition:all .2s}
+.vtog button.on{background:var(--w);color:var(--pri);box-shadow:0 1px 3px rgba(0,0,0,.08);font-weight:600}
+.scr{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.scn{display:none;flex-direction:column;height:100%}
+.scn.on{display:flex}
+.hind{height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hind div{width:134px;height:5px;background:var(--g900);border-radius:3px}
+
+/* ===== FULL CARD ===== */
+.fcl{padding:14px 18px;display:flex;flex-direction:column;gap:14px;padding-bottom:20px}
+.rc{border-radius:var(--r-lg);overflow:hidden;background:var(--w);box-shadow:var(--sh)}
+.ci{width:100%;height:195px;position:relative;overflow:hidden}
+.ci::after{content:'';position:absolute;bottom:0;left:0;right:0;height:50px;background:linear-gradient(transparent,rgba(0,0,0,.1));pointer-events:none}
+.db{position:absolute;top:9px;left:9px;display:flex;gap:4px;z-index:2}
+.dbg{font-size:9px;font-weight:700;padding:2px 6px;border-radius:var(--r-full);background:rgba(255,255,255,.85);backdrop-filter:blur(8px);color:var(--g500);text-transform:uppercase;letter-spacing:.3px}
+.dbg.ok{color:var(--ok)}
+.nb{position:absolute;top:9px;right:9px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:var(--r-full);background:var(--new);color:#fff;z-index:2}
+.st{position:absolute;bottom:9px;left:9px;font-size:10px;font-weight:500;padding:3px 9px;border-radius:var(--r-full);background:rgba(255,255,255,.88);backdrop-filter:blur(8px);color:var(--g600);z-index:2}
+.cb{padding:11px 13px 13px}
+.ct{font-size:14px;font-weight:600;color:var(--g900);line-height:1.3;margin-bottom:5px}
+.cm{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.mi2{font-size:11px;color:var(--g500)}
+.mdot{width:3px;height:3px;border-radius:50%;background:var(--g300)}
+.ckb{font-size:10px;color:var(--g400)}
+.ca{display:flex;justify-content:space-between;align-items:center;padding-top:9px;border-top:1px solid var(--g100)}
+.ag{display:flex;gap:5px}
+.ab{display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border-radius:var(--r-full);border:1.5px solid var(--g200);background:var(--w);font-family:var(--f);font-size:11px;font-weight:500;color:var(--g500);cursor:pointer;transition:all .2s}
+.ab .ic{font-size:13px}
+.ab.hrt.on{border-color:var(--heart);color:var(--heart);background:var(--heart-l)}
+.adb{padding:7px 14px;border-radius:var(--r-full);border:none;background:var(--pri);font-family:var(--f);font-size:12px;font-weight:600;color:#fff;cursor:pointer}
+.adb:active{transform:scale(.96)}
+
+/* ===== QUICK VIEW ===== */
+.ql{padding:8px 14px;display:flex;flex-direction:column;gap:0;padding-bottom:20px}
+
+/* Swipeable row */
+.qrow{position:relative;overflow:hidden;border-bottom:1px solid var(--g100);transition:height .3s ease, opacity .3s ease, margin .3s ease;height:84px}
+.qrow.removing{height:0!important;opacity:0;margin:0;border:none;overflow:hidden}
+
+/* Action panels behind card */
+.qrow-left{position:absolute;top:0;left:0;bottom:0;display:flex;align-items:stretch;z-index:1}
+.qrow-right{position:absolute;top:0;right:0;bottom:0;display:flex;align-items:stretch;z-index:1}
+.qact{display:flex;flex-direction:column;align-items:center;justify-content:center;width:72px;font-size:10px;font-weight:600;color:var(--w);gap:2px;cursor:pointer;transition:opacity .15s}
+.qact:active{opacity:.7}
+.qact .qact-i{font-size:18px}
+.qact.c-shortlist{background:var(--pri)}
+.qact.c-plan{background:var(--ok)}
+.qact.c-skip{background:var(--g400)}
+.qact.c-nope{background:var(--g700)}
+
+/* The sliding card */
+.qc{display:flex;background:var(--w);height:84px;position:relative;z-index:2;touch-action:pan-y;transition:transform .3s cubic-bezier(.4,0,.2,1);cursor:grab}
+.qc.dragging{transition:none;cursor:grabbing}
+.qc.flyout-left{transition:transform .3s ease-in;transform:translateX(-110%)!important}
+.qc.flyout-right{transition:transform .3s ease-in;transform:translateX(110%)!important}
+
+.qi{width:84px;height:100%;flex-shrink:0;overflow:hidden;position:relative}
+.qbg{position:absolute;top:4px;left:4px;display:flex;gap:2px}
+.qb2{font-size:7px;font-weight:700;padding:1px 4px;border-radius:var(--r-full);background:rgba(255,255,255,.85);color:var(--g500);text-transform:uppercase}
+.qb2.ok{color:var(--ok)}
+.qbd{flex:1;padding:8px 10px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.qt{font-size:12px;font-weight:600;color:var(--g900);line-height:1.3;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qm{font-size:10px;color:var(--g500);display:flex;gap:6px;margin-bottom:4px}
+.qtags{display:flex;gap:3px}
+.qtg{font-size:8px;font-weight:500;padding:1px 5px;border-radius:var(--r-full);background:var(--g50);color:var(--g500);border:1px solid var(--g100)}
+.qtg.nw{background:#f3e8ff;color:var(--new);border-color:#e9d5ff}
+.qhrt{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--g200);background:var(--w);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;margin-right:8px;align-self:center;flex-shrink:0}
+.qhrt.ha{border-color:var(--heart);background:var(--heart-l)}
+.qc.chk{border-left:3px solid var(--warn)}
+
+/* Shortlist badge (floating) */
+.shortlist-bar{
+    position:sticky;bottom:0;left:0;right:0;
+    background:var(--w);border-top:1px solid var(--g200);
+    padding:10px 18px;display:flex;align-items:center;justify-content:space-between;
+    z-index:10;flex-shrink:0;
+}
+.sl-left{display:flex;align-items:center;gap:8px}
+.sl-count{
+    width:28px;height:28px;border-radius:50%;background:var(--pri);color:#fff;
+    font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;
+}
+.sl-text{font-size:12px;color:var(--g600)}
+.sl-text strong{color:var(--g900)}
+.sl-btn{
+    padding:8px 16px;border-radius:var(--r-full);border:none;
+    background:var(--pri);font-family:var(--f);font-size:12px;
+    font-weight:600;color:#fff;cursor:pointer;
+}
+.sl-btn:active{transform:scale(.96)}
+
+/* Long-press day picker popover */
+.day-picker{
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    background:var(--w);border-radius:var(--r-xl);padding:18px;
+    box-shadow:0 8px 40px rgba(0,0,0,.18);z-index:100;
+    width:300px;display:none;animation:popIn .2s ease-out;
+}
+.day-picker.show{display:block}
+.day-picker h3{font-size:14px;font-weight:700;color:var(--g900);margin-bottom:4px}
+.day-picker p{font-size:11px;color:var(--g500);margin-bottom:12px}
+.dp-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.dp-day{
+    padding:10px;border-radius:var(--r-md);border:1.5px solid var(--g200);
+    background:var(--w);font-family:var(--f);font-size:12px;font-weight:500;
+    color:var(--g700);cursor:pointer;text-align:left;transition:all .15s;
+}
+.dp-day:active{border-color:var(--pri);background:var(--pri-50)}
+.dp-day .dp-label{font-weight:600;color:var(--g900)}
+.dp-day .dp-status{font-size:10px;color:var(--g400);margin-top:2px}
+.dp-day.filled{opacity:.5}
+.dp-day.filled .dp-status{color:var(--ok)}
+.dp-cancel{margin-top:10px;width:100%;padding:10px;border:none;background:var(--g50);border-radius:var(--r-md);font-family:var(--f);font-size:12px;font-weight:500;color:var(--g500);cursor:pointer}
+.dp-overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99;display:none}
+.dp-overlay.show{display:block}
+
+/* Toast */
+.toast{
+    position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
+    background:var(--g800);color:var(--w);padding:10px 20px;border-radius:var(--r-full);
+    font-family:var(--f);font-size:12px;font-weight:500;opacity:0;transition:opacity .3s;
+    pointer-events:none;z-index:200;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.2);
+}
+.toast.show{opacity:1}
+
+/* ===== SWIPE MODE ===== */
+.swhdr{padding:14px 20px 6px;flex-shrink:0}
+.swhdr h3{font-size:15px;font-weight:700;margin-bottom:2px}
+.swhdr p{font-size:12px;color:var(--g500)}
+.swa{flex:1;position:relative;padding:10px 20px;overflow:hidden;touch-action:none}
+.sww{position:relative;width:100%;height:340px}
+.swc{position:absolute;top:0;left:0;right:0;border-radius:var(--r-lg);overflow:visible;background:var(--w);box-shadow:var(--sh);will-change:transform;touch-action:none}
+.swc-inner{border-radius:var(--r-lg);overflow:hidden}
+.swc[data-p="0"]{z-index:3}
+.swc[data-p="1"]{z-index:2;transform:scale(.95) translateY(10px);opacity:.5;pointer-events:none}
+.swc[data-p="2"]{z-index:1;transform:scale(.90) translateY(20px);opacity:.2;pointer-events:none}
+.swc.gone{pointer-events:none}
+.swc .ci{height:195px}
+.sw-label{position:absolute;top:16px;z-index:10;padding:5px 14px;border-radius:var(--r-sm);font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:2px;opacity:0;transition:opacity .1s;pointer-events:none;border:3px solid}
+.sw-label.skip-l{right:16px;color:var(--g500);border-color:var(--g400);transform:rotate(12deg);background:rgba(255,255,255,.9)}
+.sw-label.add-l{left:16px;color:var(--ok);border-color:var(--ok);transform:rotate(-12deg);background:rgba(255,255,255,.9)}
+.sw-dislike{position:absolute;bottom:10px;right:10px;z-index:10;display:flex;align-items:center;gap:4px;padding:6px 12px;border-radius:var(--r-full);background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border:1.5px solid var(--g200);font-family:var(--f);font-size:11px;font-weight:500;color:var(--g500);cursor:pointer}
+.sw-toast{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);background:var(--g800);color:var(--w);padding:8px 18px;border-radius:var(--r-full);font-size:12px;font-weight:500;opacity:0;transition:opacity .3s;pointer-events:none;z-index:30;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.sw-toast.show{opacity:1}
+.swacts{display:flex;justify-content:center;gap:16px;padding:6px 20px;flex-shrink:0}
+.swbw{display:flex;flex-direction:column;align-items:center}
+.swab{width:50px;height:50px;border-radius:50%;border:2px solid var(--g200);background:var(--w);display:flex;align-items:center;justify-content:center;font-size:19px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.swab:active{transform:scale(.88)}
+.swbl{font-size:8px;font-weight:600;color:var(--g400);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+.spg{padding:4px 20px 2px;flex-shrink:0}
+.pdots{display:flex;gap:3px;justify-content:center}
+.pd{width:7px;height:7px;border-radius:50%;background:var(--g200);transition:all .3s}
+.pd.dn{background:var(--ok)}.pd.cr{background:var(--pri);width:18px;border-radius:4px}.pd.sk{background:var(--g300)}
+
+/* ===== DISMISS SHEET ===== */
+.dov{position:absolute;inset:0;background:rgba(15,23,42,.4);backdrop-filter:blur(2px);display:none;align-items:flex-end;z-index:20;border-radius:40px;overflow:hidden}
+.dov.sh{display:flex}
+.dsh{background:var(--w);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:18px 18px 28px;width:100%;animation:slu .3s ease-out}
+.dsh h3{font-size:15px;font-weight:700;margin-bottom:3px}
+.dsh>p{font-size:12px;color:var(--g500);margin-bottom:12px}
+.dos{display:flex;flex-direction:column;gap:6px}
+.dop{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:var(--r-md);border:1.5px solid var(--g200);background:var(--w);cursor:pointer;transition:all .2s;font-family:var(--f);text-align:left}
+.dop:active{border-color:var(--pri);background:var(--pri-50)}
+.doi{font-size:16px;width:32px;height:32px;border-radius:50%;background:var(--g50);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dot2{font-size:12px;font-weight:500;color:var(--g800)}
+.dsub{font-size:10px;color:var(--g400);margin-top:1px}
+.dcn{margin-top:8px;width:100%;padding:11px;border-radius:var(--r-md);border:none;background:var(--g50);font-family:var(--f);font-size:12px;font-weight:500;color:var(--g500);cursor:pointer}
+
+/* ===== SPEC ===== */
+.sps{padding:10px 18px}
+.spt{font-size:13px;font-weight:700;margin-bottom:8px;padding-bottom:5px;border-bottom:2px solid var(--pri-l)}
+.spl{display:flex;flex-direction:column;gap:6px}
+.spi{display:flex;gap:7px;align-items:flex-start;font-size:11px;line-height:1.5;color:var(--g700)}
+.spn{width:18px;height:18px;border-radius:50%;background:var(--pri);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.spi strong{color:var(--g900)}
+
+.pi{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px}
+.i-thai{background:linear-gradient(135deg,#f59e0b,#d97706,#92400e)}
+.i-salm{background:linear-gradient(135deg,#f97316,#fb923c,#ea580c)}
+.i-stew{background:linear-gradient(135deg,#78350f,#92400e,#a16207)}
+.i-riso{background:linear-gradient(135deg,#fbbf24,#f59e0b,#d97706)}
+.i-salad{background:linear-gradient(135deg,#22c55e,#16a34a,#15803d)}
+.i-curry{background:linear-gradient(135deg,#eab308,#ca8a04,#a16207)}
+.i-faji{background:linear-gradient(135deg,#dc2626,#ea580c,#f59e0b)}
+.i-past{background:linear-gradient(135deg,#ef4444,#dc2626,#991b1b)}
+.i-bowl{background:linear-gradient(135deg,#06b6d4,#0891b2,#0e7490)}
+.i-wrap{background:linear-gradient(135deg,#a3e635,#65a30d,#4d7c0f)}
+
+@keyframes slu{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes popIn{from{transform:translate(-50%,-50%) scale(.9);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+@keyframes hpop{0%{transform:scale(1)}30%{transform:scale(1.25)}100%{transform:scale(1)}}
+@media(max-width:420px){.phone{width:100%;border-radius:0;box-shadow:none;height:100vh}body{padding:0}.pg-hdr,.top-nav{display:none}}
+</style>
+</head>
+<body>
+<div class="pg-hdr"><h1>🍽 Recipe Card Wireframe v5</h1><p>Swipe to act, cards dismiss on skip/nope, shortlist basket, long-press to pick a day.</p></div>
+<div class="top-nav" id="tn">
+<button class="on" data-s="full">Full Card</button>
+<button data-s="quick">Quick View</button>
+<button data-s="swipe">Swipe Mode</button>
+<button data-s="dismiss">Dismiss Flow</button>
+<button data-s="spec">Design Spec</button>
+</div>
+
+<div class="phone">
+<div class="sbar"><span>09:41</span><span style="font-size:12px">📶 🔋</span></div>
+
+<!-- ===== FULL CARD ===== -->
+<div class="scn on" id="s-full">
+<div class="ahdr"><h2>Recipes</h2><div class="ahdr-ic"><button class="hic">🎛</button><button class="hic">🔍</button></div></div>
+<div class="vtog"><button class="on" data-v="full">🃏 Full</button><button data-v="quick">📋 Quick</button><button data-v="swipe">💫 Swipe</button></div>
+<div class="scr"><div class="fcl">
+<div class="rc"><div class="ci"><div class="pi i-thai">🍜</div><div class="db"><span class="dbg ok">GF</span><span class="dbg ok">DF</span></div><span class="nb">New</span><span class="st">🥘 One Pot</span></div><div class="cb"><div class="ct">Thai Green Curry with Jasmine Rice</div><div class="cm"><span class="mi2">⏱ 25 min</span><span class="mdot"></span><span class="mi2">High Protein</span></div><div class="ca"><div class="ag"><button class="ab hrt" onclick="tH(this)"><span class="ic">🤍</span> Save</button><button class="ab" onclick="go('dismiss')"><span class="ic">✕</span> Not for me</button></div><button class="adb" onclick="aP(this)">+ Shortlist</button></div></div></div>
+<div class="rc"><div class="ci"><div class="pi i-salm">🐟</div><div class="db"><span class="dbg ok">GF</span></div><span class="st">⚡ Quick</span></div><div class="cb"><div class="ct">Honey Glazed Salmon & Greens</div><div class="cm"><span class="mi2">⏱ 20 min</span><span class="mdot"></span><span class="ckb">✓ Made 5×</span></div><div class="ca"><div class="ag"><button class="ab hrt on" onclick="tH(this)"><span class="ic">❤️</span> Saved</button><button class="ab" onclick="go('dismiss')"><span class="ic">✕</span> Not for me</button></div><button class="adb" onclick="aP(this)">+ Shortlist</button></div></div></div>
+<div class="rc"><div class="ci"><div class="pi i-stew">🍲</div><div class="db"><span class="dbg ok">GF</span><span class="dbg ok">DF</span></div><span class="st">🫕 Comfort</span></div><div class="cb"><div class="ct">Beef & Root Veg Stew</div><div class="cm"><span class="mi2">⏱ 45 min</span><span class="mdot"></span><span class="ckb">✓ Made 2×</span></div><div class="ca"><div class="ag"><button class="ab hrt" onclick="tH(this)"><span class="ic">🤍</span> Save</button><button class="ab" onclick="go('dismiss')"><span class="ic">✕</span> Not for me</button></div><button class="adb" onclick="aP(this)">+ Shortlist</button></div></div></div>
+<div class="rc"><div class="ci"><div class="pi i-riso">🍚</div><div class="db"><span class="dbg ok">GF</span></div><span class="nb">New</span></div><div class="cb"><div class="ct">Mushroom & Parmesan Risotto</div><div class="cm"><span class="mi2">⏱ 35 min</span><span class="mdot"></span><span class="mi2">Vegetarian</span></div><div class="ca"><div class="ag"><button class="ab hrt" onclick="tH(this)"><span class="ic">🤍</span> Save</button><button class="ab" onclick="go('dismiss')"><span class="ic">✕</span> Not for me</button></div><button class="adb" onclick="aP(this)">+ Shortlist</button></div></div></div>
+</div></div>
+<div class="hind"><div></div></div>
+</div>
+
+<!-- ===== QUICK VIEW ===== -->
+<div class="scn" id="s-quick">
+<div class="ahdr"><h2>Recipes</h2><div class="ahdr-ic"><button class="hic">🎛</button><button class="hic">🔍</button></div></div>
+<div class="vtog"><button data-v="full">🃏 Full</button><button class="on" data-v="quick">📋 Quick</button><button data-v="swipe">💫 Swipe</button></div>
+<div class="scr"><div class="ql" id="quickList">
+
+<div class="qrow"><div class="qrow-left"><div class="qact c-shortlist" data-action="shortlist"><span class="qact-i">📋</span>Shortlist</div><div class="qact c-plan" data-action="plan"><span class="qact-i">📅</span>Add</div></div><div class="qrow-right"><div class="qact c-skip" data-action="skip"><span class="qact-i">⏭</span>Skip</div><div class="qact c-nope" data-action="nope"><span class="qact-i">👎</span>Not for me</div></div>
+<div class="qc" data-sw><div class="qi"><div class="pi i-thai" style="font-size:26px">🍜</div><div class="qbg"><span class="qb2 ok">GF</span><span class="qb2 ok">DF</span></div></div><div class="qbd"><div class="qt">Thai Green Curry</div><div class="qm"><span>⏱ 25 min</span><span>High Protein</span></div><div class="qtags"><span class="qtg nw">New</span><span class="qtg">One Pot</span></div></div><button class="qhrt" onclick="tQH(this)">🤍</button></div></div>
+
+<div class="qrow"><div class="qrow-left"><div class="qact c-shortlist" data-action="shortlist"><span class="qact-i">📋</span>Shortlist</div><div class="qact c-plan" data-action="plan"><span class="qact-i">📅</span>Add</div></div><div class="qrow-right"><div class="qact c-skip" data-action="skip"><span class="qact-i">⏭</span>Skip</div><div class="qact c-nope" data-action="nope"><span class="qact-i">👎</span>Not for me</div></div>
+<div class="qc" data-sw><div class="qi"><div class="pi i-salm" style="font-size:26px">🐟</div><div class="qbg"><span class="qb2 ok">GF</span></div></div><div class="qbd"><div class="qt">Honey Glazed Salmon</div><div class="qm"><span>⏱ 20 min</span><span>✓ Made 5×</span></div><div class="qtags"><span class="qtg">Quick</span></div></div><button class="qhrt ha" onclick="tQH(this)">❤️</button></div></div>
+
+<div class="qrow"><div class="qrow-left"><div class="qact c-shortlist" data-action="shortlist"><span class="qact-i">📋</span>Shortlist</div><div class="qact c-plan" data-action="plan"><span class="qact-i">📅</span>Add</div></div><div class="qrow-right"><div class="qact c-skip" data-action="skip"><span class="qact-i">⏭</span>Skip</div><div class="qact c-nope" data-action="nope"><span class="qact-i">👎</span>Not for me</div></div>
+<div class="qc" data-sw><div class="qi"><div class="pi i-stew" style="font-size:26px">🍲</div><div class="qbg"><span class="qb2 ok">GF</span><span class="qb2 ok">DF</span></div></div><div class="qbd"><div class="qt">Beef & Root Veg Stew</div><div class="qm"><span>⏱ 45 min</span><span>✓ Made 2×</span></div><div class="qtags"><span class="qtg">Comfort</span></div></div><button class="qhrt" onclick="tQH(this)">🤍</button></div></div>
+
+<div class="qrow"><div class="qrow-left"><div class="qact c-shortlist" data-action="shortlist"><span class="qact-i">📋</span>Shortlist</div><div class="qact c-plan" data-action="plan"><span class="qact-i">📅</span>Add</div></div><div class="qrow-right"><div class="qact c-skip" data-action="skip"><span class="qact-i">⏭</span>Skip</div><div class="qact c-nope" data-action="nope"><span class="qact-i">👎</span>Not for me</div></div>
+<div class="qc" data-sw><div class="qi"><div class="pi i-riso" style="font-size:26px">🍚</div><div class="qbg"><span class="qb2 ok">GF</span></div></div><div class="qbd"><div class="qt">Mushroom Risotto</div><div class="qm"><span>⏱ 35 min</span><span>Vegetarian</span></div><div class="qtags"><span class="qtg nw">New</span></div></div><button class="qhrt" onclick="tQH(this)">🤍</button></div></div>
+
+<div class="qrow"><div class="qrow-left"><div class="qact c-shortlist" data-action="shortlist"><span class="qact-i">📋</span>Shortlist</div><div class="qact c-plan" data-action="plan"><span class="qact-i">📅</span>Add</div></div><div class="qrow-right"><div class="qact c-skip" data-action="skip"><span class="qact-i">⏭</span>Skip</div><div class="qact c-nope" data-action="nope"><span class="qact-i">👎</span>Not for me</div></div>
+<div class="qc chk" data-sw><div class="qi"><div class="pi i-faji" style="font-size:26px">🌮</div><div class="qbg"><span class="qb2" style="color:var(--warn)">Check</span></div></div><div class="qbd"><div class="qt">Chicken Fajitas</div><div class="qm"><span>⏱ 30 min</span><span style="color:var(--warn)">⚠ Review</span></div><div class="qtags"><span class="qtg">Mexican</span></div></div><button class="qhrt" onclick="tQH(this)">🤍</button></div></div>
+
+<div class="qrow"><div class="qrow-left"><div class="qact c-shortlist" data-action="shortlist"><span class="qact-i">📋</span>Shortlist</div><div class="qact c-plan" data-action="plan"><span class="qact-i">📅</span>Add</div></div><div class="qrow-right"><div class="qact c-skip" data-action="skip"><span class="qact-i">⏭</span>Skip</div><div class="qact c-nope" data-action="nope"><span class="qact-i">👎</span>Not for me</div></div>
+<div class="qc" data-sw><div class="qi"><div class="pi i-past" style="font-size:26px">🍝</div></div><div class="qbd"><div class="qt">Spaghetti Bolognese</div><div class="qm"><span>⏱ 40 min</span><span>✓ Made 8×</span></div><div class="qtags"><span class="qtg">Family Fave</span></div></div><button class="qhrt ha" onclick="tQH(this)">❤️</button></div></div>
+
+<div class="qrow"><div class="qrow-left"><div class="qact c-shortlist" data-action="shortlist"><span class="qact-i">📋</span>Shortlist</div><div class="qact c-plan" data-action="plan"><span class="qact-i">📅</span>Add</div></div><div class="qrow-right"><div class="qact c-skip" data-action="skip"><span class="qact-i">⏭</span>Skip</div><div class="qact c-nope" data-action="nope"><span class="qact-i">👎</span>Not for me</div></div>
+<div class="qc" data-sw><div class="qi"><div class="pi i-bowl" style="font-size:26px">🥗</div><div class="qbg"><span class="qb2 ok">GF</span><span class="qb2 ok">DF</span></div></div><div class="qbd"><div class="qt">Mediterranean Bowl</div><div class="qm"><span>⏱ 15 min</span><span>Light</span></div><div class="qtags"><span class="qtg">Quick</span><span class="qtg nw">New</span></div></div><button class="qhrt" onclick="tQH(this)">🤍</button></div></div>
+
+</div></div>
+
+<!-- Shortlist floating bar -->
+<div class="shortlist-bar" id="slBar" style="display:none">
+<div class="sl-left"><div class="sl-count" id="slCount">0</div><div class="sl-text"><strong>shortlisted</strong> this week</div></div>
+<button class="sl-btn">Review →</button>
+</div>
+
+<div class="hind"><div></div></div>
+</div>
+
+<!-- ===== SWIPE MODE ===== -->
+<div class="scn" id="s-swipe">
+<div class="ahdr"><h2>Pick Meals</h2><div class="ahdr-ic"><button class="hic">🎛</button></div></div>
+<div class="vtog"><button data-v="full">🃏 Full</button><button data-v="quick">📋 Quick</button><button class="on" data-v="swipe">💫 Swipe</button></div>
+<div class="swhdr"><h3>Tuesday — Main Meal</h3><p>3 of 7 meals picked · Cooking for 2</p></div>
+<div class="swa" id="swa"><div class="sww" id="sww">
+<div class="swc" data-p="2"><div class="swc-inner"><div class="ci"><div class="pi i-salad">🥗</div><div class="db"><span class="dbg ok">GF</span><span class="dbg ok">DF</span></div></div><div class="cb"><div class="ct">Mediterranean Bowl</div><div class="cm"><span class="mi2">⏱ 15 min</span><span class="mdot"></span><span class="mi2">Light & Fresh</span></div></div></div></div>
+<div class="swc" data-p="1"><div class="swc-inner"><div class="ci"><div class="pi i-riso">🍚</div><div class="db"><span class="dbg ok">GF</span></div><span class="nb">New</span></div><div class="cb"><div class="ct">Mushroom Risotto</div><div class="cm"><span class="mi2">⏱ 35 min</span><span class="mdot"></span><span class="mi2">Vegetarian</span></div></div></div></div>
+<div class="swc" data-p="0"><div class="swc-inner"><div class="ci"><div class="pi i-stew">🍲</div><div class="db"><span class="dbg ok">GF</span><span class="dbg ok">DF</span></div><span class="st">🥘 One Pot</span></div><div class="cb"><div class="ct">Beef & Root Veg Stew</div><div class="cm"><span class="mi2">⏱ 45 min</span><span class="mdot"></span><span class="mi2">Comfort Food</span></div></div></div>
+<div class="sw-label skip-l" id="skipLabel">SKIP</div><div class="sw-label add-l" id="addLabel">ADD ✓</div>
+<button class="sw-dislike" id="dislikeBtn" onclick="doDislike(event)">👎 Not for me</button>
+</div></div>
+<div class="sw-toast" id="skipToast">Skipped — it'll come back 👋</div><div class="sw-toast" id="dislikeToast">Got it — won't suggest this again</div>
+</div>
+<div class="spg"><div class="pdots" id="pdots"><div class="pd dn"></div><div class="pd dn"></div><div class="pd dn"></div><div class="pd cr"></div><div class="pd"></div><div class="pd"></div><div class="pd"></div></div></div>
+<div class="swacts">
+<div class="swbw"><button class="swab" onclick="btnSwipe('l')">⏭</button><span class="swbl">Skip</span></div>
+<div class="swbw"><button class="swab" onclick="btnSwipe('r')" style="border-color:var(--pri);width:58px;height:58px;font-size:22px">📋</button><span class="swbl">Shortlist</span></div>
+<div class="swbw"><button class="swab" onclick="btnSwipe('r')" style="border-color:var(--heart)">❤️</button><span class="swbl">Save</span></div>
+</div>
+<div class="hind"><div></div></div>
+</div>
+
+<!-- ===== DISMISS ===== -->
+<div class="scn" id="s-dismiss">
+<div class="ahdr"><h2>Recipes</h2></div>
+<div class="scr" style="position:relative">
+<div class="fcl" style="opacity:.25;filter:blur(1px);pointer-events:none"><div class="rc"><div class="ci" style="height:150px"><div class="pi i-curry">🍛</div></div><div class="cb"><div class="ct">Cauliflower & Chickpea Curry</div><div class="cm"><span class="mi2">⏱ 35 min</span></div></div></div></div>
+<div class="dov sh" style="position:absolute;border-radius:0"><div class="dsh">
+<h3>Not for you?</h3><p>We won't recommend this again. What's the reason?</p>
+<div class="dos">
+<div class="dop" onclick="dSel(this)"><div class="doi">🙈</div><div><div class="dot2">Just this recipe</div><div class="dsub">Hide it — won't show up anymore</div></div></div>
+<div class="dop" onclick="dSel(this)"><div class="doi">🥦</div><div><div class="dot2">Don't like an ingredient</div><div class="dsub">e.g. cauliflower — we'll show fewer</div></div></div>
+<div class="dop" onclick="dSel(this)"><div class="doi">🌍</div><div><div class="dot2">Not into this cuisine</div><div class="dsub">e.g. Indian — less of it for now</div></div></div>
+</div>
+<button class="dcn" onclick="go('full')">Never mind</button>
+</div></div>
+</div><div class="hind"><div></div></div>
+</div>
+
+<!-- ===== SPEC ===== -->
+<div class="scn" id="s-spec">
+<div class="ahdr"><h2>Design Spec</h2></div>
+<div class="scr">
+<div class="sps"><div class="spt">Shortlist vs Plan</div><div class="spl">
+<div class="spi"><span class="spn" style="background:var(--pri)">📋</span><span><strong>Shortlist</strong> = "I'm interested." Low commitment. Add lots, narrow down later. Like a shopping basket.</span></div>
+<div class="spi"><span class="spn" style="background:var(--ok)">📅</span><span><strong>Plan</strong> = "I'm cooking this." Assigned to a specific day. Final commitment. Done from the review screen.</span></div>
+<div class="spi"><span class="spn">→</span><span><strong>Long-press shortlist</strong> = skip the basket, assign directly to a day via popover picker.</span></div>
+</div></div>
+<div class="sps"><div class="spt">Quick View — Swipe Actions</div><div class="spl">
+<div class="spi"><span class="spn" style="background:var(--pri)">→</span><span><strong>Swipe right (short)</strong> = Shortlist. Adds to basket for review. Card stays.</span></div>
+<div class="spi"><span class="spn" style="background:var(--ok)">→→</span><span><strong>Swipe right (long)</strong> = Add to plan. Takes first empty day slot. Card dismissed.</span></div>
+<div class="spi"><span class="spn" style="background:var(--g400)">←</span><span><strong>Swipe left (short) = Skip</strong>. Card slides off. "Not this week." Comes back later.</span></div>
+<div class="spi"><span class="spn" style="background:var(--g700)">←←</span><span><strong>Swipe left (long) = Not for me</strong>. Card slides off. Won't come back. Algorithm learns.</span></div>
+</div></div>
+<div class="sps"><div class="spt">Swipe Mode — Tinder-style</div><div class="spl">
+<div class="spi"><span class="spn" style="background:var(--g400)">←</span><span><strong>Swipe left = Skip</strong>. Not now. No consequence.</span></div>
+<div class="spi"><span class="spn" style="background:var(--pri)">→</span><span><strong>Swipe right = Shortlist</strong>. Added to basket for review.</span></div>
+<div class="spi"><span class="spn" style="background:var(--g700)">👎</span><span><strong>Tap "Not for me"</strong>. Deliberate. Won't come back.</span></div>
+</div></div>
+<div class="sps"><div class="spt">Card States</div><div class="spl">
+<div class="spi"><span class="spn" style="background:var(--new)">N</span><span><strong>New</strong> — first time seeing this recipe.</span></div>
+<div class="spi"><span class="spn" style="background:var(--heart)">♥</span><span><strong>Saved</strong> — favourited. In regular rotation.</span></div>
+<div class="spi"><span class="spn" style="background:var(--g400)">✓</span><span><strong>Tried</strong> — "Made 5×". Has history.</span></div>
+<div class="spi"><span class="spn" style="background:var(--warn)">!</span><span><strong>Needs check</strong> — amber border. Review ingredients.</span></div>
+</div></div>
+<div class="sps" style="padding-bottom:20px"><div class="spt">Philosophy</div><div class="spl">
+<div class="spi"><span class="spn">★</span><span><strong>Skip ≠ Dislike.</strong> Skip = "not now." Dislike = "not ever."</span></div>
+<div class="spi"><span class="spn">★</span><span><strong>Shortlist ≠ Plan.</strong> Shortlist = "interested." Plan = "cooking it Tuesday."</span></div>
+<div class="spi"><span class="spn">★</span><span><strong>❤️ on the card.</strong> Favourite directly — no swipe needed.</span></div>
+<div class="spi"><span class="spn">★</span><span>Add lots, narrow down later. Reduces decision anxiety.</span></div>
+<div class="spi"><span class="spn">★</span><span>Dopamine-first: image forward, quick decisions.</span></div>
+</div></div>
+</div><div class="hind"><div></div></div>
+</div>
+</div>
+
+<!-- Day picker popover -->
+<div class="dp-overlay" id="dpOverlay" onclick="closeDayPicker()"></div>
+<div class="day-picker" id="dayPicker">
+<h3>Add to which day?</h3>
+<p>Thai Green Curry</p>
+<div class="dp-grid">
+<button class="dp-day" onclick="pickDay(this,'Mon')"><div class="dp-label">Monday</div><div class="dp-status">Empty</div></button>
+<button class="dp-day filled" onclick="pickDay(this,'Tue')"><div class="dp-label">Tuesday</div><div class="dp-status">✓ Salmon</div></button>
+<button class="dp-day" onclick="pickDay(this,'Wed')"><div class="dp-label">Wednesday</div><div class="dp-status">Empty</div></button>
+<button class="dp-day" onclick="pickDay(this,'Thu')"><div class="dp-label">Thursday</div><div class="dp-status">Empty</div></button>
+<button class="dp-day filled" onclick="pickDay(this,'Fri')"><div class="dp-label">Friday</div><div class="dp-status">✓ Pizza</div></button>
+<button class="dp-day" onclick="pickDay(this,'Sat')"><div class="dp-label">Saturday</div><div class="dp-status">Empty</div></button>
+<button class="dp-day" onclick="pickDay(this,'Sun')"><div class="dp-label">Sunday</div><div class="dp-status">Empty</div></button>
+</div>
+<button class="dp-cancel" onclick="closeDayPicker()">Just shortlist it</button>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// === NAV ===
+function go(s){document.querySelectorAll('.scn').forEach(function(x){x.classList.remove('on')});var el=document.getElementById('s-'+s);if(el)el.classList.add('on');document.querySelectorAll('.top-nav button').forEach(function(b){b.classList.toggle('on',b.dataset.s===s)});document.querySelectorAll('.vtog button').forEach(function(b){b.classList.toggle('on',b.dataset.v===s)})}
+document.querySelectorAll('.top-nav button').forEach(function(b){b.addEventListener('click',function(){go(this.dataset.s)})});
+document.querySelectorAll('.vtog button').forEach(function(b){b.addEventListener('click',function(){go(this.dataset.v)})});
+
+// === TOAST ===
+function showToast(msg,bg){var t=document.getElementById('toast');t.textContent=msg;t.style.background=bg||'var(--g800)';t.classList.add('show');setTimeout(function(){t.classList.remove('show')},1800)}
+
+// === FULL CARD ===
+function tH(b){b.classList.toggle('on');b.innerHTML=b.classList.contains('on')?'<span class="ic" style="animation:hpop .3s">❤️</span> Saved':'<span class="ic">🤍</span> Save'}
+var shortlistCount=0;
+function updateSlBar(){var bar=document.getElementById('slBar'),cnt=document.getElementById('slCount');if(shortlistCount>0){bar.style.display='flex';cnt.textContent=shortlistCount}else{bar.style.display='none'}}
+function aP(b){shortlistCount++;b.innerHTML='✓ Shortlisted';b.style.background='var(--ok)';b.disabled=true;updateSlBar();showToast('📋 Added to shortlist','var(--pri)')}
+function tQH(b){b.classList.toggle('ha');b.textContent=b.classList.contains('ha')?'❤️':'🤍'}
+function dSel(el){el.style.borderColor='var(--pri)';el.style.background='var(--pri-50)';setTimeout(function(){go('full');el.style.borderColor='';el.style.background=''},400)}
+
+// === QUICK VIEW SWIPE ===
+(function(){
+var cards=document.querySelectorAll('.qc[data-sw]');
+cards.forEach(function(card){
+    var startX=0,curX=0,isDrag=false,row=card.closest('.qrow');
+    var pressTimer=null;
+
+    card.addEventListener('pointerdown',function(e){
+        if(e.target.closest('.qhrt'))return;
+        isDrag=true;startX=e.clientX;curX=0;
+        card.classList.add('dragging');
+        card.setPointerCapture(e.pointerId);
+
+        // Long press detection for shortlist
+        pressTimer=setTimeout(function(){
+            if(Math.abs(curX)<10){
+                isDrag=false;card.classList.remove('dragging');card.style.transform='';
+                openDayPicker(card.querySelector('.qt').textContent);
+            }
+        },600);
+    });
+
+    card.addEventListener('pointermove',function(e){
+        if(!isDrag)return;
+        curX=e.clientX-startX;
+        if(Math.abs(curX)>10&&pressTimer){clearTimeout(pressTimer);pressTimer=null}
+        var max=160;
+        if(curX>max)curX=max+(curX-max)*0.15;
+        if(curX<-max)curX=-max+(curX+max)*0.15;
+        card.style.transform='translateX('+curX+'px)';
+    });
+
+    card.addEventListener('pointerup',function(e){
+        if(pressTimer){clearTimeout(pressTimer);pressTimer=null}
+        if(!isDrag)return;
+        isDrag=false;card.classList.remove('dragging');
+
+        var SNAP1=72,SNAP2=144;
+        if(curX>SNAP2*0.6){
+            // Far right = Add to plan — dismiss card, takes first empty day
+            card.classList.add('flyout-right');
+            showToast('📅 Added to Monday (first empty)','var(--ok)');
+            setTimeout(function(){
+                row.classList.add('removing');
+                setTimeout(function(){row.style.display='none'},300);
+            },250);
+        }else if(curX>SNAP1*0.5){
+            // Short right = Shortlist — card snaps, stays visible
+            shortlistCount++;updateSlBar();
+            showToast('📋 Added to shortlist','var(--pri)');
+            card.style.transform='translateX(0)';
+        }else if(curX<-SNAP2*0.6){
+            // Far left = Not for me — dismiss card
+            dismissRow(row,'👎 Won\'t suggest this again','var(--g800)');
+        }else if(curX<-SNAP1*0.5){
+            // Short left = Skip — dismiss card
+            dismissRow(row,'⏭ Skipped — it\'ll come back','var(--g600)');
+        }else{
+            card.style.transform='translateX(0)';
+        }
+    });
+
+    card.addEventListener('pointercancel',function(){
+        isDrag=false;card.classList.remove('dragging');card.style.transform='';
+        if(pressTimer){clearTimeout(pressTimer);pressTimer=null}
+    });
+});
+
+// Tap action buttons
+document.querySelectorAll('.qact').forEach(function(btn){
+    btn.addEventListener('click',function(e){
+        e.stopPropagation();
+        var row=this.closest('.qrow');
+        var card=row.querySelector('.qc');
+        var action=this.dataset.action;
+
+        if(action==='skip'){
+            dismissRow(row,'⏭ Skipped — it\'ll come back','var(--g600)');
+        }else if(action==='nope'){
+            dismissRow(row,'👎 Won\'t suggest this again','var(--g800)');
+        }else if(action==='shortlist'){
+            shortlistCount++;updateSlBar();
+            showToast('📋 Added to shortlist','var(--pri)');
+            card.style.transform='translateX(0)';
+        }else if(action==='plan'){
+            card.classList.add('flyout-right');
+            showToast('📅 Added to Monday (first empty)','var(--ok)');
+            setTimeout(function(){
+                row.classList.add('removing');
+                setTimeout(function(){row.style.display='none'},300);
+            },250);
+        }
+    });
+});
+
+function autoClose(card){
+    var closer=function(e){
+        if(!card.contains(e.target)){
+            card.style.transform='translateX(0)';
+            document.removeEventListener('pointerdown',closer);
+        }
+    };
+    setTimeout(function(){document.addEventListener('pointerdown',closer)},50);
+}
+
+function dismissRow(row,msg,bg){
+    var card=row.querySelector('.qc');
+    var dir=card.style.transform.indexOf('-')!==-1?'flyout-left':'flyout-left';
+    card.classList.add('flyout-left');
+    showToast(msg,bg);
+    setTimeout(function(){
+        row.classList.add('removing');
+        setTimeout(function(){row.style.display='none'},300);
+    },250);
+}
+})();
+
+// === DAY PICKER ===
+function openDayPicker(name){
+    document.getElementById('dayPicker').querySelector('p').textContent=name;
+    document.getElementById('dpOverlay').classList.add('show');
+    document.getElementById('dayPicker').classList.add('show');
+}
+function closeDayPicker(){
+    document.getElementById('dpOverlay').classList.remove('show');
+    document.getElementById('dayPicker').classList.remove('show');
+}
+function pickDay(btn,day){
+    showToast('📅 Added to '+day+'!','var(--ok)');
+    closeDayPicker();
+}
+
+// === SWIPE MODE ===
+var swa=document.getElementById('swa'),swIdx=0,swDrag=false,swSX=0,swCX=0,swCard=null;
+function getSwF(){return document.querySelector('.swc[data-p="0"]:not(.gone)')}
+swa.addEventListener('pointerdown',function(e){swCard=getSwF();if(!swCard||e.target.closest('.sw-dislike'))return;swDrag=true;swSX=e.clientX;swCX=0;swCard.style.transition='none';e.preventDefault()});
+swa.addEventListener('pointermove',function(e){if(!swDrag||!swCard)return;swCX=e.clientX-swSX;swCard.style.transform='translateX('+swCX+'px) rotate('+(swCX*.08)+'deg)';var sl=swCard.querySelector('.skip-l'),al=swCard.querySelector('.add-l');if(sl)sl.style.opacity=swCX<-30?Math.min(1,(-swCX-30)/50):0;if(al)al.style.opacity=swCX>30?Math.min(1,(swCX-30)/50):0;e.preventDefault()});
+swa.addEventListener('pointerup',function(){if(!swDrag||!swCard)return;swDrag=false;if(Math.abs(swCX)>80){swFly(swCard,swCX<0?'l':'r')}else{swCard.style.transition='transform .3s';swCard.style.transform='';var sl=swCard.querySelector('.skip-l'),al=swCard.querySelector('.add-l');if(sl)sl.style.opacity=0;if(al)al.style.opacity=0}});
+
+function swFly(card,dir){
+    card.classList.add('gone');card.style.transition='transform .35s ease-in,opacity .35s';
+    card.style.transform='translateX('+(dir==='l'?-500:500)+'px) rotate('+(dir==='l'?-20:20)+'deg)';card.style.opacity='0';
+    if(dir==='l'){swToast('skipToast')}else{shortlistCount++;updateSlBar();showToast('📋 Shortlisted!','var(--pri)')}
+    swDot(dir==='l'?'sk':'dn');setTimeout(function(){card.style.display='none';swRestack()},350);
+}
+function btnSwipe(dir){var c=getSwF();if(!c)return;var sl=c.querySelector('.skip-l'),al=c.querySelector('.add-l');if(dir==='l'&&sl)sl.style.opacity='1';if(dir==='r'&&al)al.style.opacity='1';setTimeout(function(){swFly(c,dir)},120)}
+function swRestack(){
+    var rem=Array.from(document.querySelectorAll('#sww .swc:not([style*="display: none"])')),sl=document.getElementById('skipLabel'),al=document.getElementById('addLabel'),db=document.getElementById('dislikeBtn');
+    rem.forEach(function(c,i){c.style.transition='transform .4s,opacity .4s';if(i===0){c.setAttribute('data-p','0');c.style.transform='';c.style.opacity='1';c.style.pointerEvents='';if(sl)c.appendChild(sl);if(al)c.appendChild(al);if(db)c.appendChild(db);sl.style.opacity='0';al.style.opacity='0'}else if(i===1){c.setAttribute('data-p','1');c.style.transform='scale(.95) translateY(10px)';c.style.opacity='.5';c.style.pointerEvents='none'}else{c.setAttribute('data-p','2');c.style.transform='scale(.90) translateY(20px)';c.style.opacity='.2';c.style.pointerEvents='none'}});swIdx++}
+function swDot(t){var d=document.querySelectorAll('.pd'),i=3+swIdx;if(i<d.length)d[i].className='pd '+(t==='sk'?'sk':'dn');if(i+1<d.length)d[i+1].className='pd cr'}
+function swToast(id){var t=document.getElementById(id);t.classList.add('show');setTimeout(function(){t.classList.remove('show')},1500)}
+function doDislike(e){e.stopPropagation();var c=getSwF();if(!c)return;swToast('dislikeToast');c.classList.add('gone');c.style.transition='transform .4s,opacity .4s';c.style.transform='translateY(100px) scale(.8)';c.style.opacity='0';swDot('sk');setTimeout(function(){c.style.display='none';swRestack()},400)}
+</script>
+</body>
+</html>
