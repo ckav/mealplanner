@@ -35,6 +35,10 @@
 
 - Feature inventory
   - https://github.com/ckav/mealplanner/blob/main/MealPlannerApp/docs/FEATURE_INVENTORY.md
+- Feature priority matrix
+  - https://github.com/ckav/mealplanner/blob/main/MealPlannerApp/docs/FEATURE_PRIORITY_MATRIX.md
+- Allergy UX wireframe
+  - https://github.com/ckav/mealplanner/blob/main/MealPlannerApp/docs/ALLERGY_UX_WIREFRAME.md
 - Requirements
   - https://github.com/ckav/mealplanner/blob/main/MealPlannerApp/docs/requirements.md
 - Project objectives

@@ -6,7 +6,7 @@ The core weekly planning interface. A grid of days × meal slots where users bui
 
 **Documentation:**
 - 📖 [README.md](./README.md) - This file — feature overview
-- 📋 [MEAL_PLANNER_WEEKLY_VIEW_SPEC.md](./MEAL_PLANNER_WEEKLY_VIEW_SPEC.md) - Full specification (layout, states, data model, acceptance criteria)
+- 📋 [MEAL_PLANNER_WEEKLY_VIEW_SPEC.md](../cook-forward/MEAL_PLANNER_WEEKLY_VIEW_SPEC.md) - Full specification (layout, states, data model, acceptance criteria)
 
 **Status:** 📐 Core spec complete — Phase 1 (MVP grid) through Phase 7 (Cook Forward intelligence) defined
 
@@ -70,7 +70,7 @@ Core objects defined in the spec:
 - **Recipe.cookForward** — `yields[]`, `consumes[]`, `shareablePrep[]`, `freezer{}`
 - **FreezerItem** — `recipeId`, `frozenDate`, `portions`, `expiryDate`, `status`
 
-See [MEAL_PLANNER_WEEKLY_VIEW_SPEC.md](./MEAL_PLANNER_WEEKLY_VIEW_SPEC.md) for full data structures and TypeScript interfaces.
+See [MEAL_PLANNER_WEEKLY_VIEW_SPEC.md](../cook-forward/MEAL_PLANNER_WEEKLY_VIEW_SPEC.md) for full data structures and TypeScript interfaces.
 
 ---
 
