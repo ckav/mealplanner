@@ -1,0 +1,704 @@
+[
+  {
+    "id": "solo-chicken-stir-fry",
+    "name": "Quick Chicken Stir-Fry",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/quick-chicken-stir-fry",
+    "servings": 1,
+    "cookTime": 15,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "Chinese",
+    "mainProtein": "Chicken",
+    "calories": 420,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "under-20-min",
+      "one-pan"
+    ],
+    "dietary": [
+      "dairy-free"
+    ],
+    "description": "A fast weeknight stir-fry with chicken breast, pak choi and soy sauce. Ready in under 20 minutes."
+  },
+  {
+    "id": "solo-chicken-caesar-salad",
+    "name": "Chicken Caesar Salad for One",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/chicken-caesar-salad",
+    "servings": 1,
+    "cookTime": 15,
+    "prepTime": 10,
+    "difficulty": "Easy",
+    "cuisine": "American",
+    "mainProtein": "Chicken",
+    "calories": 480,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "low-carb",
+      "high-protein"
+    ],
+    "dietary": [],
+    "description": "Pan-fried chicken on crisp romaine with homemade Caesar dressing and Parmesan shavings."
+  },
+  {
+    "id": "solo-chicken-noodle-soup",
+    "name": "Chicken Noodle Soup for One",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/chicken-noodle-soup-0",
+    "servings": 1,
+    "cookTime": 20,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "British",
+    "mainProtein": "Chicken",
+    "calories": 350,
+    "tags": [
+      "solo-friendly",
+      "comfort-food",
+      "one-pot",
+      "quick"
+    ],
+    "dietary": [
+      "dairy-free"
+    ],
+    "description": "A warming bowl of chicken noodle soup. Perfect when you're feeling under the weather or just want something cosy."
+  },
+  {
+    "id": "solo-teriyaki-chicken",
+    "name": "Teriyaki Chicken with Rice",
+    "source": "Mob Kitchen",
+    "sourceUrl": "https://www.mob.co.uk/recipes/teriyaki-chicken",
+    "servings": 1,
+    "cookTime": 20,
+    "prepTime": 10,
+    "difficulty": "Easy",
+    "cuisine": "Japanese",
+    "mainProtein": "Chicken",
+    "calories": 520,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "fakeaway"
+    ],
+    "dietary": [
+      "dairy-free"
+    ],
+    "description": "Sticky teriyaki chicken thighs with steamed rice and quick pickled cucumber. Better than takeaway."
+  },
+  {
+    "id": "solo-chicken-quesadilla",
+    "name": "Chicken & Cheese Quesadilla",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/chicken-quesadilla",
+    "servings": 1,
+    "cookTime": 10,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "Mexican",
+    "mainProtein": "Chicken",
+    "calories": 490,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "under-20-min",
+      "budget-friendly"
+    ],
+    "dietary": [],
+    "description": "Crispy tortilla filled with leftover chicken, cheese and peppers. A 15-minute solo dinner classic."
+  },
+  {
+    "id": "solo-cacio-e-pepe",
+    "name": "Cacio e Pepe",
+    "source": "Mob Kitchen",
+    "sourceUrl": "https://www.mob.co.uk/recipes/cacio-e-pepe",
+    "servings": 1,
+    "cookTime": 12,
+    "prepTime": 3,
+    "difficulty": "Easy",
+    "cuisine": "Italian",
+    "mainProtein": "None",
+    "calories": 450,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "under-20-min",
+      "vegetarian",
+      "budget-friendly",
+      "3-ingredients"
+    ],
+    "dietary": [
+      "vegetarian"
+    ],
+    "description": "Just pasta, pecorino and black pepper. Three ingredients, pure comfort, and zero leftovers."
+  },
+  {
+    "id": "solo-garlic-prawn-linguine",
+    "name": "Garlic Prawn Linguine",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/garlic-prawn-linguine",
+    "servings": 1,
+    "cookTime": 15,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "Italian",
+    "mainProtein": "Prawns",
+    "calories": 480,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "under-20-min",
+      "pescatarian",
+      "date-night"
+    ],
+    "dietary": [
+      "pescatarian"
+    ],
+    "description": "King prawns tossed in garlic, chilli and lemon with linguine. Feels fancy, takes 15 minutes."
+  },
+  {
+    "id": "solo-one-pot-pasta",
+    "name": "One-Pot Tomato & Basil Pasta",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/one-pot-pasta",
+    "servings": 1,
+    "cookTime": 15,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "Italian",
+    "mainProtein": "None",
+    "calories": 400,
+    "tags": [
+      "solo-friendly",
+      "one-pot",
+      "quick",
+      "vegan",
+      "budget-friendly"
+    ],
+    "dietary": [
+      "vegan",
+      "vegetarian",
+      "dairy-free"
+    ],
+    "description": "Everything cooks in one pan \u2014 pasta, tomatoes, garlic, basil. Almost no washing up."
+  },
+  {
+    "id": "solo-pesto-gnocchi",
+    "name": "Crispy Pesto Gnocchi",
+    "source": "Mob Kitchen",
+    "sourceUrl": "https://www.mob.co.uk/recipes/crispy-pesto-gnocchi",
+    "servings": 1,
+    "cookTime": 10,
+    "prepTime": 2,
+    "difficulty": "Easy",
+    "cuisine": "Italian",
+    "mainProtein": "None",
+    "calories": 420,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "under-20-min",
+      "vegetarian"
+    ],
+    "dietary": [
+      "vegetarian"
+    ],
+    "description": "Shop-bought gnocchi pan-fried until crispy, tossed in pesto with cherry tomatoes and spinach. Stupid easy."
+  },
+  {
+    "id": "solo-carbonara",
+    "name": "Spaghetti Carbonara for One",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/ultimate-spaghetti-carbonara",
+    "servings": 1,
+    "cookTime": 15,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "Italian",
+    "mainProtein": "Bacon",
+    "calories": 550,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "comfort-food"
+    ],
+    "dietary": [],
+    "description": "The real deal \u2014 egg, pecorino, guanciale (or bacon) and black pepper. No cream."
+  },
+  {
+    "id": "solo-salmon-teriyaki",
+    "name": "Teriyaki Salmon with Noodles",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/teriyaki-salmon-noodles",
+    "servings": 1,
+    "cookTime": 15,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "Japanese",
+    "mainProtein": "Salmon",
+    "calories": 520,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "pescatarian",
+      "one-pan"
+    ],
+    "dietary": [
+      "pescatarian",
+      "dairy-free"
+    ],
+    "description": "Glazed salmon fillet with egg noodles and stir-fried veg. A solo treat that looks like a restaurant plate."
+  },
+  {
+    "id": "solo-fish-finger-sandwich",
+    "name": "Posh Fish Finger Sandwich",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/posh-fish-finger-sandwich",
+    "servings": 1,
+    "cookTime": 15,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "British",
+    "mainProtein": "Fish",
+    "calories": 450,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "comfort-food",
+      "pescatarian"
+    ],
+    "dietary": [
+      "pescatarian"
+    ],
+    "description": "Crispy battered fish fingers in a ciabatta roll with tartare sauce and rocket. Nostalgia, elevated."
+  },
+  {
+    "id": "solo-tuna-pasta-bake",
+    "name": "Tuna Pasta Bake for One",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/tuna-pasta-bake",
+    "servings": 1,
+    "cookTime": 25,
+    "prepTime": 10,
+    "difficulty": "Easy",
+    "cuisine": "British",
+    "mainProtein": "Tuna",
+    "calories": 520,
+    "tags": [
+      "solo-friendly",
+      "comfort-food",
+      "budget-friendly",
+      "pescatarian"
+    ],
+    "dietary": [
+      "pescatarian"
+    ],
+    "description": "Creamy tuna pasta bake with sweetcorn and cheese topping. Budget-friendly and deeply satisfying."
+  },
+  {
+    "id": "solo-prawn-fried-rice",
+    "name": "Prawn Fried Rice",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/prawn-fried-rice",
+    "servings": 1,
+    "cookTime": 10,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "Chinese",
+    "mainProtein": "Prawns",
+    "calories": 400,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "under-20-min",
+      "use-up-leftovers",
+      "pescatarian"
+    ],
+    "dietary": [
+      "pescatarian",
+      "dairy-free"
+    ],
+    "description": "The ultimate leftover rice recipe. Frozen prawns, egg, soy sauce, and whatever veg you have."
+  },
+  {
+    "id": "solo-smoked-mackerel-salad",
+    "name": "Smoked Mackerel & Beetroot Salad",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/smoked-mackerel-beetroot-salad",
+    "servings": 1,
+    "cookTime": 0,
+    "prepTime": 10,
+    "difficulty": "Easy",
+    "cuisine": "British",
+    "mainProtein": "Mackerel",
+    "calories": 380,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "no-cook",
+      "pescatarian",
+      "high-protein",
+      "healthy"
+    ],
+    "dietary": [
+      "pescatarian",
+      "gluten-free"
+    ],
+    "description": "No cooking required. Flaked smoked mackerel with beetroot, horseradish and watercress."
+  },
+  {
+    "id": "solo-mushroom-risotto",
+    "name": "Mushroom Risotto for One",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/mushroom-risotto",
+    "servings": 1,
+    "cookTime": 25,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "Italian",
+    "mainProtein": "None",
+    "calories": 450,
+    "tags": [
+      "solo-friendly",
+      "vegetarian",
+      "comfort-food",
+      "one-pot"
+    ],
+    "dietary": [
+      "vegetarian"
+    ],
+    "description": "Creamy risotto with chestnut mushrooms and Parmesan. Meditative stirring, solo dinner bliss."
+  },
+  {
+    "id": "solo-halloumi-wrap",
+    "name": "Grilled Halloumi & Veg Wrap",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/halloumi-wrap",
+    "servings": 1,
+    "cookTime": 10,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "Mediterranean",
+    "mainProtein": "Halloumi",
+    "calories": 480,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "under-20-min",
+      "vegetarian"
+    ],
+    "dietary": [
+      "vegetarian"
+    ],
+    "description": "Griddled halloumi with roasted peppers, rocket and hummus in a warm tortilla. Done in 15 minutes."
+  },
+  {
+    "id": "solo-egg-fried-rice",
+    "name": "Veggie Egg Fried Rice",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/egg-fried-rice",
+    "servings": 1,
+    "cookTime": 10,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "Chinese",
+    "mainProtein": "Egg",
+    "calories": 380,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "under-20-min",
+      "vegetarian",
+      "budget-friendly",
+      "use-up-leftovers"
+    ],
+    "dietary": [
+      "vegetarian",
+      "dairy-free"
+    ],
+    "description": "Leftover rice, an egg, soy sauce, frozen peas. The solo cook's best friend."
+  },
+  {
+    "id": "solo-shakshuka",
+    "name": "Shakshuka for One",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/shakshuka",
+    "servings": 1,
+    "cookTime": 20,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "Middle Eastern",
+    "mainProtein": "Egg",
+    "calories": 320,
+    "tags": [
+      "solo-friendly",
+      "vegetarian",
+      "one-pan",
+      "budget-friendly"
+    ],
+    "dietary": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "description": "Eggs baked in a spiced tomato sauce with cumin and paprika. Scoop it up with crusty bread."
+  },
+  {
+    "id": "solo-loaded-sweet-potato",
+    "name": "Loaded Sweet Potato",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/loaded-sweet-potato",
+    "servings": 1,
+    "cookTime": 45,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "British",
+    "mainProtein": "None",
+    "calories": 420,
+    "tags": [
+      "solo-friendly",
+      "vegetarian",
+      "budget-friendly",
+      "healthy"
+    ],
+    "dietary": [
+      "vegetarian",
+      "gluten-free"
+    ],
+    "description": "Baked sweet potato loaded with black beans, cheese, avocado and sour cream. Low effort, high reward."
+  },
+  {
+    "id": "solo-peanut-noodles",
+    "name": "Peanut Butter Noodles",
+    "source": "Mob Kitchen",
+    "sourceUrl": "https://www.mob.co.uk/recipes/peanut-butter-noodles",
+    "servings": 1,
+    "cookTime": 10,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "Asian-Fusion",
+    "mainProtein": "None",
+    "calories": 450,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "under-20-min",
+      "vegan",
+      "budget-friendly"
+    ],
+    "dietary": [
+      "vegan",
+      "vegetarian",
+      "dairy-free"
+    ],
+    "description": "Noodles in a 5-minute peanut butter, soy and sriracha sauce. Dangerously addictive solo dinner."
+  },
+  {
+    "id": "solo-dal-rice",
+    "name": "Quick Dal with Rice",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/quick-dal",
+    "servings": 1,
+    "cookTime": 20,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "Indian",
+    "mainProtein": "Lentils",
+    "calories": 380,
+    "tags": [
+      "solo-friendly",
+      "vegan",
+      "budget-friendly",
+      "one-pot",
+      "high-protein"
+    ],
+    "dietary": [
+      "vegan",
+      "vegetarian",
+      "dairy-free",
+      "gluten-free"
+    ],
+    "description": "Red lentil dal with cumin, turmeric and garlic. Cheap, filling, and freezes perfectly for future solo dinners."
+  },
+  {
+    "id": "solo-tofu-stir-fry",
+    "name": "Crispy Tofu Stir-Fry",
+    "source": "Mob Kitchen",
+    "sourceUrl": "https://www.mob.co.uk/recipes/crispy-tofu-stir-fry",
+    "servings": 1,
+    "cookTime": 15,
+    "prepTime": 10,
+    "difficulty": "Easy",
+    "cuisine": "Chinese",
+    "mainProtein": "Tofu",
+    "calories": 400,
+    "tags": [
+      "solo-friendly",
+      "vegan",
+      "quick",
+      "high-protein"
+    ],
+    "dietary": [
+      "vegan",
+      "vegetarian",
+      "dairy-free"
+    ],
+    "description": "Cornflour-coated tofu pan-fried until crispy, with stir-fried veg and sweet chilli sauce."
+  },
+  {
+    "id": "solo-steak-chips",
+    "name": "Steak & Chips for One",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/steak-chips",
+    "servings": 1,
+    "cookTime": 25,
+    "prepTime": 10,
+    "difficulty": "Easy",
+    "cuisine": "British",
+    "mainProtein": "Beef",
+    "calories": 600,
+    "tags": [
+      "solo-friendly",
+      "treat-yourself",
+      "date-night"
+    ],
+    "dietary": [
+      "gluten-free"
+    ],
+    "description": "A sirloin steak cooked exactly how you like it, with oven chips and peppercorn sauce. Solo luxury."
+  },
+  {
+    "id": "solo-burger",
+    "name": "Homemade Smash Burger",
+    "source": "Mob Kitchen",
+    "sourceUrl": "https://www.mob.co.uk/recipes/smash-burger",
+    "servings": 1,
+    "cookTime": 10,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "American",
+    "mainProtein": "Beef",
+    "calories": 550,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "under-20-min",
+      "fakeaway"
+    ],
+    "dietary": [],
+    "description": "Thin beef patties smashed on a screaming hot pan with American cheese and pickles. Fakeaway perfection."
+  },
+  {
+    "id": "solo-pork-chop",
+    "name": "Pan-Fried Pork Chop with Apple",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/pan-fried-pork-chop-apple",
+    "servings": 1,
+    "cookTime": 15,
+    "prepTime": 5,
+    "difficulty": "Easy",
+    "cuisine": "British",
+    "mainProtein": "Pork",
+    "calories": 450,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "under-20-min"
+    ],
+    "dietary": [
+      "gluten-free"
+    ],
+    "description": "A golden pork chop with a quick apple and mustard pan sauce. Classic solo weeknight dinner."
+  },
+  {
+    "id": "solo-lamb-chop-salad",
+    "name": "Lamb Chop with Grain Salad",
+    "source": "Olive Magazine",
+    "sourceUrl": "https://www.olivemagazine.com/recipes/quick-and-easy/lamb-chops-grain-salad/",
+    "servings": 1,
+    "cookTime": 15,
+    "prepTime": 10,
+    "difficulty": "Easy",
+    "cuisine": "Mediterranean",
+    "mainProtein": "Lamb",
+    "calories": 500,
+    "tags": [
+      "solo-friendly",
+      "quick",
+      "healthy",
+      "high-protein"
+    ],
+    "dietary": [],
+    "description": "Quick-grilled lamb chops with a warm grain and herb salad. Restaurant-quality solo dinner."
+  },
+  {
+    "id": "solo-bolognese",
+    "name": "Solo Bolognese (Freezer-Friendly)",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/best-spaghetti-bolognese",
+    "servings": 2,
+    "cookTime": 30,
+    "prepTime": 10,
+    "difficulty": "Easy",
+    "cuisine": "Italian",
+    "mainProtein": "Beef",
+    "calories": 520,
+    "tags": [
+      "solo-friendly",
+      "batch-cook",
+      "freezer-friendly",
+      "comfort-food"
+    ],
+    "dietary": [],
+    "description": "Makes 2 portions \u2014 eat one tonight, freeze the other. The solo cook's batch cooking staple."
+  },
+  {
+    "id": "solo-chicken-curry",
+    "name": "Easy Chicken Curry (Batch)",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/easy-chicken-curry",
+    "servings": 2,
+    "cookTime": 25,
+    "prepTime": 10,
+    "difficulty": "Easy",
+    "cuisine": "Indian",
+    "mainProtein": "Chicken",
+    "calories": 480,
+    "tags": [
+      "solo-friendly",
+      "batch-cook",
+      "freezer-friendly",
+      "fakeaway"
+    ],
+    "dietary": [
+      "gluten-free"
+    ],
+    "description": "A creamy, mild chicken curry that makes 2 portions. Tonight's dinner and tomorrow's lunch sorted."
+  },
+  {
+    "id": "solo-chilli-batch",
+    "name": "Turkey Chilli (Freeze & Reheat)",
+    "source": "BBC Good Food",
+    "sourceUrl": "https://www.bbcgoodfood.com/recipes/turkey-chilli",
+    "servings": 2,
+    "cookTime": 30,
+    "prepTime": 10,
+    "difficulty": "Easy",
+    "cuisine": "Mexican",
+    "mainProtein": "Turkey",
+    "calories": 380,
+    "tags": [
+      "solo-friendly",
+      "batch-cook",
+      "freezer-friendly",
+      "budget-friendly",
+      "high-protein"
+    ],
+    "dietary": [
+      "dairy-free",
+      "gluten-free"
+    ],
+    "description": "Lean turkey mince chilli that freezes brilliantly. Lower fat than beef, just as satisfying."
+  }
+]

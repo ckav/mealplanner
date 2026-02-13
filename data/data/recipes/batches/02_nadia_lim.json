@@ -1,0 +1,2228 @@
+[
+  {
+    "id": "nl-coconut-chicken",
+    "name": "Coconut Chicken",
+    "source": "Nadia Lim \u2013 Family Favourites",
+    "sourceUrl": "https://nadialim.com/product/family-favourites/",
+    "sourceType": "cookbook-photo",
+    "image": "",
+    "servings": 4,
+    "cookTime": 25,
+    "prepTime": 15,
+    "readyIn": 30,
+    "difficulty": "Easy",
+    "cuisine": "Asian-Fusion",
+    "mainProtein": "Chicken",
+    "calories": 576,
+    "carbs": 57.2,
+    "protein": 22.7,
+    "fat": 28.7,
+    "tags": [
+      "family-friendly",
+      "curry-spiced",
+      "with-salad"
+    ],
+    "dietary": [
+      "dairy-free",
+      "gluten-free"
+    ],
+    "soloFriendly": false,
+    "familyFriendly": true,
+    "description": "Marinating chicken in coconut cream makes for moist, tasty mouthfuls. Served with spiced jasmine rice and a fresh coconut cream salad.",
+    "ingredients": [
+      {
+        "section": "Rice",
+        "items": [
+          {
+            "name": "jasmine rice",
+            "amount": 2,
+            "unit": "cups",
+            "scalingType": "linear"
+          },
+          {
+            "name": "coconut chicken spice mix",
+            "amount": 1.5,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "water",
+            "amount": 3,
+            "unit": "cups",
+            "scalingType": "linear"
+          },
+          {
+            "name": "salt",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          }
+        ]
+      },
+      {
+        "section": "Coconut Chicken",
+        "items": [
+          {
+            "name": "boneless, skinless chicken thighs",
+            "amount": 600,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "coconut chicken spice mix",
+            "amount": 1,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "chilli flakes or chilli powder",
+            "amount": 1,
+            "unit": "pinch",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "coconut cream",
+            "amount": 0.25,
+            "unit": "cup",
+            "scalingType": "threshold",
+            "minimumAmount": 2,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "salt",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          }
+        ]
+      },
+      {
+        "section": "Spice Mix",
+        "items": [
+          {
+            "name": "curry powder",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "ground cumin",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "ground coriander",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "ground turmeric",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "ground ginger",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.25,
+            "minimumUnit": "tsp"
+          }
+        ]
+      },
+      {
+        "section": "Salad",
+        "items": [
+          {
+            "name": "carrot",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "capsicum (pepper)",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "baby spinach leaves",
+            "amount": 3,
+            "unit": "handfuls",
+            "scalingType": "linear"
+          },
+          {
+            "name": "coconut cream",
+            "amount": 0.25,
+            "unit": "cup",
+            "scalingType": "threshold",
+            "minimumAmount": 2,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "mayo",
+            "amount": 0.25,
+            "unit": "cup",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "lemon juice",
+            "amount": 1,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          }
+        ]
+      }
+    ],
+    "method": [
+      "Combine all rice ingredients in a medium-sized lidded pot and bring to the boil. Cover with a tight-fitting lid and reduce to lowest heat for 12 minutes. Turn off heat and steam, still covered, for 8 minutes. Fluff with a fork.",
+      "Pat chicken dry with paper towels. Place in a bowl with coconut chicken spice mix, chilli, coconut cream and salt. Toss to coat and marinate.",
+      "Grate carrot; remove core and seeds from capsicum and roughly dice. Place both in a large bowl with baby spinach. Whisk coconut cream, mayo and lemon juice together for dressing.",
+      "Heat a little oil in a large frying pan on medium-high heat. Cook chicken for 4-5 minutes on each side until golden and cooked through. Rest covered with foil for 2-3 minutes, then slice.",
+      "Toss half the dressing through the salad. Season with salt and pepper.",
+      "Spoon rice onto plates, top with sliced coconut chicken. Serve salad on the side with extra dressing."
+    ],
+    "tips": "Can also be cooked on a barbecue grill or hot plate for 4-5 minutes each side."
+  },
+  {
+    "id": "nl-greek-lamb-rissoles",
+    "name": "Greek Lamb Rissoles with Summer Salad",
+    "source": "Nadia Lim \u2013 Family Favourites",
+    "sourceUrl": "https://nadialim.com/product/family-favourites/",
+    "sourceType": "cookbook-photo",
+    "image": "",
+    "servings": 4,
+    "cookTime": 15,
+    "prepTime": 20,
+    "readyIn": 30,
+    "difficulty": "Easy",
+    "cuisine": "Greek",
+    "mainProtein": "Lamb",
+    "calories": 590,
+    "carbs": 57.9,
+    "protein": 57.9,
+    "fat": 17.9,
+    "tags": [
+      "family-friendly",
+      "high-protein",
+      "with-salad"
+    ],
+    "dietary": [],
+    "soloFriendly": false,
+    "familyFriendly": true,
+    "description": "Lamb, cucumber and yoghurt are a classic Greek flavour combo. Spiced lamb rissoles with couscous summer salad and cucumber yoghurt.",
+    "ingredients": [
+      {
+        "section": "Summer Salad",
+        "items": [
+          {
+            "name": "couscous",
+            "amount": 1.5,
+            "unit": "cups",
+            "scalingType": "linear"
+          },
+          {
+            "name": "salt",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "summer spice mix",
+            "amount": 1.5,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "boiling water",
+            "amount": 1.5,
+            "unit": "cups",
+            "scalingType": "linear"
+          },
+          {
+            "name": "frozen peas",
+            "amount": 250,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "tomato",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "telegraph cucumber",
+            "amount": 0.25,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "capsicum",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "baby spinach leaves",
+            "amount": 3,
+            "unit": "handfuls",
+            "scalingType": "linear"
+          },
+          {
+            "name": "olive oil",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          }
+        ]
+      },
+      {
+        "section": "Greek Lamb Rissoles",
+        "items": [
+          {
+            "name": "lamb mince",
+            "amount": 600,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "brown onion, finely diced",
+            "amount": 0.5,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "salt",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "summer spice mix",
+            "amount": 1,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "fine breadcrumbs",
+            "amount": 0.5,
+            "unit": "cup",
+            "scalingType": "linear"
+          }
+        ]
+      },
+      {
+        "section": "Cucumber Yoghurt",
+        "items": [
+          {
+            "name": "natural yoghurt",
+            "amount": 150,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "telegraph cucumber",
+            "amount": 0.25,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "sweet chilli sauce (preferably mild)",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          }
+        ]
+      },
+      {
+        "section": "Summer Spice Mix",
+        "items": [
+          {
+            "name": "ground cumin",
+            "amount": 2.5,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "ground coriander",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "dried parsley",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "onion powder",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "garlic powder",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "dried mint",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.25,
+            "minimumUnit": "tsp"
+          }
+        ]
+      }
+    ],
+    "method": [
+      "Preheat oven to 220\u00b0C and line a tray with baking paper. Bring a small pot of water and a full kettle to the boil.",
+      "Combine couscous, salt, first measure of spice mix and boiling water in a heat-proof bowl. Stir, cover and leave to swell for 5 minutes. Fluff with a fork and set aside to cool.",
+      "Mix all lamb rissole ingredients together well. Shape tablespoon-sized amounts into balls, place on tray and flatten slightly with a fork. Bake for 12-14 minutes until golden.",
+      "Place peas in boiling water and cook for 1-2 minutes. Refresh under cold water and drain.",
+      "Dice tomato, cucumber and capsicum. Roughly chop spinach. Place in a large bowl with cooled couscous and peas. Add olive oil, season and mix well.",
+      "Place yoghurt in a small bowl. Grate cucumber in, add sweet chilli sauce and season.",
+      "Serve summer salad in bowls, top with rissoles and spoon over cucumber yoghurt."
+    ],
+    "tips": "Dampen your hands before rolling the rissoles to stop the mixture sticking. Can also cook on barbecue hot plate for 12-14 minutes, turning regularly."
+  },
+  {
+    "id": "nl-moroccan-meatballs",
+    "name": "Moroccan Meatballs with Couscous Salad",
+    "source": "Nadia Lim \u2013 Family Favourites",
+    "sourceUrl": "https://nadialim.com/product/family-favourites/",
+    "sourceType": "cookbook-photo",
+    "image": "",
+    "servings": 5,
+    "cookTime": 20,
+    "prepTime": 10,
+    "readyIn": 30,
+    "difficulty": "Easy",
+    "cuisine": "Moroccan",
+    "mainProtein": "Beef",
+    "calories": 685,
+    "carbs": 34.8,
+    "protein": 40.4,
+    "fat": 42.6,
+    "tags": [
+      "family-friendly",
+      "batch-cook",
+      "kid-friendly"
+    ],
+    "dietary": [],
+    "soloFriendly": false,
+    "familyFriendly": true,
+    "description": "Fragrant Moroccan-spiced beef meatballs with a fresh couscous salad and spiced sour cream. The spice mix makes enough for both the meatballs and the garnish.",
+    "ingredients": [
+      {
+        "section": "Moroccan Meatballs",
+        "items": [
+          {
+            "name": "beef mince",
+            "amount": 600,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "panko breadcrumbs",
+            "amount": 0.75,
+            "unit": "cup",
+            "scalingType": "linear"
+          },
+          {
+            "name": "Moroccan spice mix",
+            "amount": 1.5,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "grated cheese",
+            "amount": 1,
+            "unit": "cup",
+            "scalingType": "linear"
+          },
+          {
+            "name": "soy sauce",
+            "amount": 1,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "egg",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "salt",
+            "amount": 0.25,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "tomato sauce",
+            "amount": 1,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          }
+        ]
+      },
+      {
+        "section": "Moroccan Spice Mix",
+        "items": [
+          {
+            "name": "ground coriander",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "ground cumin",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "smoked paprika",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "garlic powder",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "ground turmeric",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.25,
+            "minimumUnit": "tsp"
+          }
+        ]
+      },
+      {
+        "section": "Couscous Salad",
+        "items": [
+          {
+            "name": "boiling water",
+            "amount": 1,
+            "unit": "cup",
+            "scalingType": "linear"
+          },
+          {
+            "name": "couscous",
+            "amount": 1,
+            "unit": "cup",
+            "scalingType": "linear"
+          },
+          {
+            "name": "salt",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "broccoli, small florets and diced stem",
+            "amount": 1,
+            "unit": "head",
+            "scalingType": "linear"
+          },
+          {
+            "name": "telegraph cucumber",
+            "amount": 0.5,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "carrot",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "vinegar",
+            "amount": 1,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "olive oil",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          }
+        ]
+      },
+      {
+        "section": "To Serve",
+        "items": [
+          {
+            "name": "sour cream",
+            "amount": 0.5,
+            "unit": "cup",
+            "scalingType": "linear"
+          },
+          {
+            "name": "Moroccan spice mix (optional)",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          }
+        ]
+      }
+    ],
+    "method": [
+      "Preheat oven to 220\u00b0C. Lightly grease a large casserole dish and place in oven to preheat. Bring a small pot of salted water and a full kettle to the boil.",
+      "Mix all meatball ingredients together. Roll into golf-ball-sized balls. Place in preheated dish and bake for 13-15 minutes until cooked through. Grill for 2-3 minutes to golden.",
+      "Combine boiling water, couscous and salt in a heat-proof bowl. Stir, cover and leave to swell for 5 minutes. Fluff with a fork.",
+      "Cook broccoli in boiling water for 3-4 minutes. Drain and cool. Quarter cucumber lengthways, dice into 1cm pieces; grate carrot. Stir all veggies through couscous with vinegar and olive oil. Season.",
+      "Mix sour cream with remaining Moroccan spice mix.",
+      "Serve couscous salad topped with meatballs and spiced sour cream."
+    ],
+    "tips": "Turmeric is part of the ginger family. In India, the world's largest producer of turmeric, it is known as the Golden Spice."
+  },
+  {
+    "id": "nl-lamb-kofta-pita",
+    "name": "Lamb Kofta Pita Pockets",
+    "source": "Nadia Lim \u2013 Family Favourites",
+    "sourceUrl": "https://nadialim.com/product/family-favourites/",
+    "sourceType": "cookbook-photo",
+    "image": "",
+    "servings": 4,
+    "cookTime": 20,
+    "prepTime": 15,
+    "readyIn": 30,
+    "difficulty": "Easy",
+    "cuisine": "Turkish",
+    "mainProtein": "Lamb",
+    "calories": 678,
+    "carbs": 60.2,
+    "protein": 48.4,
+    "fat": 26.4,
+    "tags": [
+      "family-friendly",
+      "kid-friendly",
+      "build-your-own"
+    ],
+    "dietary": [],
+    "soloFriendly": false,
+    "familyFriendly": true,
+    "description": "Spiced lamb kofta in warm pita pockets with a crunchy apple slaw and homemade tomato sauce. Kids love building their own.",
+    "ingredients": [
+      {
+        "section": "Tomato Sauce",
+        "items": [
+          {
+            "name": "brown onion, finely diced",
+            "amount": 0.5,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "tomato paste",
+            "amount": 1,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "chopped tomatoes (tin)",
+            "amount": 400,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "sugar",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "salt",
+            "amount": 0.25,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "vinegar",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          }
+        ]
+      },
+      {
+        "section": "Lamb Kofta",
+        "items": [
+          {
+            "name": "lamb mince",
+            "amount": 600,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "salt",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "black pepper",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "brown onion, finely diced or grated",
+            "amount": 0.5,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "garlic cloves, minced",
+            "amount": 2,
+            "unit": "pieces",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "pieces"
+          },
+          {
+            "name": "Turkish spice rub",
+            "amount": 1,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "cornflour",
+            "amount": 1.5,
+            "unit": "tbsp",
+            "scalingType": "linear"
+          },
+          {
+            "name": "egg",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "fixed"
+          }
+        ]
+      },
+      {
+        "section": "Turkish Spice Rub",
+        "items": [
+          {
+            "name": "ground cumin",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "ground coriander",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "ground allspice",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.25,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "fennel seeds",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.25,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "ground cinnamon",
+            "amount": 0.25,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.25,
+            "minimumUnit": "tsp"
+          }
+        ]
+      },
+      {
+        "section": "To Serve",
+        "items": [
+          {
+            "name": "cabbage",
+            "amount": 0.25,
+            "unit": "head",
+            "scalingType": "linear"
+          },
+          {
+            "name": "carrot",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "apple",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "mayo",
+            "amount": 0.25,
+            "unit": "cup",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "small pita breads",
+            "amount": 8,
+            "unit": "pieces",
+            "scalingType": "linear"
+          }
+        ]
+      }
+    ],
+    "method": [
+      "Preheat oven to 220\u00b0C. Line two oven trays with baking paper.",
+      "Heat oil in a pot on low-medium heat. Cook onion for 4-5 minutes. Stir in tomato paste, canned tomatoes, sugar and salt. Simmer for 6-8 minutes until thickened. Stir through vinegar and season.",
+      "Mix all lamb kofta ingredients until well combined. Roll tablespoon-sized pieces into cigar shapes. Arrange on first tray and bake for about 12 minutes.",
+      "Thinly slice cabbage, grate carrot and apple. Place in a bowl with mayo and mix to combine. Season.",
+      "Cut into each pita bread horizontally. Place on second tray and warm in oven for 2-3 minutes.",
+      "Stuff pita pockets with salad, lamb kofta pieces and tomato sauce. Serve extra salad on the side."
+    ],
+    "tips": "The name kofta comes from the Persian word koftan, meaning 'to pound' or 'to grind'."
+  },
+  {
+    "id": "nl-lamb-lentil-burgers",
+    "name": "Lamb 'n' Lentil Burgers with Veggie Chips",
+    "source": "Nadia Lim \u2013 Family Favourites",
+    "sourceUrl": "https://nadialim.com/product/family-favourites/",
+    "sourceType": "cookbook-photo",
+    "image": "",
+    "servings": 6,
+    "cookTime": 30,
+    "prepTime": 15,
+    "readyIn": 35,
+    "difficulty": "Easy",
+    "cuisine": "Fusion",
+    "mainProtein": "Lamb",
+    "calories": 535,
+    "carbs": 57.8,
+    "protein": 32.0,
+    "fat": 18.2,
+    "tags": [
+      "family-friendly",
+      "high-protein",
+      "hidden-veg",
+      "with-chips"
+    ],
+    "dietary": [],
+    "soloFriendly": false,
+    "familyFriendly": true,
+    "description": "Packed with nutritious ingredients and made lighter with pita breads, hummus and lentils. Served with baked parsnip and carrot chips.",
+    "ingredients": [
+      {
+        "section": "Parsnip and Carrot Chips",
+        "items": [
+          {
+            "name": "parsnips, cut into sticks",
+            "amount": 2,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "carrots, cut into sticks",
+            "amount": 2,
+            "unit": "pieces",
+            "scalingType": "linear"
+          }
+        ]
+      },
+      {
+        "section": "Lamb Patties",
+        "items": [
+          {
+            "name": "brown onion, finely diced",
+            "amount": 0.5,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "lamb mince",
+            "amount": 500,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "brown lentils (tin), drained and rinsed",
+            "amount": 400,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "lamb burger spice mix",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "soy sauce",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "salt",
+            "amount": 0.25,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "egg",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "fine breadcrumbs",
+            "amount": 1,
+            "unit": "cup",
+            "scalingType": "linear"
+          }
+        ]
+      },
+      {
+        "section": "To Serve",
+        "items": [
+          {
+            "name": "hummus (store-bought)",
+            "amount": 100,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "mayo",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "sweet chilli sauce (optional)",
+            "amount": 1,
+            "unit": "tbsp",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "small pita breads",
+            "amount": 8,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "tomatoes",
+            "amount": 2,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "cos lettuce",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "butter (optional)",
+            "amount": 1,
+            "unit": "knob",
+            "scalingType": "fixed"
+          }
+        ]
+      }
+    ],
+    "method": [
+      "Preheat oven to 220\u00b0C. Line two oven trays with baking paper.",
+      "Toss parsnips and carrots with a little oil on first tray. Season and cook for 25-30 minutes, turning once.",
+      "Mix all lamb patty ingredients. Shape into 8 patties, slightly larger than pita breads, about 1cm thick.",
+      "Cook patties in a large frying pan on medium-high heat, in batches, for 3-5 minutes each side until browned and cooked through.",
+      "Mix together hummus, mayo and sweet chilli sauce. Set aside.",
+      "Cut pita breads in half horizontally and warm in oven for 3-4 minutes.",
+      "Thinly slice tomatoes and tear up lettuce. Assemble: pita bread, hummus mayo, patty, tomato, lettuce. Serve with veggie chips."
+    ],
+    "tips": "Can also cook patties on barbecue following the same method."
+  },
+  {
+    "id": "nl-chicken-soft-tacos",
+    "name": "Chicken Soft Tacos",
+    "source": "Nadia Lim \u2013 Family Favourites",
+    "sourceUrl": "https://nadialim.com/product/family-favourites/",
+    "sourceType": "cookbook-photo",
+    "image": "",
+    "servings": 6,
+    "cookTime": 20,
+    "prepTime": 20,
+    "readyIn": 35,
+    "difficulty": "Easy",
+    "cuisine": "Mexican",
+    "mainProtein": "Chicken",
+    "calories": 652,
+    "carbs": 53.0,
+    "protein": 38.2,
+    "fat": 28.6,
+    "tags": [
+      "family-friendly",
+      "kid-friendly",
+      "build-your-own",
+      "batch-cook"
+    ],
+    "dietary": [],
+    "soloFriendly": false,
+    "familyFriendly": true,
+    "description": "Tacos are a fun, family-friendly meal! The kids will love constructing their own and picking the fillings.",
+    "ingredients": [
+      {
+        "section": "Chicken Filling",
+        "items": [
+          {
+            "name": "brown onion, thinly sliced",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "garlic cloves, minced",
+            "amount": 2,
+            "unit": "pieces",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "pieces"
+          },
+          {
+            "name": "chicken mince",
+            "amount": 600,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "taco spice mix",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "salt",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "green capsicum, thinly sliced",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "tomatoes, diced",
+            "amount": 2,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "red kidney beans (tin), drained",
+            "amount": 400,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "tomato paste",
+            "amount": 4,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 2,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "stock",
+            "amount": 0.5,
+            "unit": "cup",
+            "scalingType": "linear"
+          },
+          {
+            "name": "water",
+            "amount": 0.25,
+            "unit": "cup",
+            "scalingType": "linear"
+          }
+        ]
+      },
+      {
+        "section": "Taco Spice Mix",
+        "items": [
+          {
+            "name": "dried coriander",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "ground cumin",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "paprika",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "black pepper",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "dried oregano",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          }
+        ]
+      },
+      {
+        "section": "Avo Sweet Chilli Mayo",
+        "items": [
+          {
+            "name": "avocado",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "mayo",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "sweet chilli sauce (preferably mild)",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          }
+        ]
+      },
+      {
+        "section": "To Serve",
+        "items": [
+          {
+            "name": "small soft tortillas",
+            "amount": 12,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "lettuce",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "tomatoes",
+            "amount": 2,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "grated cheese",
+            "amount": 1,
+            "unit": "cup",
+            "scalingType": "linear"
+          }
+        ]
+      }
+    ],
+    "method": [
+      "Preheat oven to 200\u00b0C (if using to warm tortillas).",
+      "Heat oil in a large frying pan on medium-high heat. Cook onion and garlic for 2-3 minutes. Add chicken mince, taco spice mix and salt; cook for 4-5 minutes until browned. Add capsicum and cook for 2 minutes.",
+      "Add tomatoes, beans, tomato paste, stock and water. Simmer, reduce heat to medium, cook for 8-10 minutes until reduced and thickened.",
+      "Warm tortillas in oven wrapped in foil for 10-15 minutes, or microwave covered for 90 seconds.",
+      "Mash avocado with mayo and sweet chilli sauce. Season.",
+      "Thinly slice lettuce and dice tomatoes. Place all ingredients in the centre of the table for everyone to build their own tacos."
+    ],
+    "tips": "Americans consume over 4 billion tacos every year! Great for batch cooking \u2014 the filling freezes well."
+  },
+  {
+    "id": "nl-beef-soft-tacos",
+    "name": "Beef Soft Tacos",
+    "source": "Nadia Lim \u2013 Family Favourites",
+    "sourceUrl": "https://nadialim.com/product/family-favourites/",
+    "sourceType": "cookbook-photo",
+    "image": "",
+    "servings": 6,
+    "cookTime": 20,
+    "prepTime": 20,
+    "readyIn": 35,
+    "difficulty": "Easy",
+    "cuisine": "Mexican",
+    "mainProtein": "Beef",
+    "calories": 718,
+    "carbs": 45.6,
+    "protein": 33.1,
+    "fat": 34.5,
+    "tags": [
+      "family-friendly",
+      "kid-friendly",
+      "build-your-own"
+    ],
+    "dietary": [],
+    "soloFriendly": false,
+    "familyFriendly": true,
+    "description": "A little like a Sloppy Joe \u2014 the kids will love the saucy filling in these tasty beef tacos!",
+    "ingredients": [
+      {
+        "section": "Beef Filling",
+        "items": [
+          {
+            "name": "brown onion, thinly sliced",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "garlic cloves, minced",
+            "amount": 2,
+            "unit": "pieces",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "pieces"
+          },
+          {
+            "name": "beef mince",
+            "amount": 600,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "taco spice mix (see Chicken Soft Tacos)",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "salt",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "capsicum, thinly sliced",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "tomatoes, diced",
+            "amount": 1.5,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "red kidney beans (tin), drained",
+            "amount": 400,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "tomato paste",
+            "amount": 0.5,
+            "unit": "cup",
+            "scalingType": "threshold",
+            "minimumAmount": 2,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "stock",
+            "amount": 0.5,
+            "unit": "cup",
+            "scalingType": "linear"
+          },
+          {
+            "name": "water",
+            "amount": 0.25,
+            "unit": "cup",
+            "scalingType": "linear"
+          }
+        ]
+      },
+      {
+        "section": "Avo Sweet Chilli Mayo",
+        "items": [
+          {
+            "name": "avocado",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "mayo",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "sweet chilli sauce",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          }
+        ]
+      },
+      {
+        "section": "To Serve",
+        "items": [
+          {
+            "name": "small soft tortillas",
+            "amount": 12,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "cos lettuce",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "tomatoes",
+            "amount": 1.5,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "grated cheese",
+            "amount": 1,
+            "unit": "cup",
+            "scalingType": "linear"
+          }
+        ]
+      }
+    ],
+    "method": [
+      "Preheat oven to 200\u00b0C (if using to warm tortillas).",
+      "Heat oil in a large frying pan on medium-high heat. Cook onion and garlic for 2-3 minutes. Add beef mince, taco spice mix and salt; cook for 4-5 minutes until browned. Add capsicum and cook for 2 minutes.",
+      "Add tomatoes, beans, tomato paste, stock and water. Simmer, reduce heat to medium, cook for 8-10 minutes until reduced and thickened.",
+      "Warm tortillas in oven wrapped in foil for 10-15 minutes, or microwave for 90 seconds.",
+      "Mash avocado with mayo and sweet chilli sauce. Season.",
+      "Thinly slice lettuce and dice tomatoes. Place all ingredients in the centre for everyone to help themselves."
+    ],
+    "tips": "Warm the tortillas in a microwave if you're short on time."
+  },
+  {
+    "id": "nl-chilli-con-carne",
+    "name": "Chilli Con Carne",
+    "source": "Nadia Lim \u2013 Family Favourites",
+    "sourceUrl": "https://nadialim.com/product/family-favourites/",
+    "sourceType": "cookbook-photo",
+    "image": "",
+    "servings": 6,
+    "cookTime": 30,
+    "prepTime": 15,
+    "readyIn": 40,
+    "difficulty": "Easy",
+    "cuisine": "Mexican",
+    "mainProtein": "Beef",
+    "calories": 740,
+    "carbs": 83.5,
+    "protein": 38.0,
+    "fat": 25.7,
+    "tags": [
+      "family-friendly",
+      "batch-cook",
+      "freezer-friendly",
+      "one-pot",
+      "budget-friendly"
+    ],
+    "dietary": [],
+    "soloFriendly": true,
+    "familyFriendly": true,
+    "description": "This easy chilli con carne will have you cooking authentic Mexican in no time! It also builds flavour after a day or two, so it's the perfect dish to make in advance.",
+    "ingredients": [
+      {
+        "section": "Rice",
+        "items": [
+          {
+            "name": "jasmine rice",
+            "amount": 2,
+            "unit": "cups",
+            "scalingType": "linear"
+          },
+          {
+            "name": "water",
+            "amount": 3,
+            "unit": "cups",
+            "scalingType": "linear"
+          },
+          {
+            "name": "salt",
+            "amount": 1,
+            "unit": "pinch",
+            "scalingType": "fixed"
+          }
+        ]
+      },
+      {
+        "section": "Chilli Con Carne",
+        "items": [
+          {
+            "name": "beef mince",
+            "amount": 600,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "brown onion, finely diced",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "chilli spice mix",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "chilli flakes or powder (optional)",
+            "amount": 1,
+            "unit": "pinch",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "frozen corn kernels",
+            "amount": 1,
+            "unit": "cup",
+            "scalingType": "linear"
+          },
+          {
+            "name": "red kidney beans (tin), drained",
+            "amount": 400,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "tomato paste",
+            "amount": 3,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1.5,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "chopped tomatoes (tin)",
+            "amount": 400,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "carrot, grated",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "beef stock",
+            "amount": 1,
+            "unit": "cup",
+            "scalingType": "linear"
+          },
+          {
+            "name": "grated cheese",
+            "amount": 0.5,
+            "unit": "cup",
+            "scalingType": "linear"
+          }
+        ]
+      },
+      {
+        "section": "Chilli Spice Mix",
+        "items": [
+          {
+            "name": "smoked paprika",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "dried oregano",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "onion powder",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "ground cumin",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "ground coriander",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          }
+        ]
+      },
+      {
+        "section": "To Serve",
+        "items": [
+          {
+            "name": "sour cream",
+            "amount": 0.25,
+            "unit": "cup",
+            "scalingType": "linear"
+          },
+          {
+            "name": "tomato sauce",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "iceberg lettuce",
+            "amount": 0.5,
+            "unit": "pieces",
+            "scalingType": "linear"
+          }
+        ]
+      }
+    ],
+    "method": [
+      "Preheat oven grill to 200\u00b0C/high. Set aside a large casserole/baking dish.",
+      "Combine all rice ingredients in a lidded pot. Boil, then reduce to lowest heat for 12 minutes. Turn off heat and steam for 8 minutes. Fluff with a fork.",
+      "Heat oil in a large frying pan (preferably oven-proof) on high heat. Cook beef mince and onion, breaking up with a spoon, for 7-8 minutes until browned. Add chilli spice mix and chilli flakes; cook for 1 minute.",
+      "Add corn, beans, tomato paste, canned tomatoes, carrot and stock. Simmer on low for 9-12 minutes, stirring occasionally, until thickened. Season.",
+      "Combine sour cream and tomato sauce. Thinly slice lettuce.",
+      "Sprinkle cheese over mince and place under grill for about 6 minutes until cheese is bubbling and golden.",
+      "Serve chilli con carne with rice, sour cream mixture and lettuce."
+    ],
+    "tips": "To turn into beef nachos, simply serve the chilli con carne mixture with your favourite corn chips instead of rice. Freezes brilliantly in portions."
+  },
+  {
+    "id": "nl-baked-beef-meatballs",
+    "name": "Baked Beef Meatballs",
+    "source": "Nadia Lim \u2013 Family Favourites",
+    "sourceUrl": "https://nadialim.com/product/family-favourites/",
+    "sourceType": "cookbook-photo",
+    "image": "",
+    "servings": 6,
+    "cookTime": 20,
+    "prepTime": 20,
+    "readyIn": 40,
+    "difficulty": "Easy",
+    "cuisine": "Italian",
+    "mainProtein": "Beef",
+    "calories": 696,
+    "carbs": 68.5,
+    "protein": 39.6,
+    "fat": 28.7,
+    "tags": [
+      "family-friendly",
+      "kid-friendly",
+      "hidden-veg",
+      "batch-cook",
+      "freezer-friendly"
+    ],
+    "dietary": [],
+    "soloFriendly": true,
+    "familyFriendly": true,
+    "description": "With plenty of veggies hidden inside the tasty tomato vegetable sauce, this family fav is nutritious and delicious!",
+    "ingredients": [
+      {
+        "section": "Meatballs",
+        "items": [
+          {
+            "name": "beef mince",
+            "amount": 600,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "panko breadcrumbs",
+            "amount": 0.5,
+            "unit": "cup",
+            "scalingType": "linear"
+          },
+          {
+            "name": "egg",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "soy sauce",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "meatball spice mix",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "brown onion, finely diced",
+            "amount": 0.5,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "garlic clove, minced (optional)",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "tomato sauce",
+            "amount": 1,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "salt",
+            "amount": 0.75,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          }
+        ]
+      },
+      {
+        "section": "Meatball Spice Mix",
+        "items": [
+          {
+            "name": "dried rosemary",
+            "amount": 1,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "dried oregano",
+            "amount": 1,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          }
+        ]
+      },
+      {
+        "section": "Tomato Vegetable Sauce",
+        "items": [
+          {
+            "name": "brown onion, finely diced",
+            "amount": 0.5,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "carrot, grated",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "celery stalks, finely diced",
+            "amount": 3,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "salt",
+            "amount": 1,
+            "unit": "pinch",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "tomato passata",
+            "amount": 680,
+            "unit": "ml",
+            "scalingType": "linear"
+          },
+          {
+            "name": "beef stock",
+            "amount": 1,
+            "unit": "cup",
+            "scalingType": "linear"
+          },
+          {
+            "name": "sugar",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "baby spinach leaves",
+            "amount": 3,
+            "unit": "handfuls",
+            "scalingType": "linear"
+          },
+          {
+            "name": "grated cheese",
+            "amount": 0.75,
+            "unit": "cup",
+            "scalingType": "linear"
+          }
+        ]
+      },
+      {
+        "section": "To Serve",
+        "items": [
+          {
+            "name": "dried spaghetti",
+            "amount": 400,
+            "unit": "g",
+            "scalingType": "linear"
+          }
+        ]
+      }
+    ],
+    "method": [
+      "Preheat oven to 220\u00b0C and a large casserole dish.",
+      "Combine all meatball ingredients and mix well. Scoop about 2 tablespoons per meatball, roll into balls. Place in preheated dish and bake for 10 minutes.",
+      "While meatballs bake, make the sauce. Heat oil in a large frying pan on medium heat. Cook onion, carrot and celery with salt for 5-6 minutes. Add passata, stock and sugar. Simmer on low-medium for 5-6 minutes until slightly thickened. Stir through spinach and season.",
+      "Remove meatballs from oven, pour sauce over to cover. Sprinkle over cheese. Bake for a further 10 minutes until cheese is melted and golden.",
+      "Cook spaghetti for 7-8 minutes until just tender. Drain and toss with a little olive oil.",
+      "Divide spaghetti among plates and top with baked beef meatballs and tomato vegetable sauce."
+    ],
+    "tips": "If your crowd prefers a different shape or style of pasta, simply cook this instead and serve the meatballs on top. Freezes well in portions."
+  },
+  {
+    "id": "nl-pea-pumpkin-risotto",
+    "name": "Pea 'n' Pumpkin Risotto with Pesto and Bacon",
+    "source": "Nadia Lim \u2013 Family Favourites",
+    "sourceUrl": "https://nadialim.com/product/family-favourites/",
+    "sourceType": "cookbook-photo",
+    "image": "",
+    "servings": 5,
+    "cookTime": 30,
+    "prepTime": 20,
+    "readyIn": 40,
+    "difficulty": "Medium",
+    "cuisine": "Italian",
+    "mainProtein": "Bacon",
+    "calories": 579,
+    "carbs": 55.4,
+    "protein": 19.9,
+    "fat": 29.7,
+    "tags": [
+      "family-friendly",
+      "comfort-food",
+      "weekend-cook"
+    ],
+    "dietary": [],
+    "soloFriendly": false,
+    "familyFriendly": true,
+    "description": "This easy-to-follow risotto recipe is sure to impress the family. It's a delicious, creamy dish topped with crispy bacon \u2014 yum!",
+    "ingredients": [
+      {
+        "section": "Pea and Pumpkin Risotto",
+        "items": [
+          {
+            "name": "pumpkin, peeled and diced 1.5cm",
+            "amount": 400,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "butter",
+            "amount": 1,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "brown onion, finely diced",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "garlic cloves, minced",
+            "amount": 2,
+            "unit": "pieces",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "pieces"
+          },
+          {
+            "name": "dried thyme",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "salt",
+            "amount": 0.5,
+            "unit": "tsp",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "Arborio rice",
+            "amount": 1.5,
+            "unit": "cups",
+            "scalingType": "linear"
+          },
+          {
+            "name": "vegetable stock, heated",
+            "amount": 3.5,
+            "unit": "cups",
+            "scalingType": "linear"
+          },
+          {
+            "name": "frozen peas",
+            "amount": 1.5,
+            "unit": "cups",
+            "scalingType": "linear"
+          },
+          {
+            "name": "sour cream",
+            "amount": 0.33,
+            "unit": "cup",
+            "scalingType": "threshold",
+            "minimumAmount": 2,
+            "minimumUnit": "tbsp"
+          }
+        ]
+      },
+      {
+        "section": "Salad",
+        "items": [
+          {
+            "name": "iceberg lettuce",
+            "amount": 0.5,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "tomatoes",
+            "amount": 2,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "telegraph cucumber",
+            "amount": 0.5,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "vinegar",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "olive oil",
+            "amount": 1,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          }
+        ]
+      },
+      {
+        "section": "To Serve",
+        "items": [
+          {
+            "name": "streaky bacon, thinly sliced",
+            "amount": 250,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "basil pesto (store-bought)",
+            "amount": 4,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 2,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "Parmesan cheese, shaved or grated",
+            "amount": 0.25,
+            "unit": "cup",
+            "scalingType": "threshold",
+            "minimumAmount": 2,
+            "minimumUnit": "tbsp"
+          }
+        ]
+      }
+    ],
+    "method": [
+      "Preheat oven to 220\u00b0C. Line two oven trays with baking paper.",
+      "Place bacon on first tray and bake for 15-20 minutes until crispy. Toss pumpkin with olive oil on second tray, season and roast for about 15 minutes until tender.",
+      "Melt butter and a little oil in a large, heavy-based lidded pot on medium heat. Cook onion, garlic, thyme and salt for about 3 minutes until soft. Add rice and stir for 1 minute.",
+      "Add 1 cup stock and cook for 2-3 minutes, stirring often, until almost absorbed. Stir in remaining stock. Reduce heat to low-medium, cover and cook for about 15 minutes, stirring often, until rice is tender but grains still intact.",
+      "While risotto cooks, prepare salad. Shred lettuce, dice tomatoes, thinly slice cucumber. Toss with vinegar and oil, season.",
+      "Remove lid, add peas and cook for 2-3 minutes until bright green and liquid absorbed. Stir through sour cream and roasted pumpkin. Season.",
+      "Spoon risotto onto plates, sprinkle with crispy bacon. Top with a dollop of pesto and Parmesan. Serve salad on the side."
+    ],
+    "tips": "The risotto technique here is simplified \u2014 you don't need to add stock one ladle at a time. The lid does the work for you."
+  },
+  {
+    "id": "nl-beef-lasagne",
+    "name": "Beef Lasagne",
+    "source": "Nadia Lim \u2013 Family Favourites",
+    "sourceUrl": "https://nadialim.com/product/family-favourites/",
+    "sourceType": "cookbook-photo",
+    "image": "",
+    "servings": 6,
+    "cookTime": 50,
+    "prepTime": 20,
+    "readyIn": 65,
+    "difficulty": "Medium",
+    "cuisine": "Italian",
+    "mainProtein": "Beef",
+    "calories": 584,
+    "carbs": 26.6,
+    "protein": 29.8,
+    "fat": 37.1,
+    "tags": [
+      "family-friendly",
+      "comfort-food",
+      "batch-cook",
+      "freezer-friendly",
+      "weekend-cook",
+      "hidden-veg"
+    ],
+    "dietary": [],
+    "soloFriendly": true,
+    "familyFriendly": true,
+    "description": "A family favourite \u2014 this classic lasagne recipe is a favourite with Bargain Box households across NZ. Recommended!",
+    "ingredients": [
+      {
+        "section": "Meat Sauce",
+        "items": [
+          {
+            "name": "brown onion, finely diced",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "carrot, grated",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "celery stalks, finely diced",
+            "amount": 2,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "beef mince",
+            "amount": 600,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "dried Italian herbs mix",
+            "amount": 2,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "tomato paste",
+            "amount": 0.25,
+            "unit": "cup",
+            "scalingType": "threshold",
+            "minimumAmount": 2,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "chopped tomatoes (tin)",
+            "amount": 400,
+            "unit": "g",
+            "scalingType": "linear"
+          },
+          {
+            "name": "beef stock",
+            "amount": 1.5,
+            "unit": "cups",
+            "scalingType": "linear"
+          },
+          {
+            "name": "soy sauce",
+            "amount": 1.25,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          },
+          {
+            "name": "sugar",
+            "amount": 1.5,
+            "unit": "tbsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tbsp"
+          }
+        ]
+      },
+      {
+        "section": "Dried Italian Herbs",
+        "items": [
+          {
+            "name": "dried oregano",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "dried thyme",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "dried marjoram",
+            "amount": 2,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 1,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "dried basil",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          },
+          {
+            "name": "dried rosemary",
+            "amount": 1,
+            "unit": "tsp",
+            "scalingType": "threshold",
+            "minimumAmount": 0.5,
+            "minimumUnit": "tsp"
+          }
+        ]
+      },
+      {
+        "section": "White Sauce",
+        "items": [
+          {
+            "name": "egg",
+            "amount": 1,
+            "unit": "pieces",
+            "scalingType": "fixed"
+          },
+          {
+            "name": "cream",
+            "amount": 200,
+            "unit": "ml",
+            "scalingType": "linear"
+          },
+          {
+            "name": "milk",
+            "amount": 0.25,
+            "unit": "cup",
+            "scalingType": "linear"
+          },
+          {
+            "name": "Parmesan cheese, finely grated",
+            "amount": 0.5,
+            "unit": "cup",
+            "scalingType": "linear"
+          }
+        ]
+      },
+      {
+        "section": "To Assemble",
+        "items": [
+          {
+            "name": "dried lasagne sheets",
+            "amount": 6,
+            "unit": "pieces",
+            "scalingType": "linear"
+          },
+          {
+            "name": "Parmesan cheese, finely grated",
+            "amount": 0.5,
+            "unit": "cup",
+            "scalingType": "linear"
+          },
+          {
+            "name": "broccoli, small florets",
+            "amount": 1,
+            "unit": "head",
+            "scalingType": "linear"
+          }
+        ]
+      }
+    ],
+    "method": [
+      "Preheat oven to 190\u00b0C. Set a medium-sized lasagne dish (about 20cm x 28cm) aside.",
+      "Heat oil in a large frying pan on high heat. Cook onion, carrot and celery for 3-4 minutes. Add mince and cook for 5 minutes, breaking up with a spoon, until browned.",
+      "Add dried Italian herbs, tomato paste, canned tomatoes, stock, soy sauce and sugar. Simmer for about 10 minutes until thickened but still saucy. Season.",
+      "In a medium bowl, lightly whisk egg. Add cream, milk and Parmesan and whisk until combined. Season. The sauce should be runny.",
+      "Spread about 1 cup of meat sauce over base of lasagne dish. Lay lasagne sheets in a single layer. Spoon over half the remaining meat sauce followed by half the white sauce. Repeat one more layer, finishing with white sauce. Sprinkle over Parmesan.",
+      "Bake for about 30 minutes until topping is golden. Leave to rest for 5 minutes.",
+      "When lasagne has about 10 minutes remaining, cook broccoli in boiling water for 3-4 minutes until bright green and tender.",
+      "Cut lasagne into large squares and serve with broccoli on the side."
+    ],
+    "tips": "You can test if the lasagne sheets are cooked by pushing the pointy end of a knife down through the pasta \u2014 the knife should go through easily. Freezes well in portions."
+  }
+]
