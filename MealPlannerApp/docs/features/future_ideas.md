@@ -2,6 +2,10 @@
 
 This file captures long-term feature ideas and architectural considerations for the Meal Mate app.
 
+> **Note:** Some ideas that were previously in this file have now been fully specced and moved to their own feature folders:
+> - **Cook Forward** (linked meals, prep nudges, freezer stash) → See [cook-forward/](./cook-forward/)
+> - **Meal Planner Weekly View** → See [meal-planner-weekly/](./meal-planner-weekly/)
+
 ## 1. AI Agent for Recipe Processing (LLM Integration)
 
 **Concept:** Use a Large Language Model (LLM) via an automation platform like n8n or a custom backend to create a consistent, high-quality "recipe card" format from any recipe URL.
