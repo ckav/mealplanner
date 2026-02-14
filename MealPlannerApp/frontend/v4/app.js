@@ -473,6 +473,7 @@ function switchView(viewName) {
     // Refresh view data
     if (viewName === 'planner') renderPlanner();
     if (viewName === 'recipes') renderRecipes();
+    if (viewName === 'cook') renderCookView();
     if (viewName === 'shopping') { renderShopping(); renderPantry(); }
     if (viewName === 'settings') { renderProfiles(); renderAllergenGrid(); renderPantry(); }
 
@@ -699,38 +700,83 @@ function renderRecipes() {
         grid.className = 'recipe-grid recipe-grid-quick';
         grid.innerHTML = list.map(r => {
             const fav = state.favouriteRecipes.includes(r.id);
-            return `<div class="quick-row" data-id="${r.id}">
-                <img class="quick-thumb" src="${r.image || FALLBACK_IMAGE}" alt="${r.name}" loading="lazy" ${IMAGE_FALLBACK_ATTR}>
-                <div class="quick-info">
-                    <span class="quick-name">${r.name}</span>
-                    <span class="quick-meta">🕒 ${r.cookTime}m · 👤 ${r.servings} · ${r.difficulty}</span>
+            return `<div class="qv-card-wrapper" data-id="${r.id}">
+                <div class="qv-actions-left">
+                    <button class="qv-action-btn save-action" data-qv-action="save"><span class="qv-action-icon">🔖</span>Save</button>
+                    <button class="qv-action-btn plan-action" data-qv-action="add"><span class="qv-action-icon">📅</span>Add</button>
                 </div>
-                <div class="quick-actions">
-                    <button class="btn-icon" data-action="fav" data-id="${r.id}" style="color:${fav?'var(--c-favourite)':'var(--c-gray-400)'};">${fav?'♥':'♡'}</button>
-                    <button class="btn btn-primary btn-sm" data-action="add" data-id="${r.id}">+</button>
+                <div class="qv-actions-right">
+                    <button class="qv-action-btn skip-action" data-qv-action="skip"><span class="qv-action-icon">⏭</span>Skip</button>
+                    <button class="qv-action-btn nope-action" data-qv-action="nope"><span class="qv-action-icon">✕</span>Nope</button>
+                </div>
+                <div class="qv-card" data-id="${r.id}">
+                    <img class="quick-thumb" src="${r.image || FALLBACK_IMAGE}" alt="${r.name}" loading="lazy" ${IMAGE_FALLBACK_ATTR}>
+                    <div class="quick-info">
+                        <span class="quick-name">${r.name}</span>
+                        <span class="quick-meta">🕒 ${r.cookTime}m · 👤 ${r.servings} · ${r.difficulty}</span>
+                    </div>
+                    <button class="qv-heart ${fav?'liked':''}" data-action="fav" data-id="${r.id}">${fav?'❤️':'🤍'}</button>
                 </div>
             </div>`;
         }).join('');
+        // Attach swipe-to-reveal gestures
+        requestAnimationFrame(() => initQuickViewSwipe(grid));
     } else if (state.browseMode === 'swipe') {
         grid.className = 'recipe-grid recipe-grid-swipe';
         if (list.length > 0) {
             if (state.swipeIndex >= list.length) state.swipeIndex = 0;
-            const r = list[state.swipeIndex];
-            const fav = state.favouriteRecipes.includes(r.id);
-            const allergens = detectAllergens(r);
-            grid.innerHTML = `<div class="swipe-card" data-id="${r.id}">
-                <img class="swipe-img" src="${r.image || FALLBACK_IMAGE}" alt="${r.name}" ${IMAGE_FALLBACK_ATTR}>
-                <div class="swipe-body">
-                    <h3 class="swipe-title">${r.name}</h3>
-                    <div class="card-meta"><span>🕒 ${r.cookTime}m</span> ${r.calories ? `<span>🔥 ${r.calories} kcal</span>` : ''} <span>👤 ${r.servings}</span></div>
-                    ${r.description ? `<p style="font-size:.85rem;color:var(--c-gray-500);margin:8px 0;">${r.description}</p>` : ''}
-                    ${allergens.length ? `<div style="margin:6px 0;">${allergens.map(a => `<span class="pill allergen-pill">${ALLERGENS[a]?.icon||''} ${a}</span>`).join(' ')}</div>` : ''}
-                </div>
-                <div class="swipe-actions">
-                    <button class="btn btn-secondary" data-action="swipe-skip">Skip</button>
-                    <button class="btn-icon" data-action="fav" data-id="${r.id}" style="font-size:1.4rem;color:${fav?'var(--c-favourite)':'var(--c-gray-400)'};">${fav?'♥':'♡'}</button>
-                    <button class="btn btn-primary" data-action="add" data-id="${r.id}">+ Add to Plan</button>
-                </div>
+            // Progress dots (show up to 10)
+            const dotCount = Math.min(list.length, 10);
+            const dotsHtml = Array.from({length: dotCount}, (_, i) => {
+                let cls = 'swipe-dot';
+                if (i === state.swipeIndex) cls += ' current';
+                else if (i < state.swipeIndex) cls += ' done';
+                return `<span class="${cls}"></span>`;
+            }).join('');
+
+            // Card stack — show current + 2 behind
+            let stackHtml = '';
+            for (let i = Math.min(2, list.length - state.swipeIndex - 1); i >= 0; i--) {
+                const idx = state.swipeIndex + i;
+                if (idx >= list.length) continue;
+                const r = list[idx];
+                const isCurrent = i === 0;
+                const stackClass = isCurrent ? 'swipe-card top-card' : i === 1 ? 'swipe-card behind-1' : 'swipe-card behind-2';
+                stackHtml += `<div class="${stackClass}" data-id="${r.id}">
+                    <div class="swipe-card-image">
+                        <img class="swipe-img" src="${r.image || FALLBACK_IMAGE}" alt="${r.name}" ${IMAGE_FALLBACK_ATTR}>
+                        ${r.tags && r.tags.length ? `<div class="sc-badges">${r.tags.slice(0,2).map(t => `<span class="sc-badge">${t}</span>`).join('')}</div>` : ''}
+                        <div class="sc-stamp skip-stamp">SKIP</div>
+                        <div class="sc-stamp add-stamp">ADD ✓</div>
+                    </div>
+                    <div class="swipe-body">
+                        <h3 class="swipe-title">${r.name}</h3>
+                        <div class="card-meta"><span>🕒 ${r.cookTime}m</span> ${r.calories ? `<span>🔥 ${r.calories} kcal</span>` : ''} <span>👤 ${r.servings}</span></div>
+                        ${r.cuisine ? `<span class="sc-tag">${r.cuisine}</span>` : ''}
+                    </div>
+                </div>`;
+            }
+
+            const currentR = list[state.swipeIndex];
+            const fav = state.favouriteRecipes.includes(currentR.id);
+            grid.innerHTML = `
+                <div class="swipe-mode-container">
+                    <div class="swipe-progress">${dotsHtml}</div>
+                    <div class="swipe-stack">${stackHtml}</div>
+                    <div class="swipe-actions-row">
+                        <button class="swipe-btn save-btn" data-action="swipe-save" title="Save for later">🔖</button>
+                        <button class="swipe-btn add-btn" data-action="add" data-id="${currentR.id}" title="Add to meals">＋</button>
+                        <button class="swipe-btn heart-btn ${fav?'liked':''}" data-action="fav" data-id="${currentR.id}" title="Favourite">${fav?'❤️':'🤍'}</button>
+                    </div>
+                    <button class="swipe-nope-link" data-action="swipe-nope">Not for me — don't show again</button>
+                </div>`;
+            // Attach swipe gesture to top card
+            requestAnimationFrame(() => initSwipeCardGesture(grid, list));
+        } else {
+            grid.innerHTML = `<div class="swipe-mode-container" style="text-align:center;padding:40px;">
+                <div style="font-size:2rem;margin-bottom:8px;">🎉</div>
+                <p style="color:var(--c-gray-500);">No more recipes to browse!</p>
+                <button class="btn btn-primary btn-sm" style="margin-top:12px;" onclick="state.swipeIndex=0;renderRecipes();">Start over</button>
             </div>`;
         }
     } else {
@@ -810,6 +856,256 @@ function renderRecipes() {
     renderActiveFiltersInfo(blocked, dislikes);
     renderUseItUp();
     saveState();
+}
+
+
+// =========================================
+// SWIPE MODE — GESTURE HANDLING
+// =========================================
+function initSwipeCardGesture(grid, list) {
+    const topCard = grid.querySelector('.swipe-card.top-card');
+    if (!topCard) return;
+    const skipStamp = topCard.querySelector('.skip-stamp');
+    const addStamp = topCard.querySelector('.add-stamp');
+    let startX = 0, deltaX = 0, dragging = false;
+
+    function onStart(e) {
+        dragging = true;
+        startX = (e.touches ? e.touches[0] : e).clientX;
+        topCard.style.transition = 'none';
+    }
+    function onMove(e) {
+        if (!dragging) return;
+        deltaX = (e.touches ? e.touches[0] : e).clientX - startX;
+        topCard.style.transform = `translateX(${deltaX}px) rotate(${deltaX * 0.05}deg)`;
+        // Show stamps based on direction
+        if (deltaX < -30 && skipStamp) {
+            skipStamp.style.opacity = Math.min(1, (Math.abs(deltaX) - 30) / 80);
+            if (addStamp) addStamp.style.opacity = 0;
+        } else if (deltaX > 30 && addStamp) {
+            addStamp.style.opacity = Math.min(1, (deltaX - 30) / 80);
+            if (skipStamp) skipStamp.style.opacity = 0;
+        } else {
+            if (skipStamp) skipStamp.style.opacity = 0;
+            if (addStamp) addStamp.style.opacity = 0;
+        }
+    }
+    function onEnd() {
+        if (!dragging) return;
+        dragging = false;
+        topCard.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        const id = topCard.dataset.id;
+
+        if (deltaX < -120) {
+            // Swiped left — skip
+            topCard.style.transform = 'translateX(-500px) rotate(-20deg)';
+            topCard.style.opacity = '0';
+            setTimeout(() => {
+                state.swipeIndex++;
+                renderRecipes();
+            }, 300);
+            showToast('Skipped 👋');
+        } else if (deltaX > 120) {
+            // Swiped right — add to plan
+            topCard.style.transform = 'translateX(500px) rotate(20deg)';
+            topCard.style.opacity = '0';
+            setTimeout(() => {
+                addRecipeToFirstAvailableSlot(id);
+                state.swipeIndex++;
+                renderRecipes();
+            }, 300);
+        } else {
+            // Snap back
+            topCard.style.transform = 'translateX(0) rotate(0)';
+            if (skipStamp) skipStamp.style.opacity = 0;
+            if (addStamp) addStamp.style.opacity = 0;
+        }
+        deltaX = 0;
+    }
+
+    topCard.addEventListener('touchstart', onStart, { passive: true });
+    topCard.addEventListener('touchmove', onMove, { passive: true });
+    topCard.addEventListener('touchend', onEnd);
+    topCard.addEventListener('mousedown', onStart);
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onEnd);
+
+    // Prevent text selection while dragging
+    topCard.style.userSelect = 'none';
+    topCard.style.touchAction = 'none';
+    topCard.style.cursor = 'grab';
+}
+
+function addRecipeToFirstAvailableSlot(recipeId) {
+    const weekDays = getWeekDates(state.weekOffset);
+    for (const d of weekDays) {
+        const key = fmtDate(d);
+        const slots = ensureSlots(key);
+        const mainSlot = slots[0];
+        if (mainSlot.status === 'empty') {
+            mainSlot.status = 'filled';
+            mainSlot.recipeId = recipeId;
+            mainSlot.portions = state.defaultPortions;
+            saveState();
+            showToast(`Added to ${dayName(d)}! 📅`);
+            return;
+        }
+    }
+    // No empty main slots — try extra slots
+    for (const d of weekDays) {
+        const key = fmtDate(d);
+        const slots = ensureSlots(key);
+        for (let i = 1; i < slots.length; i++) {
+            if (slots[i].status === 'notNeeded' || slots[i].status === 'empty') {
+                slots[i].status = 'filled';
+                slots[i].recipeId = recipeId;
+                slots[i].portions = state.defaultPortions;
+                saveState();
+                showToast(`Added to ${dayName(d)}! 📅`);
+                return;
+            }
+        }
+    }
+    showToast('Week is full! Clear some slots first.');
+}
+
+
+// =========================================
+// QUICK VIEW — SWIPE-TO-REVEAL (iOS Mail Style)
+// =========================================
+function initQuickViewSwipe(container) {
+    container.querySelectorAll('.qv-card').forEach(card => {
+        let startX = 0, currentX = 0, dragging = false, isOpen = false, openDir = null;
+        const wrapper = card.closest('.qv-card-wrapper');
+        const REVEAL_THRESHOLD = 68;     // px to reveal action buttons
+        const ACTION_THRESHOLD = 200;    // px for full-swipe auto-action
+
+        function onStart(e) {
+            const t = e.touches ? e.touches[0] : e;
+            startX = t.clientX - (isOpen ? (openDir === 'right' ? REVEAL_THRESHOLD * 2 : -REVEAL_THRESHOLD * 2) : 0);
+            dragging = true;
+            card.style.transition = 'none';
+        }
+        function onMove(e) {
+            if (!dragging) return;
+            const t = e.touches ? e.touches[0] : e;
+            currentX = Math.max(-(ACTION_THRESHOLD + 20), Math.min(ACTION_THRESHOLD + 20, t.clientX - startX));
+            card.style.transform = `translateX(${currentX}px)`;
+        }
+        function onEnd() {
+            if (!dragging) return;
+            dragging = false;
+            card.style.transition = 'transform 0.25s ease';
+            const id = wrapper.dataset.id;
+
+            // Full swipe right → auto add
+            if (currentX > ACTION_THRESHOLD) {
+                card.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    wrapper.style.maxHeight = wrapper.offsetHeight + 'px';
+                    requestAnimationFrame(() => { wrapper.classList.add('dismissed'); });
+                    addRecipeToFirstAvailableSlot(id);
+                }, 250);
+                return;
+            }
+            // Full swipe left → auto skip
+            if (currentX < -ACTION_THRESHOLD) {
+                card.style.transform = 'translateX(-400px)';
+                setTimeout(() => {
+                    wrapper.style.maxHeight = wrapper.offsetHeight + 'px';
+                    requestAnimationFrame(() => { wrapper.classList.add('dismissed'); });
+                    showToast('Skipped 👋');
+                }, 250);
+                return;
+            }
+            // Partial swipe — reveal actions
+            if (currentX > REVEAL_THRESHOLD / 2) {
+                card.style.transform = `translateX(${REVEAL_THRESHOLD * 2}px)`;
+                isOpen = true; openDir = 'right';
+            } else if (currentX < -REVEAL_THRESHOLD / 2) {
+                card.style.transform = `translateX(-${REVEAL_THRESHOLD * 2}px)`;
+                isOpen = true; openDir = 'left';
+            } else {
+                card.style.transform = 'translateX(0)';
+                isOpen = false; openDir = null;
+            }
+            currentX = 0;
+        }
+
+        card.addEventListener('touchstart', onStart, { passive: true });
+        card.addEventListener('touchmove', onMove, { passive: true });
+        card.addEventListener('touchend', onEnd);
+        card.addEventListener('mousedown', onStart);
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onEnd);
+
+        // Tap to close if open
+        card.addEventListener('click', (e) => {
+            if (isOpen) {
+                e.stopPropagation();
+                card.style.transition = 'transform 0.25s ease';
+                card.style.transform = 'translateX(0)';
+                isOpen = false; openDir = null;
+            }
+        });
+
+        // Handle revealed action button clicks
+        wrapper.querySelectorAll('.qv-action-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const action = btn.dataset.qvAction;
+                const id = wrapper.dataset.id;
+                if (action === 'save') {
+                    // Save to favourites
+                    if (!state.favouriteRecipes.includes(id)) state.favouriteRecipes.push(id);
+                    saveState();
+                    card.style.transform = 'translateX(0)';
+                    isOpen = false; openDir = null;
+                    showToast('🔖 Saved to favourites!');
+                    renderRecipes();
+                } else if (action === 'add') {
+                    card.style.transform = 'translateX(400px)';
+                    setTimeout(() => {
+                        wrapper.style.maxHeight = wrapper.offsetHeight + 'px';
+                        requestAnimationFrame(() => wrapper.classList.add('dismissed'));
+                        addRecipeToFirstAvailableSlot(id);
+                    }, 250);
+                } else if (action === 'skip') {
+                    card.style.transform = 'translateX(-400px)';
+                    setTimeout(() => {
+                        wrapper.style.maxHeight = wrapper.offsetHeight + 'px';
+                        requestAnimationFrame(() => wrapper.classList.add('dismissed'));
+                        showToast('Skipped 👋');
+                    }, 250);
+                } else if (action === 'nope') {
+                    card.style.transform = 'translateX(-400px)';
+                    setTimeout(() => {
+                        wrapper.style.maxHeight = wrapper.offsetHeight + 'px';
+                        requestAnimationFrame(() => wrapper.classList.add('dismissed'));
+                        showToast('Won\'t show again');
+                    }, 250);
+                }
+            });
+        });
+
+        // Heart button in quick view
+        wrapper.querySelectorAll('.qv-heart').forEach(h => {
+            h.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const rid = h.dataset.id;
+                const idx = state.favouriteRecipes.indexOf(rid);
+                if (idx > -1) state.favouriteRecipes.splice(idx, 1);
+                else state.favouriteRecipes.push(rid);
+                saveState();
+                h.classList.toggle('liked');
+                h.textContent = h.classList.contains('liked') ? '❤️' : '🤍';
+            });
+        });
+
+        // Make card look draggable
+        card.style.userSelect = 'none';
+        card.style.cursor = 'grab';
+    });
 }
 
 
@@ -1342,9 +1638,10 @@ function renderOnboardingStep(step) {
         dot.classList.toggle('active', i < step);
         dot.classList.toggle('current', i === step - 1);
     });
-    if (step === 2) renderOnboardingBrowseMode();
-    if (step === 3) renderOnboardingProfiles();
-    if (step === 6) renderOnboardingSummary();
+    if (step === 2) renderOnboardingDietary();
+    if (step === 3) renderOnboardingBrowseMode();
+    if (step === 4) renderOnboardingProfiles();
+    if (step === 7) renderOnboardingSummary();
 }
 
 function renderOnboardingAllergenGrid() {
@@ -1353,6 +1650,15 @@ function renderOnboardingAllergenGrid() {
     grid.innerHTML = Object.entries(ALLERGENS).map(([name, data]) =>
         `<label class="allergen-checkbox"><input type="checkbox" value="${name}"> ${data.icon} ${name}</label>`
     ).join('');
+}
+
+function renderOnboardingDietary() {
+    const container = document.getElementById('onboardingDietaryOptions');
+    if (!container) return;
+    // Sync checkboxes with current state
+    container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = state.filterDietary.includes(cb.value);
+    });
 }
 
 function renderOnboardingProfiles() {
@@ -1436,17 +1742,22 @@ function renderOnboardingSummary() {
     const profileCount = state.profiles.length;
     const pantryCount = state.pantryItems.length;
     const fridgeCount = state.fridgeItems.length;
+    const dietaryCount = state.filterDietary.length;
     const modeLabels = { full: 'Full Card', swipe: 'Swipe', quick: 'Quick View' };
     el.innerHTML = `
         <div style="display:grid;gap:12px;text-align:left;">
+            ${dietaryCount > 0 ? `<div class="card" style="padding:12px;">
+                <strong>🥗 ${state.filterDietary.join(', ')}</strong>
+                <div style="font-size:.8rem;color:var(--c-gray-500);margin-top:2px;">Dietary preferences applied to recipes</div>
+            </div>` : ''}
             <div class="card" style="padding:12px;">
                 <strong>🍽️ ${modeLabels[state.browseMode] || 'Full Card'} browse · ${state.defaultPortions} portion${state.defaultPortions !== 1 ? 's' : ''}</strong>
-                <div style="font-size:.8rem;color:var(--c-gray-500);margin-top:2px;">You can change these anytime in settings</div>
+                <div style="font-size:.8rem;color:var(--c-gray-500);margin-top:2px;">You can change these anytime</div>
             </div>
             <div class="card" style="padding:12px;">
                 <strong>👨‍👩‍👧‍👦 ${profileCount} profile${profileCount !== 1 ? 's' : ''}</strong>
                 <div style="font-size:.8rem;color:var(--c-gray-500);margin-top:2px;">
-                    ${state.profiles.map(p => p.name).join(', ') || 'None'}
+                    ${state.profiles.map(p => p.name).join(', ') || 'None — you can add people later in Settings'}
                 </div>
             </div>
             <div class="card" style="padding:12px;">
@@ -1863,6 +2174,96 @@ function closeDetail() {
 
 
 // =========================================
+// COOK VIEW — Planned meals list
+// =========================================
+function renderCookView() {
+    const list = document.getElementById('cookMealList');
+    if (!list) return;
+
+    const weekDays = getWeekDates(state.weekOffset);
+    const plannedMeals = [];
+
+    weekDays.forEach(date => {
+        const key = fmtDate(date);
+        const slots = state.mealPlan[key];
+        if (!slots) return;
+        slots.forEach((slot, idx) => {
+            if (slot.status === 'filled' && slot.recipeId) {
+                const r = getRecipe(slot.recipeId);
+                if (r) {
+                    plannedMeals.push({
+                        recipe: r,
+                        date,
+                        dateKey: key,
+                        slotIdx: idx,
+                        slotType: slot.slotType,
+                        portions: slot.portions || state.defaultPortions,
+                        dayLabel: dayName(date),
+                        shortLabel: shortDate(date),
+                    });
+                }
+            }
+        });
+    });
+
+    if (plannedMeals.length === 0) {
+        list.innerHTML = `<div class="cook-empty-state">
+            <div style="font-size:2.5rem;margin-bottom:12px;">🍳</div>
+            <h3 style="font-size:1rem;font-weight:600;margin-bottom:6px;">No meals planned yet</h3>
+            <p style="font-size:.85rem;color:var(--c-gray-500);margin-bottom:16px;">Add recipes to your weekly plan, then come back here to start cooking.</p>
+            <button class="btn btn-primary" onclick="switchView('recipes')">Browse Recipes</button>
+        </div>`;
+        return;
+    }
+
+    // Group meals by day
+    const grouped = {};
+    plannedMeals.forEach(m => {
+        const label = m.dayLabel;
+        if (!grouped[label]) grouped[label] = [];
+        grouped[label].push(m);
+    });
+
+    list.innerHTML = Object.entries(grouped).map(([day, meals]) => `
+        <div class="cook-day-group">
+            <div class="cook-day-label">${day} <span class="cook-day-date">${meals[0].shortLabel}</span></div>
+            ${meals.map(m => {
+                const cooked = state.cookedDates[m.recipe.id];
+                const cookedToday = cooked === fmtDate(new Date());
+                return `<div class="cook-meal-card ${cookedToday ? 'cooked' : ''}" data-recipe-id="${m.recipe.id}" data-portions="${m.portions}">
+                    <img class="cook-meal-thumb" src="${m.recipe.image || FALLBACK_IMAGE}" alt="${m.recipe.name}" ${IMAGE_FALLBACK_ATTR}>
+                    <div class="cook-meal-info">
+                        <div class="cook-meal-name">${m.recipe.name}</div>
+                        <div class="cook-meal-meta">
+                            <span>🕒 ${m.recipe.cookTime}m</span>
+                            <span>👤 ${m.portions}</span>
+                            <span class="cook-meal-type">${m.slotType === 'main' ? 'Main' : 'Extra'}</span>
+                        </div>
+                        ${cookedToday ? '<span class="cook-meal-done">✅ Cooked today</span>' : ''}
+                    </div>
+                    <button class="btn btn-primary btn-sm cook-start-btn" data-recipe-id="${m.recipe.id}" data-portions="${m.portions}">
+                        ${cookedToday ? '🔄 Again' : '🍳 Cook'}
+                    </button>
+                </div>`;
+            }).join('')}
+        </div>`).join('');
+
+    // Attach click handlers
+    list.querySelectorAll('.cook-start-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            openCookMode(btn.dataset.recipeId, parseInt(btn.dataset.portions));
+        });
+    });
+    list.querySelectorAll('.cook-meal-card').forEach(card => {
+        card.addEventListener('click', () => {
+            openDetail(card.dataset.recipeId);
+        });
+    });
+}
+
+
+// =========================================
 // COOK MODE
 // =========================================
 function openCookMode(recipeId, portions) {
@@ -1914,6 +2315,8 @@ function renderCookSteps() {
 function closeCookMode() {
     resetTimer();
     document.getElementById('cookMode').classList.remove('open');
+    // Re-render cook view to update cooked status
+    if (state.currentView === 'cook') renderCookView();
 }
 
 
@@ -2138,6 +2541,7 @@ function setupEvents() {
         const btn = e.target.closest('.browse-mode-btn');
         if (!btn) return;
         state.browseMode = btn.dataset.mode;
+        if (btn.dataset.mode === 'swipe') state.swipeIndex = 0;
         document.querySelectorAll('.browse-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === state.browseMode));
         saveState();
         renderRecipes();
@@ -2169,10 +2573,34 @@ function setupEvents() {
         const action = e.target.dataset.action;
         const id = e.target.dataset.id;
 
-        // Swipe mode skip — advance to next recipe
+        // Swipe mode actions
         if (action === 'swipe-skip') {
             state.swipeIndex++;
             renderRecipes(); return;
+        }
+        if (action === 'swipe-save') {
+            const topCard = document.querySelector('.swipe-card.top-card');
+            if (topCard) {
+                const rid = topCard.dataset.id;
+                if (!state.favouriteRecipes.includes(rid)) state.favouriteRecipes.push(rid);
+                topCard.style.transition = 'transform 0.3s, opacity 0.3s';
+                topCard.style.transform = 'translateY(-400px)';
+                topCard.style.opacity = '0';
+                setTimeout(() => { state.swipeIndex++; saveState(); renderRecipes(); }, 300);
+                showToast('🔖 Saved to favourites!');
+            }
+            return;
+        }
+        if (action === 'swipe-nope') {
+            const topCard = document.querySelector('.swipe-card.top-card');
+            if (topCard) {
+                topCard.style.transition = 'transform 0.3s, opacity 0.3s';
+                topCard.style.transform = 'translateY(400px)';
+                topCard.style.opacity = '0';
+                setTimeout(() => { state.swipeIndex++; renderRecipes(); }, 300);
+                showToast('Won\'t show again');
+            }
+            return;
         }
 
         if (action === 'fav' && id) {
@@ -2185,6 +2613,21 @@ function setupEvents() {
         if (action === 'add' && id) {
             if (longPress.triggered && longPress.id === id) {
                 longPress.triggered = false;
+                return;
+            }
+            // Swipe mode: animate card out and advance
+            if (state.browseMode === 'swipe') {
+                const topCard = document.querySelector('.swipe-card.top-card');
+                if (topCard) {
+                    topCard.style.transition = 'transform 0.3s, opacity 0.3s';
+                    topCard.style.transform = 'translateX(500px) rotate(20deg)';
+                    topCard.style.opacity = '0';
+                    setTimeout(() => {
+                        addRecipeToFirstAvailableSlot(id);
+                        state.swipeIndex++;
+                        renderRecipes();
+                    }, 300);
+                }
                 return;
             }
             // Quick add: find next empty main slot this week
@@ -2208,10 +2651,15 @@ function setupEvents() {
             return;
         }
 
-        // Click card body → open detail
+        // Click card body → open detail (full card mode)
         const card = e.target.closest('.recipe-card');
         if (card && !e.target.closest('button')) {
             openDetail(card.dataset.id);
+        }
+        // Click swipe card body → open detail (swipe mode)
+        const swipeCard = e.target.closest('.swipe-card');
+        if (swipeCard && !e.target.closest('button') && !e.target.closest('.swipe-actions-row')) {
+            openDetail(swipeCard.dataset.id);
         }
     });
 
@@ -2793,10 +3241,18 @@ function setupEvents() {
     if (onboardingModal) {
         onboardingModal.addEventListener('click', e => {
             const action = e.target.dataset.wizardAction;
-            if (action === 'next') renderOnboardingStep(onboardingStep + 1);
+            if (action === 'next') {
+                // Save dietary selections when leaving step 2
+                if (onboardingStep === 2) {
+                    state.filterDietary = Array.from(document.querySelectorAll('#onboardingDietaryOptions input:checked')).map(c => c.value);
+                    saveState();
+                }
+                renderOnboardingStep(onboardingStep + 1);
+            }
             if (action === 'back') renderOnboardingStep(onboardingStep - 1);
             if (action === 'skip') renderOnboardingStep(onboardingStep + 1);
             if (action === 'start') renderOnboardingStep(2);
+            if (action === 'skip-all') completeOnboarding();
             if (action === 'complete') completeOnboarding();
             if (action === 'add-profile') addOnboardingProfile();
 
