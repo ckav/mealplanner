@@ -833,7 +833,7 @@ textarea.form-input { resize: vertical; min-height: 60px; }
     border: 1px solid #bbf7d0; border-radius: var(--radius-lg);
 }
 .use-it-up-header {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+    display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px;
 }
 .use-it-up-header h3 { font-size: .9rem; font-weight: 700; color: var(--c-success); margin: 0; }
 .use-it-up-hint { font-size: .75rem; color: var(--c-gray-500); }
@@ -855,3 +855,137 @@ textarea.form-input { resize: vertical; min-height: 60px; }
 .use-it-up-meta { font-size: .7rem; color: var(--c-gray-400); margin-top: 2px; }
 
 .fridge-quick-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+
+/* =========================================
+   TOAST NOTIFICATIONS
+   ========================================= */
+.toast-notification {
+    position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--c-gray-800); color: var(--c-white); padding: 10px 20px;
+    border-radius: var(--radius-full); font-size: .85rem; font-weight: 600;
+    z-index: 3000; opacity: 0; transition: all .3s ease; pointer-events: none;
+    box-shadow: var(--shadow-lg); white-space: nowrap;
+}
+.toast-notification.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* =========================================
+   BROWSE MODE TOGGLE
+   ========================================= */
+.browse-mode-bar {
+    display: flex; gap: 4px; margin-bottom: 12px;
+    background: var(--c-gray-100); padding: 3px; border-radius: var(--radius-full);
+}
+.browse-mode-btn {
+    flex: 1; padding: 7px 12px; border: none; border-radius: var(--radius-full);
+    font-family: var(--font); font-size: .8rem; font-weight: 600;
+    cursor: pointer; transition: all var(--transition);
+    background: transparent; color: var(--c-gray-500); text-align: center;
+}
+.browse-mode-btn:hover { color: var(--c-gray-700); }
+.browse-mode-btn.active { background: var(--c-white); color: var(--c-primary); box-shadow: var(--shadow-sm); }
+
+/* =========================================
+   QUICK VIEW MODE
+   ========================================= */
+.recipe-grid-quick {
+    display: flex !important; flex-direction: column; gap: 6px;
+    grid-template-columns: unset !important;
+}
+.quick-row {
+    display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+    background: var(--c-white); border: 1px solid var(--c-gray-200);
+    border-radius: var(--radius-md); cursor: pointer; transition: all var(--transition);
+}
+.quick-row:hover { box-shadow: var(--shadow-sm); border-color: var(--c-gray-300); }
+.quick-thumb {
+    width: 56px; height: 56px; border-radius: var(--radius-sm);
+    object-fit: cover; flex-shrink: 0;
+}
+.quick-info { flex: 1; min-width: 0; }
+.quick-name { font-size: .85rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.quick-meta { font-size: .7rem; color: var(--c-gray-500); }
+.quick-actions { display: flex; gap: 4px; align-items: center; flex-shrink: 0; }
+.quick-fav {
+    width: 32px; height: 32px; border: none; background: transparent;
+    cursor: pointer; font-size: 1rem; color: var(--c-gray-400); transition: all var(--transition);
+}
+.quick-fav.active { color: var(--c-favourite); }
+.quick-fav:hover { transform: scale(1.15); }
+.btn-warning { background: var(--c-warning-light); color: var(--c-warning); }
+
+/* =========================================
+   SWIPE MODE
+   ========================================= */
+.recipe-grid-swipe {
+    display: flex !important; flex-direction: column; align-items: center;
+    grid-template-columns: unset !important; max-width: 400px; margin: 0 auto;
+}
+.swipe-counter {
+    font-size: .75rem; color: var(--c-gray-400); font-weight: 600;
+    margin-bottom: 8px; text-align: center;
+}
+.swipe-card {
+    width: 100%; background: var(--c-white); border-radius: var(--radius-lg);
+    overflow: hidden; box-shadow: var(--shadow-md); border: 1px solid var(--c-gray-200);
+}
+.swipe-card .card-img { height: 220px; }
+.swipe-card .card-body { padding: 14px 16px; }
+.swipe-card .card-title { font-size: 1.1rem; }
+.swipe-actions {
+    display: flex; gap: 8px; margin-top: 14px; justify-content: center; align-items: center; width: 100%;
+}
+.swipe-actions .btn { padding: 10px 18px; }
+.swipe-skip { flex: 0 0 auto; }
+.swipe-save { flex: 0 0 auto; }
+.swipe-add { flex: 1; justify-content: center; }
+.swipe-fav {
+    width: 40px; height: 40px; border: none; background: transparent;
+    cursor: pointer; font-size: 1.3rem; color: var(--c-gray-400); transition: all var(--transition);
+}
+.swipe-fav.active { color: var(--c-favourite); }
+.swipe-fav:hover { transform: scale(1.15); }
+.swipe-empty {
+    text-align: center; padding: 60px 20px; color: var(--c-gray-400); font-size: .9rem;
+}
+
+/* =========================================
+   USE IT UP — IMPROVED HEADER
+   ========================================= */
+.use-it-up-header-top {
+    display: flex; align-items: center; justify-content: space-between; width: 100%;
+}
+.use-it-up-items {
+    display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px;
+}
+.use-it-up-item {
+    display: inline-flex; padding: 2px 8px; background: rgba(22,163,74,.12);
+    color: var(--c-success); border-radius: var(--radius-full);
+    font-size: .7rem; font-weight: 600;
+}
+
+/* =========================================
+   ONBOARDING — BROWSE OPTIONS
+   ========================================= */
+.browse-option.active {
+    border-color: var(--c-primary) !important;
+    background: var(--c-primary-50);
+}
+
+/* =========================================
+   MOBILE — SLOT ACTIONS ALWAYS VISIBLE
+   ========================================= */
+@media (max-width: 768px) {
+    .meal-slot-filled { flex-wrap: wrap; }
+    .meal-slot-filled .slot-actions {
+        opacity: 1; pointer-events: auto;
+        position: static; background: none;
+        flex-basis: 100%; justify-content: flex-end;
+        padding: 4px 0 0; gap: 4px;
+    }
+    .meal-slot-filled .slot-actions .btn-secondary {
+        background: var(--c-gray-100); color: var(--c-gray-700);
+    }
+    .meal-slot-filled .slot-actions .btn-danger {
+        background: var(--c-danger-light); color: var(--c-danger);
+    }
+}
