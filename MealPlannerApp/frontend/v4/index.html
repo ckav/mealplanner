@@ -74,11 +74,19 @@
     <!-- =================== RECIPES VIEW =================== -->
     <section id="recipes-view" class="view">
         <div class="use-it-up-section" id="useItUpSection" style="display:none;">
-            <div class="use-it-up-header">
-                <h3>🧊 Use It Up</h3>
+            <div class="use-it-up-header" id="useItUpHeader">
+                <div class="use-it-up-header-top">
+                    <h3>🧊 Use It Up</h3>
+                    <button class="btn btn-ghost btn-sm" id="useItUpClear">Clear</button>
+                </div>
                 <span class="use-it-up-hint">Recipes using ingredients you have</span>
             </div>
             <div class="use-it-up-rail" id="useItUpRail"></div>
+        </div>
+        <div class="browse-mode-bar" id="browseModeToggle">
+            <button class="browse-mode-btn active" data-mode="full">Full Card</button>
+            <button class="browse-mode-btn" data-mode="swipe">Swipe</button>
+            <button class="browse-mode-btn" data-mode="quick">Quick View</button>
         </div>
         <div class="active-filters-info" id="activeFiltersInfo"></div>
         <div class="recipe-search">
@@ -403,7 +411,7 @@
             </div>
             <div id="fridgeList"></div>
             <label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.85rem;">
-                <input type="checkbox" id="fridgeFilterToggle"> Filter recipes by fridge items
+                <input type="checkbox" id="fridgeFilterToggle"> Only show recipes with at least one of these ingredients
             </label>
         </div>
     </div>
@@ -433,6 +441,7 @@
                 <span class="wizard-dot"></span>
                 <span class="wizard-dot"></span>
                 <span class="wizard-dot"></span>
+                <span class="wizard-dot"></span>
             </div>
 
             <!-- Step 1: Welcome -->
@@ -447,8 +456,44 @@
                 </div>
             </div>
 
-            <!-- Step 2: Profiles -->
+            <!-- Step 2: Browse Mode + Portions -->
             <div class="wizard-step" id="wizard-step-2">
+                <h2 style="font-size:1.2rem;margin-bottom:4px;">How do you like to browse?</h2>
+                <p style="font-size:.8rem;color:var(--c-gray-500);margin-bottom:16px;">Choose your preferred way to view recipes. You can change this anytime.</p>
+                <div id="onboardingBrowseOptions" style="display:grid;gap:10px;margin-bottom:20px;">
+                    <div class="browse-option active" data-mode="full" style="cursor:pointer;padding:14px;border:2px solid var(--c-gray-200);border-radius:var(--radius-md);transition:all var(--transition);">
+                        <strong>Full Card</strong>
+                        <div style="font-size:.8rem;color:var(--c-gray-500);">Photo, details, and tags — great for discovering new recipes</div>
+                    </div>
+                    <div class="browse-option" data-mode="swipe" style="cursor:pointer;padding:14px;border:2px solid var(--c-gray-200);border-radius:var(--radius-md);transition:all var(--transition);">
+                        <strong>Swipe Mode</strong>
+                        <div style="font-size:.8rem;color:var(--c-gray-500);">One recipe at a time — skip or add, like a takeaway app</div>
+                    </div>
+                    <div class="browse-option" data-mode="quick" style="cursor:pointer;padding:14px;border:2px solid var(--c-gray-200);border-radius:var(--radius-md);transition:all var(--transition);">
+                        <strong>Quick View</strong>
+                        <div style="font-size:.8rem;color:var(--c-gray-500);">Compact list — scan lots of recipes fast</div>
+                    </div>
+                </div>
+
+                <h3 style="font-size:1rem;margin-bottom:8px;">Default portions</h3>
+                <p style="font-size:.8rem;color:var(--c-gray-500);margin-bottom:12px;">How many people are you usually cooking for?</p>
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+                    <div class="portion-control">
+                        <button class="portion-btn" id="onboardingPortionMinus">−</button>
+                        <span class="portion-val" id="onboardingPortionVal">2</span>
+                        <button class="portion-btn" id="onboardingPortionPlus">+</button>
+                    </div>
+                    <span style="font-size:.85rem;color:var(--c-gray-500);">portions</span>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;">
+                    <button class="btn btn-ghost" data-wizard-action="back">← Back</button>
+                    <button class="btn btn-primary" data-wizard-action="next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Profiles -->
+            <div class="wizard-step" id="wizard-step-3">
                 <h2 style="font-size:1.2rem;margin-bottom:4px;">👨‍👩‍👧‍👦 Who's in your household?</h2>
                 <p style="font-size:.8rem;color:var(--c-gray-500);margin-bottom:16px;">Add each person so we can filter out recipes with their allergens and dislikes.</p>
 
@@ -476,8 +521,8 @@
                 </div>
             </div>
 
-            <!-- Step 3: Pantry Staples -->
-            <div class="wizard-step" id="wizard-step-3">
+            <!-- Step 4: Pantry Staples -->
+            <div class="wizard-step" id="wizard-step-4">
                 <h2 style="font-size:1.2rem;margin-bottom:4px;">🏠 Cupboard Staples</h2>
                 <p style="font-size:.8rem;color:var(--c-gray-500);margin-bottom:16px;">Things you always have at home. These won't appear on your shopping list.</p>
 
@@ -494,8 +539,8 @@
                 </div>
             </div>
 
-            <!-- Step 4: Fridge -->
-            <div class="wizard-step" id="wizard-step-4">
+            <!-- Step 5: Fridge -->
+            <div class="wizard-step" id="wizard-step-5">
                 <h2 style="font-size:1.2rem;margin-bottom:4px;">🧊 What's in your fridge?</h2>
                 <p style="font-size:.8rem;color:var(--c-gray-500);margin-bottom:16px;">Optional — add items you want to use up and we'll suggest recipes that include them.</p>
 
@@ -515,8 +560,8 @@
                 </div>
             </div>
 
-            <!-- Step 5: Done -->
-            <div class="wizard-step" id="wizard-step-5">
+            <!-- Step 6: Done -->
+            <div class="wizard-step" id="wizard-step-6">
                 <div style="text-align:center;padding:12px 0;">
                     <div style="font-size:3rem;margin-bottom:12px;">🎉</div>
                     <h2 style="font-size:1.3rem;margin-bottom:12px;">You're all set!</h2>
