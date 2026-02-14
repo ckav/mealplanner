@@ -189,50 +189,65 @@
         <div class="notes-container">
             <div class="notes-header">
                 <h2 style="font-size:1.1rem;font-weight:700;">📝 Tester Notes</h2>
-                <p style="font-size:.8rem;color:var(--c-gray-500);margin-top:4px;">Visible to everyone. Add ideas, track what's being worked on, and capture feedback.</p>
+                <p style="font-size:.8rem;color:var(--c-gray-500);margin-top:4px;">Updates from the developer. Got feedback? Send it via WhatsApp and I'll update this board.</p>
+                <p style="font-size:.7rem;color:var(--c-gray-400);margin-top:2px;">Last updated: <strong id="notesLastUpdated">14 Feb 2026</strong></p>
             </div>
 
             <div class="notes-section">
-                <div class="notes-section-header" data-notes-section="ideas">
+                <div class="notes-section-header">
                     <span class="notes-section-icon">💡</span>
                     <h3>Ideas Parking Lot</h3>
-                    <span class="notes-count" id="notesIdeasCount">0</span>
                 </div>
-                <div class="notes-items" id="notesIdeasList"></div>
-                <div class="notes-add">
-                    <input type="text" class="form-input" id="notesIdeasInput" placeholder="Add an idea...">
-                    <button class="btn btn-secondary btn-sm" id="notesIdeasAdd">Add</button>
+                <div class="notes-items" id="notesIdeasList">
+                    <!-- Edit these items in the code and push to Netlify -->
+                    <div class="notes-item">
+                        <span class="notes-bullet">•</span>
+                        <span class="notes-item-text">Tesco/ASDA price comparison — parked for now</span>
+                    </div>
+                    <div class="notes-item">
+                        <span class="notes-bullet">•</span>
+                        <span class="notes-item-text">URL recipe import (paste a link, auto-fill recipe)</span>
+                    </div>
                 </div>
             </div>
 
             <div class="notes-section">
-                <div class="notes-section-header" data-notes-section="indev">
+                <div class="notes-section-header">
                     <span class="notes-section-icon">🔨</span>
                     <h3>In Development</h3>
-                    <span class="notes-count" id="notesIndevCount">0</span>
                 </div>
-                <div class="notes-items" id="notesIndevList"></div>
-                <div class="notes-add">
-                    <input type="text" class="form-input" id="notesIndevInput" placeholder="Add a dev note...">
-                    <button class="btn btn-secondary btn-sm" id="notesIndevAdd">Add</button>
+                <div class="notes-items" id="notesIndevList">
+                    <div class="notes-item">
+                        <span class="notes-bullet">•</span>
+                        <span class="notes-item-text">Saved for later — recipes can now be bookmarked when the week is full</span>
+                    </div>
                 </div>
             </div>
 
             <div class="notes-section">
-                <div class="notes-section-header" data-notes-section="review">
+                <div class="notes-section-header">
                     <span class="notes-section-icon">🔍</span>
                     <h3>Review / Feedback</h3>
-                    <span class="notes-count" id="notesReviewCount">0</span>
                 </div>
-                <div class="notes-items" id="notesReviewList"></div>
-                <div class="notes-add">
-                    <input type="text" class="form-input" id="notesReviewInput" placeholder="Add feedback...">
-                    <button class="btn btn-secondary btn-sm" id="notesReviewAdd">Add</button>
+                <div class="notes-items" id="notesReviewList">
+                    <div class="notes-item">
+                        <span class="notes-bullet">•</span>
+                        <span class="notes-item-text">Testing the new Notes tab — let me know if this is useful!</span>
+                    </div>
                 </div>
             </div>
 
-            <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--c-gray-200);">
-                <button class="btn btn-ghost btn-sm" id="notesClearAll" style="color:var(--c-danger);">🗑 Clear all notes</button>
+            <div class="notes-section notes-section-done">
+                <div class="notes-section-header">
+                    <span class="notes-section-icon">✅</span>
+                    <h3>Done</h3>
+                </div>
+                <div class="notes-items" id="notesDoneList">
+                    <div class="notes-item done">
+                        <span class="notes-bullet">•</span>
+                        <span class="notes-item-text">Fixed "all slots full" blocking — now saves for later instead</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
