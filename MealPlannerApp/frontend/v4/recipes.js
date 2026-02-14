@@ -1279,7 +1279,7 @@ const recipes = [
     {
         id: 'cajun-chicken-traybake',
         name: 'Cajun Chicken Traybake with Rice',
-        image: 'https://www.jamieoliver.com/recipes/chicken/cajun-chicken-traybake/',
+        image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=600&h=400&fit=crop',
         cookTime: 55,
         calories: 663,
         servings: 4,
@@ -1323,7 +1323,7 @@ const recipes = [
     {
         id: 'one-pot-mushroom-orzo',
         name: 'Creamy Mushroom & Spinach Orzo',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=600&h=400&fit=crop',
         cookTime: 25,
         calories: 420,
         servings: 2,
@@ -1364,7 +1364,7 @@ const recipes = [
     {
         id: 'prawn-coconut-noodles',
         name: 'Quick Prawn & Coconut Noodles',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&h=400&fit=crop',
         cookTime: 15,
         calories: 480,
         servings: 1,
@@ -1406,7 +1406,7 @@ const recipes = [
     {
         id: 'black-bean-sweet-potato-chilli',
         name: 'Sweet Potato & Black Bean Chilli',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&h=400&fit=crop',
         cookTime: 40,
         calories: 350,
         servings: 4,
@@ -1452,7 +1452,7 @@ const recipes = [
     {
         id: 'halloumi-traybake-veg',
         name: 'Halloumi & Mediterranean Veg Traybake',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1574484284002-952d92456975?w=600&h=400&fit=crop',
         cookTime: 30,
         calories: 490,
         servings: 2,
@@ -1499,7 +1499,7 @@ const recipes = [
     {
         id: 'nl-coconut-chicken',
         name: 'Coconut Chicken',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=600&h=400&fit=crop',
         cookTime: 25,
         calories: 576,
         servings: 4,
@@ -1551,7 +1551,7 @@ const recipes = [
     {
         id: 'nl-greek-lamb-rissoles',
         name: 'Greek Lamb Rissoles with Summer Salad',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=400&fit=crop',
         cookTime: 15,
         calories: 590,
         servings: 4,
@@ -1608,7 +1608,7 @@ const recipes = [
     {
         id: 'nl-moroccan-meatballs',
         name: 'Moroccan Meatballs with Couscous Salad',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=600&h=400&fit=crop',
         cookTime: 20,
         calories: 685,
         servings: 5,
@@ -1663,7 +1663,7 @@ const recipes = [
     {
         id: 'nl-lamb-kofta-pita',
         name: 'Lamb Kofta Pita Pockets',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1561651188-d207bbec4ec3?w=600&h=400&fit=crop',
         cookTime: 20,
         calories: 678,
         servings: 4,
@@ -1719,7 +1719,7 @@ const recipes = [
     {
         id: 'nl-lamb-lentil-burgers',
         name: 'Lamb \'n\' Lentil Burgers with Veggie Chips',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&h=400&fit=crop',
         cookTime: 30,
         calories: 535,
         servings: 6,
@@ -1769,7 +1769,7 @@ const recipes = [
     {
         id: 'nl-chicken-soft-tacos',
         name: 'Chicken Soft Tacos',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=600&h=400&fit=crop',
         cookTime: 20,
         calories: 652,
         servings: 6,
@@ -1824,7 +1824,7 @@ const recipes = [
     {
         id: 'nl-beef-soft-tacos',
         name: 'Beef Soft Tacos',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?w=600&h=400&fit=crop',
         cookTime: 20,
         calories: 718,
         servings: 6,
@@ -1874,7 +1874,7 @@ const recipes = [
     {
         id: 'nl-chilli-con-carne',
         name: 'Chilli Con Carne',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=600&h=400&fit=crop',
         cookTime: 30,
         calories: 740,
         servings: 6,
@@ -1929,7 +1929,7 @@ const recipes = [
     {
         id: 'nl-baked-beef-meatballs',
         name: 'Baked Beef Meatballs',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1548369937-47519962c11a?w=600&h=400&fit=crop',
         cookTime: 20,
         calories: 696,
         servings: 6,
@@ -1982,7 +1982,7 @@ const recipes = [
     {
         id: 'nl-pea-pumpkin-risotto',
         name: 'Pea \'n\' Pumpkin Risotto with Pesto and Bacon',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=600&h=400&fit=crop',
         cookTime: 30,
         calories: 579,
         servings: 5,
@@ -2033,7 +2033,7 @@ const recipes = [
     {
         id: 'nl-beef-lasagne',
         name: 'Beef Lasagne',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1560684352-8497838b2904?w=600&h=400&fit=crop',
         cookTime: 50,
         calories: 584,
         servings: 6,
@@ -2095,7 +2095,7 @@ const recipes = [
     {
         id: 'solo-chicken-stir-fry',
         name: 'Quick Chicken Stir-Fry',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600&h=400&fit=crop',
         cookTime: 15,
         calories: 420,
         servings: 1,
@@ -2119,7 +2119,7 @@ const recipes = [
     {
         id: 'solo-chicken-caesar-salad',
         name: 'Chicken Caesar Salad for One',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=600&h=400&fit=crop',
         cookTime: 15,
         calories: 480,
         servings: 1,
@@ -2143,7 +2143,7 @@ const recipes = [
     {
         id: 'solo-chicken-noodle-soup',
         name: 'Chicken Noodle Soup for One',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=600&h=400&fit=crop',
         cookTime: 20,
         calories: 350,
         servings: 1,
@@ -2167,7 +2167,7 @@ const recipes = [
     {
         id: 'solo-teriyaki-chicken',
         name: 'Teriyaki Chicken with Rice',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=600&h=400&fit=crop',
         cookTime: 20,
         calories: 520,
         servings: 1,
@@ -2191,7 +2191,7 @@ const recipes = [
     {
         id: 'solo-chicken-quesadilla',
         name: 'Chicken & Cheese Quesadilla',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1618040996337-56904b7850b7?w=600&h=400&fit=crop',
         cookTime: 10,
         calories: 490,
         servings: 1,
@@ -2215,7 +2215,7 @@ const recipes = [
     {
         id: 'solo-cacio-e-pepe',
         name: 'Cacio e Pepe',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&h=400&fit=crop',
         cookTime: 12,
         calories: 450,
         servings: 1,
@@ -2239,7 +2239,7 @@ const recipes = [
     {
         id: 'solo-garlic-prawn-linguine',
         name: 'Garlic Prawn Linguine',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=600&h=400&fit=crop',
         cookTime: 15,
         calories: 480,
         servings: 1,
@@ -2263,7 +2263,7 @@ const recipes = [
     {
         id: 'solo-one-pot-pasta',
         name: 'One-Pot Tomato & Basil Pasta',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1516100882582-96c3a05fe590?w=600&h=400&fit=crop',
         cookTime: 15,
         calories: 400,
         servings: 1,
@@ -2287,7 +2287,7 @@ const recipes = [
     {
         id: 'solo-pesto-gnocchi',
         name: 'Crispy Pesto Gnocchi',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1589227365533-cee630bd59bd?w=600&h=400&fit=crop',
         cookTime: 10,
         calories: 420,
         servings: 1,
@@ -2311,7 +2311,7 @@ const recipes = [
     {
         id: 'solo-carbonara',
         name: 'Spaghetti Carbonara for One',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?w=600&h=400&fit=crop',
         cookTime: 15,
         calories: 550,
         servings: 1,
@@ -2335,7 +2335,7 @@ const recipes = [
     {
         id: 'solo-salmon-teriyaki',
         name: 'Teriyaki Salmon with Noodles',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&h=400&fit=crop',
         cookTime: 15,
         calories: 520,
         servings: 1,
@@ -2359,7 +2359,7 @@ const recipes = [
     {
         id: 'solo-fish-finger-sandwich',
         name: 'Posh Fish Finger Sandwich',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=600&h=400&fit=crop',
         cookTime: 15,
         calories: 450,
         servings: 1,
@@ -2383,7 +2383,7 @@ const recipes = [
     {
         id: 'solo-tuna-pasta-bake',
         name: 'Tuna Pasta Bake for One',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=600&h=400&fit=crop',
         cookTime: 25,
         calories: 520,
         servings: 1,
@@ -2407,7 +2407,7 @@ const recipes = [
     {
         id: 'solo-prawn-fried-rice',
         name: 'Prawn Fried Rice',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=600&h=400&fit=crop',
         cookTime: 10,
         calories: 400,
         servings: 1,
@@ -2431,7 +2431,7 @@ const recipes = [
     {
         id: 'solo-smoked-mackerel-salad',
         name: 'Smoked Mackerel & Beetroot Salad',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop',
         cookTime: 0,
         calories: 380,
         servings: 1,
@@ -2455,7 +2455,7 @@ const recipes = [
     {
         id: 'solo-mushroom-risotto',
         name: 'Mushroom Risotto for One',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=600&h=400&fit=crop',
         cookTime: 25,
         calories: 450,
         servings: 1,
@@ -2479,7 +2479,7 @@ const recipes = [
     {
         id: 'solo-halloumi-wrap',
         name: 'Grilled Halloumi & Veg Wrap',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1561651188-d207bbec4ec3?w=600&h=400&fit=crop',
         cookTime: 10,
         calories: 480,
         servings: 1,
@@ -2503,7 +2503,7 @@ const recipes = [
     {
         id: 'solo-egg-fried-rice',
         name: 'Veggie Egg Fried Rice',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=600&h=400&fit=crop',
         cookTime: 10,
         calories: 380,
         servings: 1,
@@ -2527,7 +2527,7 @@ const recipes = [
     {
         id: 'solo-shakshuka',
         name: 'Shakshuka for One',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1590412200988-a436970781fa?w=600&h=400&fit=crop',
         cookTime: 20,
         calories: 320,
         servings: 1,
@@ -2551,7 +2551,7 @@ const recipes = [
     {
         id: 'solo-loaded-sweet-potato',
         name: 'Loaded Sweet Potato',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1596097635092-6793f4640e17?w=600&h=400&fit=crop',
         cookTime: 45,
         calories: 420,
         servings: 1,
@@ -2575,7 +2575,7 @@ const recipes = [
     {
         id: 'solo-peanut-noodles',
         name: 'Peanut Butter Noodles',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&h=400&fit=crop',
         cookTime: 10,
         calories: 450,
         servings: 1,
@@ -2599,7 +2599,7 @@ const recipes = [
     {
         id: 'solo-dal-rice',
         name: 'Quick Dal with Rice',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&h=400&fit=crop',
         cookTime: 20,
         calories: 380,
         servings: 1,
@@ -2623,7 +2623,7 @@ const recipes = [
     {
         id: 'solo-tofu-stir-fry',
         name: 'Crispy Tofu Stir-Fry',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop',
         cookTime: 15,
         calories: 400,
         servings: 1,
@@ -2647,7 +2647,7 @@ const recipes = [
     {
         id: 'solo-steak-chips',
         name: 'Steak & Chips for One',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=600&h=400&fit=crop',
         cookTime: 25,
         calories: 600,
         servings: 1,
@@ -2671,7 +2671,7 @@ const recipes = [
     {
         id: 'solo-burger',
         name: 'Homemade Smash Burger',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&h=400&fit=crop',
         cookTime: 10,
         calories: 550,
         servings: 1,
@@ -2695,7 +2695,7 @@ const recipes = [
     {
         id: 'solo-pork-chop',
         name: 'Pan-Fried Pork Chop with Apple',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=600&h=400&fit=crop',
         cookTime: 15,
         calories: 450,
         servings: 1,
@@ -2719,7 +2719,7 @@ const recipes = [
     {
         id: 'solo-lamb-chop-salad',
         name: 'Lamb Chop with Grain Salad',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&h=400&fit=crop',
         cookTime: 15,
         calories: 500,
         servings: 1,
@@ -2743,7 +2743,7 @@ const recipes = [
     {
         id: 'solo-bolognese',
         name: 'Solo Bolognese (Freezer-Friendly)',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1622973536968-3ead9e780960?w=600&h=400&fit=crop',
         cookTime: 30,
         calories: 520,
         servings: 2,
@@ -2767,7 +2767,7 @@ const recipes = [
     {
         id: 'solo-chicken-curry',
         name: 'Easy Chicken Curry (Batch)',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=600&h=400&fit=crop',
         cookTime: 25,
         calories: 480,
         servings: 2,
@@ -2791,7 +2791,7 @@ const recipes = [
     {
         id: 'solo-chilli-batch',
         name: 'Turkey Chilli (Freeze & Reheat)',
-        image: '',
+        image: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=600&h=400&fit=crop',
         cookTime: 30,
         calories: 380,
         servings: 2,

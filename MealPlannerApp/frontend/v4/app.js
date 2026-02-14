@@ -2121,10 +2121,10 @@ function setupEvents() {
     });
     document.getElementById('pickerAddBtn').addEventListener('click', addToPlan);
 
-    document.getElementById('pickerExcludeInput').addEventListener('input', e => {
+    document.getElementById('pickerExcludeInput')?.addEventListener('input', e => {
         state.pickerExclusions = e.target.value.split(',').map(v => v.trim()).filter(Boolean);
     });
-    document.getElementById('pickerSwapNoteInput').addEventListener('input', e => {
+    document.getElementById('pickerSwapNoteInput')?.addEventListener('input', e => {
         state.pickerSwapNote = e.target.value.trim();
     });
 
