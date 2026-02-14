@@ -1039,35 +1039,133 @@ textarea.form-input { resize: vertical; min-height: 60px; }
     box-shadow: var(--shadow-sm);
 }
 
-/* --- Quick View Mode --- */
-.recipe-grid-quick { display: flex; flex-direction: column; gap: 4px; }
-.quick-row {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 10px; background: var(--c-white);
-    border: 1px solid var(--c-gray-200); border-radius: var(--radius-md);
-    cursor: pointer; transition: all var(--transition);
+/* --- Quick View Mode — Swipe-to-Reveal (iOS Mail Style) --- */
+.recipe-grid-quick { display: flex; flex-direction: column; gap: 2px; }
+
+.qv-card-wrapper {
+    position: relative; overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
 }
-.quick-row:hover { box-shadow: var(--shadow-sm); background: var(--c-gray-50); }
-.quick-thumb { width: 44px; height: 44px; border-radius: var(--radius-sm); object-fit: cover; flex-shrink: 0; }
+.qv-card-wrapper.dismissed { max-height: 0 !important; opacity: 0; margin: 0; overflow: hidden; }
+
+.qv-actions-left, .qv-actions-right {
+    position: absolute; top: 0; height: 100%; display: flex; align-items: center; z-index: 1;
+}
+.qv-actions-left { left: 0; }
+.qv-actions-right { right: 0; }
+
+.qv-action-btn {
+    height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 0 14px; border: none; cursor: pointer; font-family: var(--font);
+    font-size: .65rem; font-weight: 600; color: white; gap: 3px; min-width: 62px;
+}
+.qv-action-icon { font-size: 1rem; }
+.qv-action-btn.save-action { background: var(--c-warning); }
+.qv-action-btn.plan-action { background: var(--c-primary); }
+.qv-action-btn.skip-action { background: var(--c-gray-400); }
+.qv-action-btn.nope-action { background: var(--c-gray-800); }
+
+.qv-card {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; background: var(--c-white);
+    border-bottom: 1px solid var(--c-gray-100);
+    position: relative; z-index: 2; transition: transform 0.25s ease;
+}
+.quick-thumb { width: 52px; height: 52px; border-radius: var(--radius-sm); object-fit: cover; flex-shrink: 0; }
 .quick-info { flex: 1; min-width: 0; }
 .quick-name { font-size: .85rem; font-weight: 600; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .quick-meta { font-size: .7rem; color: var(--c-gray-400); }
-.quick-actions { display: flex; gap: 4px; align-items: center; flex-shrink: 0; }
 
-/* --- Swipe Mode --- */
+.qv-heart {
+    width: 30px; height: 30px; border-radius: 50%; border: none; background: transparent;
+    cursor: pointer; font-size: .9rem; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: var(--c-gray-300); transition: all var(--transition);
+}
+.qv-heart.liked { color: var(--c-favourite); }
+
+/* --- Swipe Mode — Card Stack with Gestures --- */
 .recipe-grid-swipe { display: flex; justify-content: center; }
+
+.swipe-mode-container {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 8px 0 20px; width: 100%; max-width: 400px; margin: 0 auto;
+}
+
+.swipe-progress { display: flex; gap: 5px; margin-bottom: 12px; }
+.swipe-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--c-gray-300); transition: all 0.3s;
+}
+.swipe-dot.current { background: var(--c-primary); transform: scale(1.3); }
+.swipe-dot.done { background: var(--c-gray-400); }
+
+.swipe-stack { position: relative; width: 100%; height: 400px; margin-bottom: 14px; }
+
 .swipe-card {
-    max-width: 400px; width: 100%; background: var(--c-white);
-    border-radius: var(--radius-lg); overflow: hidden;
-    box-shadow: var(--shadow-lg); border: 1px solid var(--c-gray-200);
+    position: absolute; top: 0; left: 0; width: 100%;
+    background: var(--c-white); border-radius: var(--radius-xl); overflow: hidden;
+    box-shadow: var(--shadow-lg);
 }
-.swipe-img { width: 100%; height: 260px; object-fit: cover; display: block; }
-.swipe-body { padding: 16px; }
-.swipe-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
-.swipe-actions {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 16px; border-top: 1px solid var(--c-gray-100);
+.swipe-card.top-card { z-index: 10; }
+.swipe-card.behind-1 { transform: scale(0.95) translateY(10px); z-index: 1; pointer-events: none; }
+.swipe-card.behind-2 { transform: scale(0.90) translateY(20px); z-index: 0; pointer-events: none; }
+
+.swipe-card-image { position: relative; width: 100%; height: 240px; overflow: hidden; }
+.swipe-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.swipe-body { padding: 14px 16px 16px; }
+.swipe-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+
+/* Badges on swipe card image */
+.sc-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 5px; }
+.sc-badge {
+    padding: 2px 8px; border-radius: 6px; font-size: .7rem; font-weight: 600;
+    background: rgba(255,255,255,0.8); backdrop-filter: blur(8px);
+    color: var(--c-gray-600); letter-spacing: 0.3px;
 }
+.sc-tag {
+    display: inline-block; padding: 2px 8px; border-radius: 5px;
+    font-size: .75rem; font-weight: 500; background: var(--c-gray-100); color: var(--c-gray-600);
+    margin-top: 4px;
+}
+
+/* SKIP / ADD stamps — appear during drag */
+.sc-stamp {
+    position: absolute; top: 50%; transform: translateY(-50%) rotate(-15deg);
+    font-size: 1.5rem; font-weight: 800; padding: 6px 14px; border-radius: var(--radius-md);
+    border: 3px solid; opacity: 0; pointer-events: none; z-index: 20; letter-spacing: 2px;
+}
+.sc-stamp.skip-stamp { right: 14px; color: var(--c-gray-500); border-color: var(--c-gray-500); background: rgba(255,255,255,0.9); }
+.sc-stamp.add-stamp { left: 14px; color: var(--c-success); border-color: var(--c-success); background: rgba(255,255,255,0.9); }
+
+/* Swipe mode action buttons row */
+.swipe-actions-row {
+    display: flex; gap: 14px; align-items: center; margin-bottom: 8px;
+}
+.swipe-btn {
+    border: none; border-radius: 50%; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; font-family: var(--font);
+}
+.swipe-btn:active { transform: scale(0.9); }
+.swipe-btn.save-btn {
+    width: 48px; height: 48px; background: var(--c-warning-light); font-size: 1.2rem; color: #b45309;
+    box-shadow: 0 2px 8px rgba(245,158,11,0.15);
+}
+.swipe-btn.add-btn {
+    width: 60px; height: 60px; background: var(--c-primary); font-size: 1.5rem; color: white;
+    box-shadow: 0 4px 16px rgba(67,56,202,0.3);
+}
+.swipe-btn.heart-btn {
+    width: 48px; height: 48px; background: var(--c-gray-100); font-size: 1.2rem; color: var(--c-gray-400);
+}
+.swipe-btn.heart-btn.liked { background: var(--c-danger-light); color: var(--c-favourite); }
+
+.swipe-nope-link {
+    font-size: .75rem; color: var(--c-gray-400); cursor: pointer;
+    padding: 4px 8px; border: none; background: none; font-family: var(--font);
+    transition: color 0.15s;
+}
+.swipe-nope-link:hover { color: var(--c-gray-600); }
 
 /* --- Planned Badge --- */
 .card-planned {
@@ -1123,4 +1221,28 @@ textarea.form-input { resize: vertical; min-height: 60px; }
     background: var(--c-success-light, #ecfdf5);
     color: var(--c-success);
     border-color: var(--c-success);
+}
+
+/* --- Onboarding Dietary Preferences Grid --- */
+.onboarding-dietary-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+.dietary-option {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px; border: 2px solid var(--c-gray-200);
+    border-radius: var(--radius-md); cursor: pointer;
+    font-size: .85rem; font-weight: 500; transition: all var(--transition);
+}
+.dietary-option:hover { border-color: var(--c-gray-300); background: var(--c-gray-50); }
+.dietary-option:has(input:checked) {
+    border-color: var(--c-primary); background: var(--c-primary-50);
+}
+.dietary-option input[type="checkbox"] { accent-color: var(--c-primary); }
+
+/* --- Mobile responsive adjustments for swipe --- */
+@media (max-width: 480px) {
+    .swipe-stack { height: 360px; }
+    .swipe-card-image { height: 200px; }
+    .swipe-mode-container { padding: 4px 8px 16px; }
+    .onboarding-dietary-grid { grid-template-columns: 1fr; }
 }
