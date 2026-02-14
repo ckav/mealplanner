@@ -128,7 +128,6 @@ let state = {
     detailPortions: null,
     recipeNotes: {},
     cookedDates: {},  // { recipeId: 'YYYY-MM-DD' } — last cooked date per recipe
-    testerNotes: { ideas: [], indev: [], review: [] },
 };
 
 // --- Persistence ---
@@ -156,7 +155,6 @@ function saveState() {
         savedRecipes: state.savedRecipes,
         recipeNotes: state.recipeNotes,
         cookedDates: state.cookedDates,
-        testerNotes: state.testerNotes,
     };
     localStorage.setItem('mealPlannerV4', JSON.stringify(s));
 }
@@ -186,7 +184,6 @@ function loadState() {
             if (Array.isArray(s.savedRecipes)) state.savedRecipes = s.savedRecipes;
             if (s.recipeNotes) state.recipeNotes = s.recipeNotes;
             if (s.cookedDates) state.cookedDates = s.cookedDates;
-            if (s.testerNotes) state.testerNotes = s.testerNotes;
         }
     } catch(e) { console.warn('Failed to load state:', e); }
 }
@@ -479,7 +476,6 @@ function switchView(viewName) {
     if (viewName === 'cook') renderCookView();
     if (viewName === 'shopping') { renderShopping(); renderPantry(); }
     if (viewName === 'settings') { renderProfiles(); renderAllergenGrid(); renderPantry(); }
-    if (viewName === 'notes') renderNotesView();
 
     saveState();
 }
@@ -2188,63 +2184,6 @@ function closeDetail() {
 
 
 // =========================================
-// TESTER NOTES VIEW
-// =========================================
-function renderNotesView() {
-    const sections = ['ideas', 'indev', 'review'];
-    sections.forEach(section => {
-        const items = state.testerNotes[section] || [];
-        const list = document.getElementById(`notes${capitalize(section)}List`);
-        const count = document.getElementById(`notes${capitalize(section)}Count`);
-        if (count) count.textContent = items.length;
-        if (!list) return;
-
-        if (items.length === 0) {
-            list.innerHTML = `<div class="notes-empty">No items yet</div>`;
-            return;
-        }
-
-        list.innerHTML = items.map((item, i) => `
-            <div class="notes-item ${item.done ? 'done' : ''}">
-                <button class="notes-check" data-section="${section}" data-idx="${i}">${item.done ? '✅' : '⬜'}</button>
-                <div class="notes-item-content">
-                    <span class="notes-item-text">${escapeHtml(item.text)}</span>
-                    <span class="notes-item-date">${item.date || ''}</span>
-                </div>
-                <button class="notes-delete" data-section="${section}" data-idx="${i}">✕</button>
-            </div>`).join('');
-    });
-}
-
-function capitalize(s) {
-    const map = { ideas: 'Ideas', indev: 'Indev', review: 'Review' };
-    return map[s] || s;
-}
-
-function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-}
-
-function addTesterNote(section) {
-    const input = document.getElementById(`notes${capitalize(section)}Input`);
-    if (!input) return;
-    const text = input.value.trim();
-    if (!text) return;
-    if (!state.testerNotes[section]) state.testerNotes[section] = [];
-    state.testerNotes[section].push({
-        text,
-        date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
-        done: false,
-    });
-    input.value = '';
-    saveState();
-    renderNotesView();
-}
-
-
-// =========================================
 // COOK VIEW — Planned meals list
 // =========================================
 function renderCookView() {
@@ -3311,50 +3250,6 @@ function setupEvents() {
         saveState();
         renderProfiles();
         renderRecipes();
-    });
-
-    // --- Tester Notes ---
-    ['ideas', 'indev', 'review'].forEach(section => {
-        const addBtn = document.getElementById(`notes${capitalize(section)}Add`);
-        const input = document.getElementById(`notes${capitalize(section)}Input`);
-        if (addBtn) addBtn.addEventListener('click', () => addTesterNote(section));
-        if (input) input.addEventListener('keydown', e => {
-            if (e.key === 'Enter') { e.preventDefault(); addTesterNote(section); }
-        });
-    });
-
-    const notesList = document.querySelector('.notes-container');
-    if (notesList) {
-        notesList.addEventListener('click', e => {
-            // Toggle done
-            if (e.target.classList.contains('notes-check')) {
-                const section = e.target.dataset.section;
-                const idx = parseInt(e.target.dataset.idx);
-                if (state.testerNotes[section] && state.testerNotes[section][idx] !== undefined) {
-                    state.testerNotes[section][idx].done = !state.testerNotes[section][idx].done;
-                    saveState();
-                    renderNotesView();
-                }
-            }
-            // Delete note
-            if (e.target.classList.contains('notes-delete')) {
-                const section = e.target.dataset.section;
-                const idx = parseInt(e.target.dataset.idx);
-                if (state.testerNotes[section]) {
-                    state.testerNotes[section].splice(idx, 1);
-                    saveState();
-                    renderNotesView();
-                }
-            }
-        });
-    }
-
-    document.getElementById('notesClearAll')?.addEventListener('click', () => {
-        if (confirm('Clear all tester notes? This cannot be undone.')) {
-            state.testerNotes = { ideas: [], indev: [], review: [] };
-            saveState();
-            renderNotesView();
-        }
     });
 
     // --- Onboarding wizard ---
