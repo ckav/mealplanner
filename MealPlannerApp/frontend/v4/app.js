@@ -1,5 +1,5 @@
 // ===========================================
-// MEAL PLANNER v3 — Application Logic
+// MEAL PLANNER v4 — Application Logic
 // ===========================================
 
 // --- Allergen System (UK 14 allergens) ---
@@ -117,6 +117,9 @@ let state = {
     customRecipes: [],
     defaultPortions: 2,
     onboardingComplete: false,
+    browseMode: 'full',
+    swipeIndex: 0,
+    savedRecipes: [],
     pickerDay: null, pickerSlot: null, pickerSelected: null, pickerPortions: 2, pickerMode: 'slot',
     pickerExclusions: [], pickerSwapNote: '',
     cookRecipeId: null, cookStep: 0,
@@ -148,6 +151,8 @@ function saveState() {
         defaultPortions: state.defaultPortions,
         currentView: state.currentView,
         onboardingComplete: state.onboardingComplete,
+        browseMode: state.browseMode,
+        savedRecipes: state.savedRecipes,
         recipeNotes: state.recipeNotes,
         cookedDates: state.cookedDates,
     };
@@ -175,6 +180,8 @@ function loadState() {
             if (s.defaultPortions) state.defaultPortions = s.defaultPortions;
             if (s.currentView) state.currentView = s.currentView;
             if (typeof s.onboardingComplete === 'boolean') state.onboardingComplete = s.onboardingComplete;
+            if (s.browseMode) state.browseMode = s.browseMode;
+            if (Array.isArray(s.savedRecipes)) state.savedRecipes = s.savedRecipes;
             if (s.recipeNotes) state.recipeNotes = s.recipeNotes;
             if (s.cookedDates) state.cookedDates = s.cookedDates;
         }
@@ -231,13 +238,52 @@ function getDefaultSlot(slotType) {
 
 function fmtAmount(n) {
     if (!n && n !== 0) return '';
-    if (n === 0.25) return '¼'; if (n === 0.5) return '½'; if (n === 0.75) return '¾';
+    const fractions = [[0.25,'¼'],[0.33,'⅓'],[0.5,'½'],[0.66,'⅔'],[0.67,'⅔'],[0.75,'¾']];
+    for (const [val, sym] of fractions) {
+        if (Math.abs(n - val) < 0.03) return sym;
+    }
     if (Number.isInteger(n)) return n.toString();
-    return n.toFixed(1);
+    const whole = Math.floor(n);
+    const frac = n - whole;
+    if (whole > 0) {
+        for (const [val, sym] of fractions) {
+            if (Math.abs(frac - val) < 0.06) return `${whole}${sym}`;
+        }
+    }
+    return n % 1 === 0 ? n.toString() : n.toFixed(1).replace(/\.0$/, '');
+}
+function smartRound(amount, unit) {
+    if (!amount) return amount;
+    const u = (unit || '').toLowerCase();
+    // Whole items (no unit or countable) — minimum ½, round up to nearest ½
+    if (!u || u === 'large' || u === 'medium' || u === 'small' || u === 'tin' || u === 'clove' || u === 'thumb') {
+        if (amount < 0.4) return 0.5;
+        if (amount < 0.8) return 1;
+        return Math.ceil(amount);
+    }
+    if (u === 'tsp') { return amount < 0.2 ? 0.25 : Math.ceil(amount * 4) / 4; }
+    if (u === 'tbsp') { return amount < 0.4 ? 0.5 : Math.ceil(amount * 2) / 2; }
+    if (u === 'g') { return amount < 5 ? 5 : Math.round(amount / 5) * 5; }
+    if (u === 'ml') { return amount < 5 ? 5 : Math.round(amount / 5) * 5; }
+    if (u === 'kg' || u === 'l') { return Math.round(amount * 10) / 10; }
+    if (u === 'cup' || u === 'cups') { return amount < 0.2 ? 0.25 : Math.ceil(amount * 4) / 4; }
+    return Math.round(amount * 10) / 10;
 }
 function scaleAmt(amount, portions, base) {
     if (!amount || !base) return amount;
     return Math.round((amount * portions / base) * 100) / 100;
+}
+
+// =========================================
+// TOAST NOTIFICATIONS
+// =========================================
+function showToast(message, duration = 2500) {
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('show'));
+    setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, duration);
 }
 
 function loadCustomRecipes() {
@@ -389,8 +435,23 @@ async function fetchRecipeFromUrl(url) {
             status.style.color = 'var(--c-warning)';
         }
     } catch (err) {
-        status.textContent = 'Could not fetch recipe. Check the URL and try again.';
-        status.style.color = 'var(--c-danger)';
+        // Auto-fill with demo data so testers can experience the flow
+        const siteName = extractSiteName(url);
+        const demoRecipes = {
+            'bbc': { name: 'Veggie Sausage Rolls', image: 'https://images.unsplash.com/photo-1607532941433-304659e8198a?w=600&h=400&fit=crop', cookTime: 45, servings: 12, ingredients: '400g puff pastry\n200g butternut squash, grated\n100g cheddar cheese, grated\n1 onion, finely chopped\n2 cloves garlic, crushed\n1 tsp smoked paprika\n1 tsp dried sage\n50g breadcrumbs\n1 egg, beaten\nSalt and pepper', steps: 'Preheat oven to 200°C/180°C fan.\nMix squash, cheese, onion, garlic, paprika, sage and breadcrumbs. Season well.\nRoll out pastry into two rectangles. Spoon filling along the centre of each.\nFold pastry over, seal with a fork, and cut into rolls.\nBrush with beaten egg and bake for 25-30 minutes until golden.' },
+            'default': { name: 'Demo Recipe — ' + siteName, image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop', cookTime: 30, servings: 4, ingredients: '400g chicken breast, diced\n1 red pepper, sliced\n1 onion, chopped\n2 cloves garlic, minced\n200ml coconut milk\n2 tbsp soy sauce\n1 tbsp curry paste\n200g rice', steps: 'Cook rice according to packet instructions.\nFry onion and garlic until soft.\nAdd chicken and cook until browned.\nAdd pepper, curry paste, coconut milk and soy sauce.\nSimmer for 10 minutes. Serve over rice.' }
+        };
+        const key = url.includes('bbc.co.uk') ? 'bbc' : 'default';
+        const demo = demoRecipes[key];
+        document.getElementById('recipeNameInput').value = demo.name;
+        document.getElementById('recipeImageInput').value = demo.image;
+        document.getElementById('recipeCookTimeInput').value = demo.cookTime;
+        document.getElementById('recipeServingsInput').value = demo.servings;
+        document.getElementById('recipeIngredientsInput').value = demo.ingredients;
+        document.getElementById('recipeStepsInput').value = demo.steps;
+        document.getElementById('recipeSourceInput').value = siteName;
+        status.textContent = 'Could not fetch live data — demo recipe loaded for testing. Review and save below.';
+        status.style.color = 'var(--c-warning)';
     }
 }
 
@@ -633,68 +694,118 @@ function renderRecipes() {
         grid.parentNode.insertBefore(relaxHint, grid);
     }
 
-    grid.innerHTML = list.map(r => {
-        const fav = state.favouriteRecipes.includes(r.id);
-        const allergens = detectAllergens(r);
-        const defaultP = state.defaultPortions;
-        const recipeServes = r.servings;
-        let portionNote = '';
-        if (defaultP < recipeServes) {
-            const leftover = recipeServes - defaultP;
-            portionNote = `<span class="card-portion-note">🍱 Makes ${recipeServes}, eat ${defaultP} + ${leftover} leftover${leftover > 1 ? 's' : ''}</span>`;
-        } else if (defaultP === recipeServes) {
-            portionNote = `<span class="card-portion-note exact">👌 Perfect for ${defaultP}</span>`;
+    // --- Browse Mode Rendering ---
+    if (state.browseMode === 'quick') {
+        grid.className = 'recipe-grid recipe-grid-quick';
+        grid.innerHTML = list.map(r => {
+            const fav = state.favouriteRecipes.includes(r.id);
+            return `<div class="quick-row" data-id="${r.id}">
+                <img class="quick-thumb" src="${r.image || FALLBACK_IMAGE}" alt="${r.name}" loading="lazy" ${IMAGE_FALLBACK_ATTR}>
+                <div class="quick-info">
+                    <span class="quick-name">${r.name}</span>
+                    <span class="quick-meta">🕒 ${r.cookTime}m · 👤 ${r.servings} · ${r.difficulty}</span>
+                </div>
+                <div class="quick-actions">
+                    <button class="btn-icon" data-action="fav" data-id="${r.id}" style="color:${fav?'var(--c-favourite)':'var(--c-gray-400)'};">${fav?'♥':'♡'}</button>
+                    <button class="btn btn-primary btn-sm" data-action="add" data-id="${r.id}">+</button>
+                </div>
+            </div>`;
+        }).join('');
+    } else if (state.browseMode === 'swipe') {
+        grid.className = 'recipe-grid recipe-grid-swipe';
+        if (list.length > 0) {
+            if (state.swipeIndex >= list.length) state.swipeIndex = 0;
+            const r = list[state.swipeIndex];
+            const fav = state.favouriteRecipes.includes(r.id);
+            const allergens = detectAllergens(r);
+            grid.innerHTML = `<div class="swipe-card" data-id="${r.id}">
+                <img class="swipe-img" src="${r.image || FALLBACK_IMAGE}" alt="${r.name}" ${IMAGE_FALLBACK_ATTR}>
+                <div class="swipe-body">
+                    <h3 class="swipe-title">${r.name}</h3>
+                    <div class="card-meta"><span>🕒 ${r.cookTime}m</span> ${r.calories ? `<span>🔥 ${r.calories} kcal</span>` : ''} <span>👤 ${r.servings}</span></div>
+                    ${r.description ? `<p style="font-size:.85rem;color:var(--c-gray-500);margin:8px 0;">${r.description}</p>` : ''}
+                    ${allergens.length ? `<div style="margin:6px 0;">${allergens.map(a => `<span class="pill allergen-pill">${ALLERGENS[a]?.icon||''} ${a}</span>`).join(' ')}</div>` : ''}
+                </div>
+                <div class="swipe-actions">
+                    <button class="btn btn-secondary" data-action="swipe-skip">Skip</button>
+                    <button class="btn-icon" data-action="fav" data-id="${r.id}" style="font-size:1.4rem;color:${fav?'var(--c-favourite)':'var(--c-gray-400)'};">${fav?'♥':'♡'}</button>
+                    <button class="btn btn-primary" data-action="add" data-id="${r.id}">+ Add to Plan</button>
+                </div>
+            </div>`;
         }
-        // Fridge match badges
-        const fridgeMatches = state.fridgeItems.length > 0
-            ? state.fridgeItems.filter(item => {
-                const text = r.ingredients.map(i => `${i.name} ${i.prep||''}`).join(' ').toLowerCase();
-                return text.includes(item.toLowerCase());
-            }) : [];
-        const fridgeBadge = fridgeMatches.length > 0
-            ? `<span class="card-tag" style="background:var(--c-success-light);color:var(--c-success);">🧊 Uses your ${fridgeMatches[0]}</span>` : '';
-        const isMetadataOnly = !r.ingredients || r.ingredients.length === 0;
-        const soloTag = r.soloFriendly ? '<span class="card-solo-badge">👤 Solo-friendly</span>' : '';
-        return `<div class="recipe-card" data-id="${r.id}">
-            <div class="card-img-wrap">
-                <img class="card-img" src="${r.image || FALLBACK_IMAGE}" alt="${r.name}" loading="lazy" ${IMAGE_FALLBACK_ATTR}>
-                <button class="card-fav ${fav?'active':''}" data-action="fav" data-id="${r.id}">${fav?'♥':'♡'}</button>
-                ${r.timesCooked > 0 ? `<span class="card-cooked">${lastCookedLabel(r.id) || ('Made ' + r.timesCooked + '×')}</span>` : ''}
-                ${isMetadataOnly ? '<span class="card-metadata-only">Add details</span>' : ''}
-            </div>
-            <div class="card-body">
-                <div class="card-title">${r.name}</div>
-                <div class="card-meta">
-                    <span>🕒 ${r.cookTime}m</span>
-                    ${r.calories ? `<span>🔥 ${r.calories} kcal</span>` : ''}
-                    <span>👤 ${r.servings}</span>
-                    <span>📊 ${r.difficulty}</span>
+    } else {
+        // Full card mode (default)
+        grid.className = 'recipe-grid';
+        grid.innerHTML = list.map(r => {
+            const fav = state.favouriteRecipes.includes(r.id);
+            const allergens = detectAllergens(r);
+            const defaultP = state.defaultPortions;
+            const recipeServes = r.servings;
+            let portionNote = '';
+            if (defaultP < recipeServes) {
+                const leftover = recipeServes - defaultP;
+                portionNote = `<span class="card-portion-note">🍱 Makes ${recipeServes}, eat ${defaultP} + ${leftover} leftover${leftover > 1 ? 's' : ''}</span>`;
+            } else if (defaultP === recipeServes) {
+                portionNote = `<span class="card-portion-note exact">👌 Perfect for ${defaultP}</span>`;
+            }
+            // Fridge match badges
+            const fridgeMatches = state.fridgeItems.length > 0
+                ? state.fridgeItems.filter(item => {
+                    const text = r.ingredients.map(i => `${i.name} ${i.prep||''}`).join(' ').toLowerCase();
+                    return text.includes(item.toLowerCase());
+                }) : [];
+            const fridgeBadge = fridgeMatches.length > 0
+                ? `<span class="card-tag" style="background:var(--c-success-light);color:var(--c-success);">🧊 Uses your ${fridgeMatches[0]}</span>` : '';
+            const isMetadataOnly = !r.ingredients || r.ingredients.length === 0;
+            const soloTag = r.soloFriendly ? '<span class="card-solo-badge">👤 Solo-friendly</span>' : '';
+            // Check if recipe is planned this week
+            const weekDays = getWeekDates(state.weekOffset);
+            const isPlannedThisWeek = weekDays.some(d => {
+                const slots = state.mealPlan[fmtDate(d)];
+                return slots && slots.some(s => s.status === 'filled' && s.recipeId === r.id);
+            });
+            return `<div class="recipe-card${isPlannedThisWeek ? ' planned-this-week' : ''}" data-id="${r.id}">
+                <div class="card-img-wrap">
+                    <img class="card-img" src="${r.image || FALLBACK_IMAGE}" alt="${r.name}" loading="lazy" ${IMAGE_FALLBACK_ATTR}>
+                    <button class="card-fav ${fav?'active':''}" data-action="fav" data-id="${r.id}">${fav?'♥':'♡'}</button>
+                    ${isPlannedThisWeek ? '<span class="card-planned">Planned</span>' : ''}
+                    ${r.timesCooked > 0 ? `<span class="card-cooked">${lastCookedLabel(r.id) || ('Made ' + r.timesCooked + '×')}</span>` : ''}
+                    ${isMetadataOnly ? '<span class="card-metadata-only">Add details</span>' : ''}
                 </div>
-                ${r.description ? `<div class="card-description">${r.description}</div>` : ''}
-                ${portionNote}
-                <div class="card-tags">
-                    ${soloTag}
-                    ${(r.tags || []).slice(0, 4).map(t => `<span class="card-tag">${t}</span>`).join('')}
-                    ${allergens.map(a => `<span class="card-tag allergen-tag">${ALLERGENS[a]?.icon||''} ${a}</span>`).join('')}
-                    ${fridgeBadge}
+                <div class="card-body">
+                    <div class="card-title">${r.name}</div>
+                    <div class="card-meta">
+                        <span>🕒 ${r.cookTime}m</span>
+                        ${r.calories ? `<span>🔥 ${r.calories} kcal</span>` : ''}
+                        <span>👤 ${r.servings}</span>
+                        <span>📊 ${r.difficulty}</span>
+                    </div>
+                    ${r.description ? `<div class="card-description">${r.description}</div>` : ''}
+                    ${portionNote}
+                    <div class="card-tags">
+                        ${soloTag}
+                        ${(r.tags || []).slice(0, 4).map(t => `<span class="card-tag">${t}</span>`).join('')}
+                        ${allergens.map(a => `<span class="card-tag allergen-tag">${ALLERGENS[a]?.icon||''} ${a}</span>`).join('')}
+                        ${fridgeBadge}
+                    </div>
+                    <div class="card-source">📖 ${r.source?.name || r.source || 'Recipe'}</div>
+                    <div class="card-actions">
+                        <button class="btn btn-secondary btn-sm" data-action="view" data-id="${r.id}">${isMetadataOnly ? 'Add Details' : 'View Recipe'}</button>
+                        <button class="btn btn-primary btn-sm" data-action="add" data-id="${r.id}">+ Add to Plan</button>
+                    </div>
                 </div>
-                <div class="card-source">📖 ${r.source?.name || r.source || 'Recipe'}</div>
-                <div class="card-actions">
-                    <button class="btn btn-secondary btn-sm" data-action="view" data-id="${r.id}">${isMetadataOnly ? 'Add Details' : 'View Recipe'}</button>
-                    <button class="btn btn-primary btn-sm" data-action="add" data-id="${r.id}">+ Add to Plan</button>
-                </div>
+            </div>`;
+        }).join('');
+
+        // Add "Add your own recipe" card at end of grid
+        grid.innerHTML += `<div class="recipe-card add-recipe-card" id="addRecipeGridBtn">
+            <div class="add-recipe-card-inner">
+                <div class="add-recipe-icon">+</div>
+                <div class="add-recipe-text">Add your own recipe</div>
+                <div class="add-recipe-hint">Import from a URL or enter manually</div>
             </div>
         </div>`;
-    }).join('');
-
-    // Add "Add your own recipe" card at end of grid
-    grid.innerHTML += `<div class="recipe-card add-recipe-card" id="addRecipeGridBtn">
-        <div class="add-recipe-card-inner">
-            <div class="add-recipe-icon">+</div>
-            <div class="add-recipe-text">Add your own recipe</div>
-            <div class="add-recipe-hint">Import from a URL or enter manually</div>
-        </div>
-    </div>`;
+    }
 
     renderActiveFiltersInfo(blocked, dislikes);
     renderUseItUp();
@@ -1013,7 +1124,7 @@ function renderShopping() {
         ${cats[cat].map(ing => `
             <li class="shopping-item" data-name="${ing.name}">
                 <div class="item-check" data-action="check"></div>
-                <span class="item-name">${fmtAmount(ing.amount)} ${ing.unit} ${ing.name}${ing.prep ? ' ('+ing.prep+')' : ''}</span>
+                <span class="item-name">${fmtAmount(smartRound(ing.amount, ing.unit))} ${ing.unit} ${ing.name}${ing.prep ? ' ('+ing.prep+')' : ''}</span>
                 <span class="item-source">${[...ing.sources].join(', ')}</span>
             </li>`).join('')}
     `).join('');
@@ -1231,8 +1342,9 @@ function renderOnboardingStep(step) {
         dot.classList.toggle('active', i < step);
         dot.classList.toggle('current', i === step - 1);
     });
-    if (step === 2) renderOnboardingProfiles();
-    if (step === 5) renderOnboardingSummary();
+    if (step === 2) renderOnboardingBrowseMode();
+    if (step === 3) renderOnboardingProfiles();
+    if (step === 6) renderOnboardingSummary();
 }
 
 function renderOnboardingAllergenGrid() {
@@ -1307,14 +1419,30 @@ function renderOnboardingFridge() {
     ).join('');
 }
 
+function renderOnboardingBrowseMode() {
+    const container = document.getElementById('onboardingBrowseOptions');
+    if (!container) return;
+    container.querySelectorAll('.browse-option').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.mode === state.browseMode);
+    });
+    // Update portions display
+    const portionVal = document.getElementById('onboardingPortionVal');
+    if (portionVal) portionVal.textContent = state.defaultPortions;
+}
+
 function renderOnboardingSummary() {
     const el = document.getElementById('onboardingSummary');
     if (!el) return;
     const profileCount = state.profiles.length;
     const pantryCount = state.pantryItems.length;
     const fridgeCount = state.fridgeItems.length;
+    const modeLabels = { full: 'Full Card', swipe: 'Swipe', quick: 'Quick View' };
     el.innerHTML = `
         <div style="display:grid;gap:12px;text-align:left;">
+            <div class="card" style="padding:12px;">
+                <strong>🍽️ ${modeLabels[state.browseMode] || 'Full Card'} browse · ${state.defaultPortions} portion${state.defaultPortions !== 1 ? 's' : ''}</strong>
+                <div style="font-size:.8rem;color:var(--c-gray-500);margin-top:2px;">You can change these anytime in settings</div>
+            </div>
             <div class="card" style="padding:12px;">
                 <strong>👨‍👩‍👧‍👦 ${profileCount} profile${profileCount !== 1 ? 's' : ''}</strong>
                 <div style="font-size:.8rem;color:var(--c-gray-500);margin-top:2px;">
@@ -1354,6 +1482,20 @@ function renderUseItUp() {
     if (state.fridgeItems.length === 0) {
         section.style.display = 'none';
         return;
+    }
+
+    // Render fridge items in header
+    const header = document.getElementById('useItUpHeader');
+    if (header) {
+        header.innerHTML = `
+            <div class="use-it-up-header-top">
+                <h3>🧊 Use It Up</h3>
+                <button class="btn btn-ghost btn-sm" id="useItUpClear">Clear</button>
+            </div>
+            <div class="use-it-up-items">${state.fridgeItems.map(item =>
+                `<span class="use-it-up-item">${item}</span>`
+            ).join('')}</div>
+            <span class="use-it-up-hint">Recipes using ingredients you have</span>`;
     }
 
     const fridgeLower = state.fridgeItems.map(i => i.toLowerCase());
@@ -1496,8 +1638,10 @@ function openPicker(dateKey, slotIdx) {
     document.getElementById('pickerPortionVal').textContent = state.pickerPortions;
     document.getElementById('pickerAddBtn').disabled = true;
     document.getElementById('pickerSearch').value = '';
-    document.getElementById('pickerExcludeInput').value = '';
-    document.getElementById('pickerSwapNoteInput').value = '';
+    const pickerExclude = document.getElementById('pickerExcludeInput');
+    if (pickerExclude) pickerExclude.value = '';
+    const pickerSwapNote = document.getElementById('pickerSwapNoteInput');
+    if (pickerSwapNote) pickerSwapNote.value = '';
 
     document.getElementById('pickerTarget').classList.remove('show');
     document.getElementById('pickerSelectedInfo').classList.remove('show');
@@ -1522,8 +1666,6 @@ function openPickerForRecipe(recipeId) {
     document.getElementById('pickerPortionVal').textContent = state.pickerPortions;
     document.getElementById('pickerAddBtn').disabled = false;
     document.getElementById('pickerSearch').value = '';
-    document.getElementById('pickerExcludeInput').value = '';
-    document.getElementById('pickerSwapNoteInput').value = '';
 
     updatePickerTargetOptions();
     document.getElementById('pickerTarget').classList.add('show');
@@ -1671,7 +1813,7 @@ function openDetail(recipeId) {
         </div>
         <ul class="detail-ingredients" id="detailIngredientList">
             ${r.ingredients.map(i => {
-                const scaled = scaleAmt(i.amount, r.servings, r.servings);
+                const scaled = smartRound(scaleAmt(i.amount, r.servings, r.servings), i.unit);
                 return `<li>${fmtAmount(scaled)} ${i.unit} <strong>${i.name}</strong>${i.prep ? ' — '+i.prep : ''}</li>`;
             }).join('')}
         </ul>`;
@@ -1723,23 +1865,26 @@ function closeDetail() {
 // =========================================
 // COOK MODE
 // =========================================
-function openCookMode(recipeId) {
+function openCookMode(recipeId, portions) {
     const r = getRecipe(recipeId);
     if (!r) return;
     state.cookRecipeId = recipeId;
     state.cookStep = 0;
+    const cookPortions = portions || state.detailPortions || r.servings;
     resetTimer();
 
     document.getElementById('cookTitle').textContent = r.name;
 
-    // Render ingredients with checkboxes
+    // Render ingredients with checkboxes, scaled to portions
     document.getElementById('cookIngredients').innerHTML = `
-        <h3>Ingredients</h3>
-        ${r.ingredients.map(i => `
-            <div class="cook-ingredient">
+        <h3>Ingredients${cookPortions !== r.servings ? ` <span style="font-size:.8rem;font-weight:400;color:var(--c-gray-500);">(for ${cookPortions})</span>` : ''}</h3>
+        ${r.ingredients.map(i => {
+            const scaled = smartRound(scaleAmt(i.amount, cookPortions, r.servings), i.unit);
+            return `<div class="cook-ingredient">
                 <div class="check" data-action="check-ing"></div>
-                <span>${fmtAmount(i.amount)} ${i.unit} ${i.name}${i.prep ? ' ('+i.prep+')' : ''}</span>
-            </div>`).join('')}`;
+                <span>${fmtAmount(scaled)} ${i.unit} ${i.name}${i.prep ? ' ('+i.prep+')' : ''}</span>
+            </div>`;
+        }).join('')}`;
 
     renderCookSteps();
     closeDetail();
@@ -1988,6 +2133,27 @@ function setupEvents() {
         renderPlanner();
     });
 
+    // --- Browse mode toggle ---
+    document.getElementById('browseModeToggle')?.addEventListener('click', e => {
+        const btn = e.target.closest('.browse-mode-btn');
+        if (!btn) return;
+        state.browseMode = btn.dataset.mode;
+        document.querySelectorAll('.browse-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === state.browseMode));
+        saveState();
+        renderRecipes();
+    });
+
+    // --- Use It Up clear ---
+    document.getElementById('useItUpSection')?.addEventListener('click', e => {
+        if (e.target.id === 'useItUpClear' || e.target.closest('#useItUpClear')) {
+            state.fridgeItems = [];
+            state.fridgeFilterEnabled = false;
+            saveState();
+            renderFridge();
+            renderRecipes();
+        }
+    });
+
     // --- Recipe grid interactions ---
     document.getElementById('fabAddRecipe')?.addEventListener('click', () => {
         document.getElementById('addRecipeModal').classList.add('open');
@@ -2002,6 +2168,12 @@ function setupEvents() {
 
         const action = e.target.dataset.action;
         const id = e.target.dataset.id;
+
+        // Swipe mode skip — advance to next recipe
+        if (action === 'swipe-skip') {
+            state.swipeIndex++;
+            renderRecipes(); return;
+        }
 
         if (action === 'fav' && id) {
             const idx = state.favouriteRecipes.indexOf(id);
@@ -2032,7 +2204,7 @@ function setupEvents() {
                     return;
                 }
             }
-            alert('All main meal slots are full this week! Try swapping an existing meal.');
+            showToast('All main meal slots are full this week! Try swapping an existing meal.');
             return;
         }
 
@@ -2129,9 +2301,16 @@ function setupEvents() {
     });
 
     // --- Add Recipe Modal ---
-    document.getElementById('addRecipeClose').addEventListener('click', () => document.getElementById('addRecipeModal').classList.remove('open'));
-    document.getElementById('addRecipeCancel').addEventListener('click', () => document.getElementById('addRecipeModal').classList.remove('open'));
-    document.getElementById('addRecipeModal').addEventListener('click', e => { if (e.target === document.getElementById('addRecipeModal')) document.getElementById('addRecipeModal').classList.remove('open'); });
+    function closeAddRecipeModal() {
+        document.getElementById('addRecipeModal').classList.remove('open');
+        delete document.getElementById('addRecipeForm').dataset.editingId;
+        document.getElementById('addRecipeForm').reset();
+        if (document.getElementById('recipeUrlInput')) document.getElementById('recipeUrlInput').value = '';
+        if (document.getElementById('urlFetchStatus')) document.getElementById('urlFetchStatus').textContent = '';
+    }
+    document.getElementById('addRecipeClose').addEventListener('click', closeAddRecipeModal);
+    document.getElementById('addRecipeCancel').addEventListener('click', closeAddRecipeModal);
+    document.getElementById('addRecipeModal').addEventListener('click', e => { if (e.target === document.getElementById('addRecipeModal')) closeAddRecipeModal(); });
 
     document.getElementById('addRecipeForm').addEventListener('submit', e => {
         e.preventDefault();
@@ -2223,11 +2402,12 @@ function setupEvents() {
     });
 
     document.getElementById('detailCookBtn').addEventListener('click', () => {
-        if (state.detailRecipeId) openCookMode(state.detailRecipeId);
+        if (state.detailRecipeId) openCookMode(state.detailRecipeId, state.detailPortions);
     });
 
     document.getElementById('detailAddBtn').addEventListener('click', () => {
         if (!state.detailRecipeId) return;
+        const r = getRecipe(state.detailRecipeId);
         closeDetail();
         // Find next empty main slot
         const days = getWeekDates(state.weekOffset);
@@ -2236,11 +2416,13 @@ function setupEvents() {
             const slots = ensureSlots(key);
             const emptyMain = slots.findIndex(s => s.status === 'empty' && s.slotType === 'main');
             if (emptyMain >= 0) {
-                slots[emptyMain] = { slotType: 'main', status: 'filled', recipeId: state.detailRecipeId, portions: state.defaultPortions };
-                saveState(); renderPlanner(); switchView('planner'); return;
+                slots[emptyMain] = { slotType: 'main', status: 'filled', recipeId: state.detailRecipeId, portions: state.detailPortions || state.defaultPortions };
+                saveState(); renderPlanner();
+                showToast(`${r ? r.name : 'Recipe'} added to ${dayName(date)} — ${daysSinceCooked(state.detailRecipeId) === null ? 'first time!' : 'enjoy!'}`);
+                return;
             }
         }
-        alert('All main meal slots are full this week!');
+        showToast('All main meal slots are full this week!');
     });
 
     // --- Detail: Edit button ---
@@ -2265,7 +2447,7 @@ function setupEvents() {
         document.getElementById('recipeSourceInput').value = r.source?.name || '';
         // Store editing ID
         document.getElementById('addRecipeForm').dataset.editingId = r.id;
-        document.getElementById('addRecipeModal').classList.add('active');
+        document.getElementById('addRecipeModal').classList.add('open');
     });
 
     // --- Detail: Portion buttons ---
@@ -2284,7 +2466,7 @@ function setupEvents() {
         const list = document.getElementById('detailIngredientList');
         if (list) {
             list.innerHTML = r.ingredients.map(i => {
-                const scaled = scaleAmt(i.amount, portions, r.servings);
+                const scaled = smartRound(scaleAmt(i.amount, portions, r.servings), i.unit);
                 return `<li>${fmtAmount(scaled)} ${i.unit} <strong>${i.name}</strong>${i.prep ? ' — '+i.prep : ''}</li>`;
             }).join('');
         }
@@ -2617,6 +2799,34 @@ function setupEvents() {
             if (action === 'start') renderOnboardingStep(2);
             if (action === 'complete') completeOnboarding();
             if (action === 'add-profile') addOnboardingProfile();
+
+            // Browse mode selection in onboarding
+            const browseOpt = e.target.closest('.browse-option');
+            if (browseOpt && browseOpt.dataset.mode) {
+                state.browseMode = browseOpt.dataset.mode;
+                saveState();
+                renderOnboardingBrowseMode();
+                // Also update main browse toggle if visible
+                document.querySelectorAll('.browse-mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === state.browseMode));
+            }
+
+            // Onboarding portion controls
+            if (e.target.id === 'onboardingPortionMinus') {
+                if (state.defaultPortions > 1) {
+                    state.defaultPortions--;
+                    document.getElementById('onboardingPortionVal').textContent = state.defaultPortions;
+                    document.getElementById('defaultPortionVal').textContent = state.defaultPortions;
+                    saveState();
+                }
+            }
+            if (e.target.id === 'onboardingPortionPlus') {
+                if (state.defaultPortions < 12) {
+                    state.defaultPortions++;
+                    document.getElementById('onboardingPortionVal').textContent = state.defaultPortions;
+                    document.getElementById('defaultPortionVal').textContent = state.defaultPortions;
+                    saveState();
+                }
+            }
 
             // Remove profile from wizard
             if (e.target.classList.contains('wizard-remove-profile')) {
