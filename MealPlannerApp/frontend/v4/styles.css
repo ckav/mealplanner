@@ -1223,6 +1223,53 @@ textarea.form-input { resize: vertical; min-height: 60px; }
     border-color: var(--c-success);
 }
 
+/* --- Cook View --- */
+.cook-view-container {
+    background: var(--c-white); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm); overflow: hidden;
+}
+.cook-view-header {
+    padding: 16px 20px; border-bottom: 1px solid var(--c-gray-100);
+}
+.cook-meal-list { padding: 0; }
+.cook-day-group { border-bottom: 1px solid var(--c-gray-100); }
+.cook-day-group:last-child { border-bottom: none; }
+.cook-day-label {
+    padding: 10px 20px 6px; font-size: .8rem; font-weight: 700;
+    color: var(--c-primary); text-transform: uppercase; letter-spacing: 0.5px;
+}
+.cook-day-date { font-weight: 400; color: var(--c-gray-400); text-transform: none; letter-spacing: 0; }
+.cook-meal-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 20px; cursor: pointer; transition: background var(--transition);
+}
+.cook-meal-card:hover { background: var(--c-gray-50); }
+.cook-meal-card.cooked { opacity: 0.7; }
+.cook-meal-thumb {
+    width: 56px; height: 56px; border-radius: var(--radius-md);
+    object-fit: cover; flex-shrink: 0;
+}
+.cook-meal-info { flex: 1; min-width: 0; }
+.cook-meal-name {
+    font-size: .9rem; font-weight: 600; margin-bottom: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cook-meal-meta {
+    font-size: .75rem; color: var(--c-gray-500);
+    display: flex; align-items: center; gap: 8px;
+}
+.cook-meal-type {
+    padding: 1px 6px; border-radius: var(--radius-full);
+    background: var(--c-gray-100); font-size: .65rem; font-weight: 600; color: var(--c-gray-500);
+}
+.cook-meal-done {
+    font-size: .7rem; font-weight: 600; color: var(--c-success); margin-top: 2px; display: block;
+}
+.cook-start-btn { flex-shrink: 0; white-space: nowrap; }
+.cook-empty-state {
+    text-align: center; padding: 48px 24px;
+}
+
 /* --- Onboarding Dietary Preferences Grid --- */
 .onboarding-dietary-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 8px;

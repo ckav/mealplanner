@@ -50,6 +50,7 @@
     <nav class="tab-bar">
         <button class="tab-btn active" data-view="planner">📅 <span class="tab-label">Weekly Plan</span></button>
         <button class="tab-btn" data-view="recipes">🍲 <span class="tab-label">Recipes</span></button>
+        <button class="tab-btn" data-view="cook">🍳 <span class="tab-label">Cook</span></button>
         <button class="tab-btn" data-view="shopping">🛒 <span class="tab-label">Shopping List</span></button>
         <button class="tab-btn" data-view="settings">⚙️ <span class="tab-label">Settings</span></button>
     </nav>
@@ -101,6 +102,17 @@
         </div>
         <div class="recipe-grid" id="recipeGrid"></div>
         <button class="fab-add-recipe" id="fabAddRecipe" title="Add a new recipe">+ Add Recipe</button>
+    </section>
+
+    <!-- =================== COOK VIEW =================== -->
+    <section id="cook-view" class="view">
+        <div class="cook-view-container">
+            <div class="cook-view-header">
+                <h2 style="font-size:1.1rem;font-weight:700;">🍳 What are you cooking?</h2>
+                <p style="font-size:.8rem;color:var(--c-gray-500);margin-top:4px;">Select a meal from your plan to start cooking.</p>
+            </div>
+            <div class="cook-meal-list" id="cookMealList"></div>
+        </div>
     </section>
 
     <!-- =================== SHOPPING LIST VIEW =================== -->

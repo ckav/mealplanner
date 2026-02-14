@@ -473,6 +473,7 @@ function switchView(viewName) {
     // Refresh view data
     if (viewName === 'planner') renderPlanner();
     if (viewName === 'recipes') renderRecipes();
+    if (viewName === 'cook') renderCookView();
     if (viewName === 'shopping') { renderShopping(); renderPantry(); }
     if (viewName === 'settings') { renderProfiles(); renderAllergenGrid(); renderPantry(); }
 
@@ -2173,6 +2174,96 @@ function closeDetail() {
 
 
 // =========================================
+// COOK VIEW — Planned meals list
+// =========================================
+function renderCookView() {
+    const list = document.getElementById('cookMealList');
+    if (!list) return;
+
+    const weekDays = getWeekDates(state.weekOffset);
+    const plannedMeals = [];
+
+    weekDays.forEach(date => {
+        const key = fmtDate(date);
+        const slots = state.mealPlan[key];
+        if (!slots) return;
+        slots.forEach((slot, idx) => {
+            if (slot.status === 'filled' && slot.recipeId) {
+                const r = getRecipe(slot.recipeId);
+                if (r) {
+                    plannedMeals.push({
+                        recipe: r,
+                        date,
+                        dateKey: key,
+                        slotIdx: idx,
+                        slotType: slot.slotType,
+                        portions: slot.portions || state.defaultPortions,
+                        dayLabel: dayName(date),
+                        shortLabel: shortDate(date),
+                    });
+                }
+            }
+        });
+    });
+
+    if (plannedMeals.length === 0) {
+        list.innerHTML = `<div class="cook-empty-state">
+            <div style="font-size:2.5rem;margin-bottom:12px;">🍳</div>
+            <h3 style="font-size:1rem;font-weight:600;margin-bottom:6px;">No meals planned yet</h3>
+            <p style="font-size:.85rem;color:var(--c-gray-500);margin-bottom:16px;">Add recipes to your weekly plan, then come back here to start cooking.</p>
+            <button class="btn btn-primary" onclick="switchView('recipes')">Browse Recipes</button>
+        </div>`;
+        return;
+    }
+
+    // Group meals by day
+    const grouped = {};
+    plannedMeals.forEach(m => {
+        const label = m.dayLabel;
+        if (!grouped[label]) grouped[label] = [];
+        grouped[label].push(m);
+    });
+
+    list.innerHTML = Object.entries(grouped).map(([day, meals]) => `
+        <div class="cook-day-group">
+            <div class="cook-day-label">${day} <span class="cook-day-date">${meals[0].shortLabel}</span></div>
+            ${meals.map(m => {
+                const cooked = state.cookedDates[m.recipe.id];
+                const cookedToday = cooked === fmtDate(new Date());
+                return `<div class="cook-meal-card ${cookedToday ? 'cooked' : ''}" data-recipe-id="${m.recipe.id}" data-portions="${m.portions}">
+                    <img class="cook-meal-thumb" src="${m.recipe.image || FALLBACK_IMAGE}" alt="${m.recipe.name}" ${IMAGE_FALLBACK_ATTR}>
+                    <div class="cook-meal-info">
+                        <div class="cook-meal-name">${m.recipe.name}</div>
+                        <div class="cook-meal-meta">
+                            <span>🕒 ${m.recipe.cookTime}m</span>
+                            <span>👤 ${m.portions}</span>
+                            <span class="cook-meal-type">${m.slotType === 'main' ? 'Main' : 'Extra'}</span>
+                        </div>
+                        ${cookedToday ? '<span class="cook-meal-done">✅ Cooked today</span>' : ''}
+                    </div>
+                    <button class="btn btn-primary btn-sm cook-start-btn" data-recipe-id="${m.recipe.id}" data-portions="${m.portions}">
+                        ${cookedToday ? '🔄 Again' : '🍳 Cook'}
+                    </button>
+                </div>`;
+            }).join('')}
+        </div>`).join('');
+
+    // Attach click handlers
+    list.querySelectorAll('.cook-start-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            openCookMode(btn.dataset.recipeId, parseInt(btn.dataset.portions));
+        });
+    });
+    list.querySelectorAll('.cook-meal-card').forEach(card => {
+        card.addEventListener('click', () => {
+            openDetail(card.dataset.recipeId);
+        });
+    });
+}
+
+
+// =========================================
 // COOK MODE
 // =========================================
 function openCookMode(recipeId, portions) {
@@ -2224,6 +2315,8 @@ function renderCookSteps() {
 function closeCookMode() {
     resetTimer();
     document.getElementById('cookMode').classList.remove('open');
+    // Re-render cook view to update cooked status
+    if (state.currentView === 'cook') renderCookView();
 }
 
 
