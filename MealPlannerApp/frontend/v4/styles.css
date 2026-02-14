@@ -1270,6 +1270,56 @@ textarea.form-input { resize: vertical; min-height: 60px; }
     text-align: center; padding: 48px 24px;
 }
 
+/* --- Tester Notes View --- */
+.notes-container {
+    background: var(--c-white); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm); overflow: hidden;
+}
+.notes-header {
+    padding: 16px 20px; border-bottom: 1px solid var(--c-gray-100);
+}
+.notes-section {
+    padding: 16px 20px; border-bottom: 1px solid var(--c-gray-100);
+}
+.notes-section:last-of-type { border-bottom: none; }
+.notes-section-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+}
+.notes-section-icon { font-size: 1.1rem; }
+.notes-section-header h3 { font-size: .95rem; font-weight: 700; flex: 1; margin: 0; }
+.notes-count {
+    background: var(--c-gray-100); color: var(--c-gray-500);
+    font-size: .7rem; font-weight: 700; padding: 2px 8px;
+    border-radius: var(--radius-full); min-width: 22px; text-align: center;
+}
+.notes-items { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+.notes-empty {
+    font-size: .8rem; color: var(--c-gray-400); padding: 8px 0; font-style: italic;
+}
+.notes-item {
+    display: flex; align-items: flex-start; gap: 8px; padding: 8px 10px;
+    background: var(--c-gray-50); border-radius: var(--radius-md);
+    transition: opacity var(--transition);
+}
+.notes-item.done { opacity: 0.5; }
+.notes-item.done .notes-item-text { text-decoration: line-through; }
+.notes-check {
+    border: none; background: none; cursor: pointer; font-size: .9rem;
+    padding: 0; flex-shrink: 0; margin-top: 1px;
+}
+.notes-item-content { flex: 1; min-width: 0; }
+.notes-item-text { font-size: .85rem; display: block; word-break: break-word; }
+.notes-item-date { font-size: .7rem; color: var(--c-gray-400); margin-top: 2px; display: block; }
+.notes-delete {
+    border: none; background: none; cursor: pointer; color: var(--c-gray-300);
+    font-size: .8rem; padding: 0 2px; flex-shrink: 0; transition: color var(--transition);
+}
+.notes-delete:hover { color: var(--c-danger); }
+.notes-add {
+    display: flex; gap: 6px;
+}
+.notes-add .form-input { flex: 1; }
+
 /* --- Onboarding Dietary Preferences Grid --- */
 .onboarding-dietary-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
