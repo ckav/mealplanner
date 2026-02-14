@@ -124,6 +124,7 @@ let state = {
     detailRecipeId: null,
     detailPortions: null,
     recipeNotes: {},
+    cookedDates: {},  // { recipeId: 'YYYY-MM-DD' } — last cooked date per recipe
 };
 
 // --- Persistence ---
@@ -148,6 +149,7 @@ function saveState() {
         currentView: state.currentView,
         onboardingComplete: state.onboardingComplete,
         recipeNotes: state.recipeNotes,
+        cookedDates: state.cookedDates,
     };
     localStorage.setItem('mealPlannerV4', JSON.stringify(s));
 }
@@ -174,6 +176,7 @@ function loadState() {
             if (s.currentView) state.currentView = s.currentView;
             if (typeof s.onboardingComplete === 'boolean') state.onboardingComplete = s.onboardingComplete;
             if (s.recipeNotes) state.recipeNotes = s.recipeNotes;
+            if (s.cookedDates) state.cookedDates = s.cookedDates;
         }
     } catch(e) { console.warn('Failed to load state:', e); }
 }
@@ -189,6 +192,25 @@ function fmtDate(d) { return d.toISOString().split('T')[0]; }
 function dayName(d) { return d.toLocaleDateString('en-GB', { weekday: 'long' }); }
 function shortDate(d) { return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }); }
 function getRecipe(id) { return recipes.find(r => r.id === id); }
+
+function daysSinceCooked(recipeId) {
+    const dateStr = state.cookedDates[recipeId];
+    if (!dateStr) return null;
+    const diff = (new Date() - new Date(dateStr)) / (1000 * 60 * 60 * 24);
+    return Math.floor(diff);
+}
+function lastCookedLabel(recipeId) {
+    const days = daysSinceCooked(recipeId);
+    if (days === null) return '';
+    if (days === 0) return 'Made today';
+    if (days === 1) return 'Made yesterday';
+    if (days < 7) return `Made ${days} days ago`;
+    const weeks = Math.floor(days / 7);
+    if (weeks === 1) return 'Made 1 week ago';
+    if (weeks < 5) return `Made ${weeks} weeks ago`;
+    const months = Math.floor(days / 30);
+    return months === 1 ? 'Made 1 month ago' : `Made ${months} months ago`;
+}
 
 function ensureSlots(key) {
     if (!state.mealPlan[key]) {
@@ -240,13 +262,38 @@ function loadCustomRecipes() {
 function parseIngredientLine(line) {
     const trimmed = line.trim();
     if (!trimmed) return null;
-    const match = trimmed.match(/^([\d./¼½¾⅓⅔]+)?\s*(g|kg|ml|l|tbsp|tsp|cup|cups)?\s*(.*)$/i);
-    if (!match) return { name: trimmed, amount: null, unit: '', category: 'other' };
+
+    // Handle fractions like "1/2", "1 1/2", and unicode fractions
+    let cleaned = trimmed
+        .replace('¼', '0.25').replace('½', '0.5').replace('¾', '0.75')
+        .replace('⅓', '0.33').replace('⅔', '0.66').replace('⅛', '0.125');
+
+    // Match: optional amount (including "1 1/2" mixed fractions), optional unit, then name
+    const units = 'g|kg|ml|l|tbsp|tsp|cup|cups|bunch|bunches|handful|handfuls|pinch|tin|tins|can|cans|clove|cloves|slice|slices|piece|pieces|pack|packs|sachet|sachets|small|medium|large|cm|inch|oz|lb|sprig|sprigs|stick|sticks|head|heads|knob';
+    const match = cleaned.match(new RegExp(`^([\\d.]+(?:\\s*\\/\\s*\\d+)?(?:\\s+[\\d.]+\\/\\d+)?)\\s*(${units})?\\s*(.*)$`, 'i'));
+
+    if (!match || !match[3]?.trim()) return { name: trimmed, amount: null, unit: '', category: 'other' };
+
     const rawAmount = match[1];
     const unit = match[2] || '';
-    const name = (match[3] || '').trim() || trimmed;
-    let amount = rawAmount ? parseFloat(rawAmount.replace('¼','0.25').replace('½','0.5').replace('¾','0.75').replace('⅓','0.33').replace('⅔','0.66')) : null;
-    if (Number.isNaN(amount)) amount = null;
+    const name = match[3].replace(/^(of\s+)/i, '').trim() || trimmed;
+
+    let amount = null;
+    if (rawAmount) {
+        // Handle "1 1/2" → 1.5 and "1/2" → 0.5
+        const parts = rawAmount.trim().split(/\s+/);
+        amount = 0;
+        for (const part of parts) {
+            if (part.includes('/')) {
+                const [num, den] = part.split('/');
+                amount += parseFloat(num) / parseFloat(den);
+            } else {
+                amount += parseFloat(part);
+            }
+        }
+        if (Number.isNaN(amount)) amount = null;
+    }
+
     return { name, amount, unit, category: 'other' };
 }
 
@@ -612,7 +659,7 @@ function renderRecipes() {
             <div class="card-img-wrap">
                 <img class="card-img" src="${r.image || FALLBACK_IMAGE}" alt="${r.name}" loading="lazy" ${IMAGE_FALLBACK_ATTR}>
                 <button class="card-fav ${fav?'active':''}" data-action="fav" data-id="${r.id}">${fav?'♥':'♡'}</button>
-                ${r.timesCooked > 0 ? `<span class="card-cooked">Made ${r.timesCooked}×</span>` : ''}
+                ${r.timesCooked > 0 ? `<span class="card-cooked">${lastCookedLabel(r.id) || ('Made ' + r.timesCooked + '×')}</span>` : ''}
                 ${isMetadataOnly ? '<span class="card-metadata-only">Add details</span>' : ''}
             </div>
             <div class="card-body">
@@ -1502,6 +1549,14 @@ function updatePickerTargetOptions() {
     slotSelect.value = String(state.pickerSlot ?? 0);
 }
 
+function getStaleRecipes() {
+    // Recipes cooked before but not in the last 14 days, sorted oldest first
+    return recipes
+        .filter(r => r.timesCooked > 0 && state.cookedDates[r.id])
+        .filter(r => daysSinceCooked(r.id) >= 14)
+        .sort((a, b) => (daysSinceCooked(b.id) || 0) - (daysSinceCooked(a.id) || 0));
+}
+
 function renderPickerGrid() {
     const grid = document.getElementById('pickerGrid');
     const search = document.getElementById('pickerSearch').value.toLowerCase();
@@ -1511,10 +1566,33 @@ function renderPickerGrid() {
         if (search && !r.name.toLowerCase().includes(search)) return false;
         if (filter === 'quick') return r.cookTime <= 20;
         if (filter === 'favourites') return state.favouriteRecipes.includes(r.id);
+        if (filter === 'not-recent') {
+            const days = daysSinceCooked(r.id);
+            return days === null || days >= 14;
+        }
         return true;
     });
 
-    grid.innerHTML = list.map(r => `
+    // Build "haven't made in a while" nudge section (only when not searching/filtering)
+    let nudgeHtml = '';
+    if (!search && filter === 'all') {
+        const stale = getStaleRecipes().slice(0, 3);
+        if (stale.length > 0) {
+            nudgeHtml = `<div class="picker-nudge">
+                <div class="picker-nudge-header">🔄 Haven't made in a while</div>
+                ${stale.map(r => `
+                <div class="picker-recipe picker-nudge-item ${state.pickerSelected === r.id ? 'selected' : ''}" data-id="${r.id}">
+                    <img src="${r.image || FALLBACK_IMAGE}" alt="${r.name}" loading="lazy" ${IMAGE_FALLBACK_ATTR}>
+                    <div class="picker-info">
+                        <div class="picker-name">${r.name}</div>
+                        <div class="picker-time">${lastCookedLabel(r.id)}</div>
+                    </div>
+                </div>`).join('')}
+            </div>`;
+        }
+    }
+
+    grid.innerHTML = nudgeHtml + list.map(r => `
         <div class="picker-recipe ${state.pickerSelected === r.id ? 'selected' : ''}" data-id="${r.id}">
             <img src="${r.image || FALLBACK_IMAGE}" alt="${r.name}" loading="lazy" ${IMAGE_FALLBACK_ATTR}>
             <div class="picker-info">
@@ -1577,6 +1655,7 @@ function openDetail(recipeId) {
             <span style="font-size:.85rem;">📊 ${r.difficulty}</span>
             ${r.soloFriendly ? '<span class="card-solo-badge">👤 Solo-friendly</span>' : ''}
         </div>
+        ${r.timesCooked > 0 ? `<div style="margin-bottom:8px;font-size:.8rem;color:var(--c-gray-500);">✅ Cooked ${r.timesCooked} time${r.timesCooked > 1 ? 's' : ''} ${lastCookedLabel(r.id) ? '· ' + lastCookedLabel(r.id).toLowerCase() : ''}</div>` : ''}
         ${allergens.length > 0 ? `<div style="margin-bottom:12px;display:flex;flex-wrap:wrap;gap:4px;">${allergens.map(a => `<span class="pill allergen-pill">${ALLERGENS[a]?.icon||''} ${a}</span>`).join('')}</div>` : ''}
         ${r.description ? `<p style="font-size:.85rem;color:var(--c-gray-600);margin-bottom:12px;font-style:italic;">${r.description}</p>` : ''}
         ${r.tips ? `<div class="detail-tips"><strong>💡 Tip:</strong> ${r.tips}</div>` : ''}`;
@@ -2132,6 +2211,17 @@ function setupEvents() {
         saveState(); openDetail(state.detailRecipeId); renderRecipes();
     });
 
+    document.getElementById('detailCookedBtn').addEventListener('click', () => {
+        if (!state.detailRecipeId) return;
+        const r = getRecipe(state.detailRecipeId);
+        if (!r) return;
+        r.timesCooked = (r.timesCooked || 0) + 1;
+        state.cookedDates[r.id] = fmtDate(new Date());
+        saveState();
+        openDetail(state.detailRecipeId); // refresh detail view
+        renderRecipes();
+    });
+
     document.getElementById('detailCookBtn').addEventListener('click', () => {
         if (state.detailRecipeId) openCookMode(state.detailRecipeId);
     });
@@ -2226,6 +2316,8 @@ function setupEvents() {
             // Done cooking!
             if (confirm('Mark as cooked? 🎉')) {
                 r.timesCooked = (r.timesCooked || 0) + 1;
+                state.cookedDates[r.id] = fmtDate(new Date());
+                saveState();
                 closeCookMode();
                 renderRecipes();
             }
