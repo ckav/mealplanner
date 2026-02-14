@@ -53,6 +53,7 @@
         <button class="tab-btn" data-view="cook">🍳 <span class="tab-label">Cook</span></button>
         <button class="tab-btn" data-view="shopping">🛒 <span class="tab-label">Shopping List</span></button>
         <button class="tab-btn" data-view="settings">⚙️ <span class="tab-label">Settings</span></button>
+        <button class="tab-btn" data-view="notes">📝 <span class="tab-label">Notes</span></button>
     </nav>
 
     <!-- =================== WEEKLY PLAN VIEW =================== -->
@@ -182,6 +183,59 @@
         </div>
     </section>
 </div>
+
+    <!-- =================== TESTER NOTES VIEW =================== -->
+    <section id="notes-view" class="view">
+        <div class="notes-container">
+            <div class="notes-header">
+                <h2 style="font-size:1.1rem;font-weight:700;">📝 Tester Notes</h2>
+                <p style="font-size:.8rem;color:var(--c-gray-500);margin-top:4px;">Visible to everyone. Add ideas, track what's being worked on, and capture feedback.</p>
+            </div>
+
+            <div class="notes-section">
+                <div class="notes-section-header" data-notes-section="ideas">
+                    <span class="notes-section-icon">💡</span>
+                    <h3>Ideas Parking Lot</h3>
+                    <span class="notes-count" id="notesIdeasCount">0</span>
+                </div>
+                <div class="notes-items" id="notesIdeasList"></div>
+                <div class="notes-add">
+                    <input type="text" class="form-input" id="notesIdeasInput" placeholder="Add an idea...">
+                    <button class="btn btn-secondary btn-sm" id="notesIdeasAdd">Add</button>
+                </div>
+            </div>
+
+            <div class="notes-section">
+                <div class="notes-section-header" data-notes-section="indev">
+                    <span class="notes-section-icon">🔨</span>
+                    <h3>In Development</h3>
+                    <span class="notes-count" id="notesIndevCount">0</span>
+                </div>
+                <div class="notes-items" id="notesIndevList"></div>
+                <div class="notes-add">
+                    <input type="text" class="form-input" id="notesIndevInput" placeholder="Add a dev note...">
+                    <button class="btn btn-secondary btn-sm" id="notesIndevAdd">Add</button>
+                </div>
+            </div>
+
+            <div class="notes-section">
+                <div class="notes-section-header" data-notes-section="review">
+                    <span class="notes-section-icon">🔍</span>
+                    <h3>Review / Feedback</h3>
+                    <span class="notes-count" id="notesReviewCount">0</span>
+                </div>
+                <div class="notes-items" id="notesReviewList"></div>
+                <div class="notes-add">
+                    <input type="text" class="form-input" id="notesReviewInput" placeholder="Add feedback...">
+                    <button class="btn btn-secondary btn-sm" id="notesReviewAdd">Add</button>
+                </div>
+            </div>
+
+            <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--c-gray-200);">
+                <button class="btn btn-ghost btn-sm" id="notesClearAll" style="color:var(--c-danger);">🗑 Clear all notes</button>
+            </div>
+        </div>
+    </section>
 
 <!-- =================== RECIPE PICKER MODAL =================== -->
 <div class="modal-overlay" id="pickerModal">
